@@ -20,6 +20,6 @@ done
 
 # Install packages and test
 for PYBIN in /opt/python/cp3{4,5}*/bin /opt/python/cp27*/bin; do
-    ${PYBIN}/pip install pymor --no-index -f /io/wheelhouse
+    ${PYBIN}/pip install -vvv --pre  pymor --no-index -f /io/wheelhouse
     (cd $HOME; ${PYBIN}/py.test pymor)
 done
