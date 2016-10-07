@@ -12,7 +12,7 @@ yum install -y atlas-devel
 WHEEL_DIR=/io/wheelhouse
 
 for PYBIN in /opt/python/cp3{4,5}*/bin /opt/python/cp27*/bin; do
-    ${PYBIN}/pip install -r /io/pymor/requirements-rtd.txt
+    ${PYBIN}/pip install -r /io/requirements.txt
     ${PYBIN}/pip wheel /io/pymor/ -w ${WHEEL_DIR}/
 done
 
@@ -23,6 +23,6 @@ done
 
 # Install packages and test
 for PYBIN in /opt/python/cp3{4,5}*/bin /opt/python/cp27*/bin; do
-    ${PYBIN}/pip install -vvv --pre  pymor --no-index -f file://${WHEEL_DIR}
+    ${PYBIN}/pip install -vvv --pre --no-index -f file://${WHEEL_DIR} pymor
     (cd $HOME; ${PYBIN}/py.test pymor)
 done
