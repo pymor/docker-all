@@ -1,22 +1,33 @@
-notifications:
-  email: false
+language: generic
 
-matrix:
-  include:
-    - sudo: required
-      services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
-    - sudo: required
-      services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
-           PRE_CMD=linux32
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+sudo: required
+services:
+    - docker
+os:
+  - linux
+
+env:
+    global: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+
+    # we do not build wheels for:
+    # cPython 2.6 - pymor's incompatible with it
+    # cPython 3.3 - there's no scipy wheel for it
+    matrix:
+        - PYBIN=/opt/python/cp34-cp34m/bin
+        - PYBIN=/opt/python/cp35-cp35m/bin
+        - PYBIN=/opt/python/cp27-cp27m/bin
+        - PYBIN=/opt/python/cp27-cp27mu/bin
+
 
 install:
   - docker pull $DOCKER_IMAGE
   - git clone https://github.com/pymor/pymor
 
 script:
-  - docker run --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/build-wheels.sh
+  - docker run --rm -v `pwd`:/io -e PYBIN="${PYBIN}" $DOCKER_IMAGE /io/build-wheels.sh
   - ls wheelhouse/

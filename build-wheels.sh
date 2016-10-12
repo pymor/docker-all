@@ -2,19 +2,16 @@
 set -e -x
 
 # Install a system package required by our library
-yum install -y atlas-devel
+yum install -y atlas-devel openmpi-devel
 
-# we do not build wheels for:
-# cPython 2.6 - pymor's incompatible with it
-# cPython 3.3 - there's no scipy wheel for it
+# enable mpi4py compilation
+export MPICC=/usr/lib64/openmpi/1.4-gcc/bin/mpicc
+
 # Compile wheels
 
 WHEEL_DIR=/io/wheelhouse
-
-for PYBIN in /opt/python/cp3{4,5}*/bin /opt/python/cp27*/bin; do
-    ${PYBIN}/pip install -r /io/requirements.txt
-    ${PYBIN}/pip wheel /io/pymor/ -w ${WHEEL_DIR}/
-done
+${PYBIN}/pip install -r /io/requirements.txt
+${PYBIN}/pip wheel /io/pymor/ -w ${WHEEL_DIR}/
 
 # Bundle external shared libraries into the wheels
 for whl in ${WHEEL_DIR}/pymor*.whl; do
@@ -22,7 +19,5 @@ for whl in ${WHEEL_DIR}/pymor*.whl; do
 done
 
 # Install packages and test
-for PYBIN in /opt/python/cp3{4,5}*/bin /opt/python/cp27*/bin; do
-    ${PYBIN}/pip install -vvv --pre --no-index -f file://${WHEEL_DIR} pymor
-    (cd $HOME; ${PYBIN}/py.test pymor)
-done
+${PYBIN}/pip install -vvv --pre --no-index -f file://${WHEEL_DIR} pymor
+(cd $HOME; ${PYBIN}/py.test pymor)
