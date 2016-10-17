@@ -18,10 +18,10 @@ env:
     # cPython 2.6 - pymor's incompatible with it
     # cPython 3.3 - there's no scipy wheel for it
     matrix:
-        - PYVER=cp34-cp34m/bin
-        - PYVER=cp35-cp35m/bin
-        - PYVER=cp27-cp27m/bin
-        - PYVER=cp27-cp27mu/bin
+        - PYVER=cp34-cp34m
+        - PYVER=cp35-cp35m
+        - PYVER=cp27-cp27m
+        - PYVER=cp27-cp27mu
 
 
 install:
