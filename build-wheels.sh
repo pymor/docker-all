@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e -x
 
-# Install a system package required by our library
-yum install -y atlas-devel openmpi-devel
+# Install required system packages
+yum install -y atlas-devel openmpi-devel fltk freeglut libpng libjpeg
+rpm -ivh ./gmsh-r8692-1.el5.x86_64.rpm
 
 # enable mpi4py compilation
 export MPICC=/usr/lib64/openmpi/1.4-gcc/bin/mpicc
