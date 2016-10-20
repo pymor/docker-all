@@ -19,6 +19,8 @@ REQ=/io/requirements.txt
 if [[ -f /io/requirements_${PYVER}.txt ]] ; then
     REQ=/io/requirements_${PYVER}.txt
 fi
+# evtk fails to install w/o numpy present
+${PYBIN}/pip install numpy
 ${PYBIN}/pip install -r ${REQ}
 ${PYBIN}/pip wheel /io/pymor/ -w ${WHEEL_DIR}/
 
