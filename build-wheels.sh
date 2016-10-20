@@ -1,8 +1,12 @@
 #!/bin/bash
 set -e -x
 
+if [ -z ${PYVER+x} ]; then
+    PYVER="cp34-cp34m"
+fi
+
 # Install required system packages
-yum install -y atlas-devel openmpi-devel fltk freeglut libpng libjpeg
+yum install -y atlas-devel openmpi-devel fltk freeglut libpng libjpeg tk tcl
 rpm -ivh /io/gmsh-r8692-1.el5.x86_64.rpm
 
 # enable mpi4py compilation
