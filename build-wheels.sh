@@ -6,7 +6,7 @@ if [ -z ${PYVER+x} ]; then
 fi
 
 # Install required system packages
-yum install -y atlas-devel openmpi-devel fltk freeglut libpng libjpeg tk tcl
+yum install -y atlas-devel openmpi-devel fltk freeglut libpng libjpeg tk tcl xorg-x11-server-Xvfb
 rpm -ivh /io/gmsh-r8692-1.el5.x86_64.rpm
 
 # enable mpi4py compilation
@@ -31,4 +31,4 @@ done
 
 # Install packages and test
 ${PYBIN}/pip install --pre --no-index -f file://${WHEEL_DIR} ${WHEEL_DIR}/pymor-*${PYVER}-manylinux*.whl
-${PYBIN}/py.test --pyargs pymortests -c /io/pymor/.installed_pytest.ini
+/io/xvfb-run -a ${PYBIN}/py.test --pyargs pymortests -c /io/pymor/.installed_pytest.ini
