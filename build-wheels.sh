@@ -6,7 +6,7 @@ if [ -z ${PYVER+x} ]; then
 fi
 
 # Install required system packages
-yum install -y atlas-devel openmpi-devel fltk freeglut libpng libjpeg tk tcl xorg-x11-server-Xvfb
+yum install -y atlas-devel openmpi-devel fltk freeglut libpng libjpeg tk tcl xorg-x11-server-Xvfb xauth
 rpm -ivh /io/gmsh-r8692-1.el5.x86_64.rpm
 
 # enable mpi4py compilation
