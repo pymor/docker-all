@@ -27,15 +27,15 @@ install:
 
 script:
     - |
-    if [ "${TRAVIS_PYTHON_VERSION}" == "2.7" ] ; then
+     if [ "${TRAVIS_PYTHON_VERSION}" == "2.7" ] ; then
         export PYVER=cp27-cp27m
-    fi
-    if [ "${TRAVIS_PYTHON_VERSION}" == "3.4" ] ; then
+     fi
+     if [ "${TRAVIS_PYTHON_VERSION}" == "3.4" ] ; then
         export PYVER=cp34-cp34m
-    fi
-    if [ "${TRAVIS_PYTHON_VERSION}" == "3.5" ] ; then
+     fi
+     if [ "${TRAVIS_PYTHON_VERSION}" == "3.5" ] ; then
         export PYVER=cp35-cp35m
-    fi
+     fi
     - docker run --rm -v `pwd`:/io -e PYVER="${PYVER}" $DOCKER_IMAGE /io/build-wheels.sh
     - ls wheelhouse/
     # Install packages and test
