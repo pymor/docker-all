@@ -1,4 +1,4 @@
-language: generic
+language: python
 
 notifications:
   email:
@@ -6,28 +6,38 @@ notifications:
     on_failure: change
 
 sudo: required
-services:
-    - docker
-os:
-  - linux
+services: docker
+os: linux
+
+python:
+    # we do not build wheels for:
+    # cPython 2.6 - pymor's incompatible with it
+    # cPython 3.3 - there's no scipy wheel for it
+    - 2.7
+    - 3.4
+    - 3.5
 
 env:
     global: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
 
-    # we do not build wheels for:
-    # cPython 2.6 - pymor's incompatible with it
-    # cPython 3.3 - there's no scipy wheel for it
-    matrix:
-        - PYVER=cp34-cp34m
-        - PYVER=cp35-cp35m
-        - PYVER=cp27-cp27m
-        - PYVER=cp27-cp27mu
-
-
 install:
-  - docker pull $DOCKER_IMAGE
-  - git clone https://github.com/pymor/pymor
+    - docker pull $DOCKER_IMAGE
+    - git clone https://github.com/pymor/pymor
+    - pip install pytest
 
 script:
-  - docker run --rm -v `pwd`:/io -e PYVER="${PYVER}" $DOCKER_IMAGE /io/build-wheels.sh
-  - ls wheelhouse/
+    - |
+    if [ "${TRAVIS_PYTHON_VERSION}" == "2.7" ] ; then
+        export PYVER=cp27-cp27m
+    fi
+    if [ "${TRAVIS_PYTHON_VERSION}" == "3.4" ] ; then
+        export PYVER=cp34-cp34m
+    fi
+    if [ "${TRAVIS_PYTHON_VERSION}" == "3.5" ] ; then
+        export PYVER=cp35-cp35m
+    fi
+    - docker run --rm -v `pwd`:/io -e PYVER="${PYVER}" $DOCKER_IMAGE /io/build-wheels.sh
+    - ls wheelhouse/
+    # Install packages and test
+    - pip install --pre --no-index -f file://${PWD}/wheelhouse/ wheelhouse/pymor-*${PYVER}-manylinux*.whl
+    - xvfb-run -a py.test --pyargs pymortests -c ./pymor/.installed_pytest.ini
