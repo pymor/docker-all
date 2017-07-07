@@ -20,3 +20,13 @@ python:
 script:
     - make ${TRAVIS_PYTHON_VERSION}
     - ls -l wheelhouse/*
+
+deploy:
+  provider: releases
+  api_key:
+    secure: nNr8u+zW01c4gntCIqiprJ0a+rogGdCbYcTxqhMK8EGFKZxTIC/mwWnVGBvUDlBql9hCRir/nybI1WTf1tgwqPrPvWyDyK/2Iu6mnmYGgnXrq3qJBKxxemkZmGoLLTe+zu9u5MBpHbTGNOhYdVK8pjfhNmJeo7I4nEa2zH6TcJXyj/K23OVp8+dWtCLEWFECoP6xa/ycfMnS7/5TEUwe/vvq0jOMGbZqPzKubCB5Sb1UHtgkCD/JvLIZzbxMsgjMldhSoZ0hYpgvbC9cz7g7Gf4yXlA0G9BPGWcXYG2CnXy5gZtNL+NqHmPRT3cpNlfkE2s8nsj9k96UXcc+b6T3ZAL0aBkbfSrgEPbHp/8Zg5vqeMrZxTdjBO0U0PBdhgVILdV7uGjB86B8yekhvDb2KD4SDWhJKSqMstX8zrsj1DuVxPao2Vvydp6/WnAbQvpSeEaNHo6W4q9C0MXiiNDp1KsRIzJmTVYxepn/6XL7LpmXDQtIuI0MpBCSRxmR4ooCMLEWEKpaj0sGMOvj6N+gJw4LzfSL9rzcE/Y4tb3vkXz6GUFblxXaX+/2LmhB+pQIowU9+IjLPoqV6lGTKtk4R4nJ0A2uc46PwQaq6y8nYtlCmULmfVOKyUY2o35nfycbjmUwQahWj5h0LlTywxUX10+dHnceXM2diwT9B/vm5Ms=
+   file_glob: true
+   file: wheelhouse/pymor*manylinux*.whl
+   skip_cleanup: true
+  on:
+    tags: true
