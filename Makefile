@@ -1,7 +1,6 @@
 .PHONY: all wheel docker 2.7 3.4 3.5
 
-DOCKER_IMAGE=
-BRANCH=py3_debs
+BRANCH=origin/py3_debs
 
 3.5: REV=3.5
 3.5: PYVER=cp35-cp35m
