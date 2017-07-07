@@ -17,30 +17,6 @@ python:
     - 3.4
     - 3.5
 
-env:
-    global: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
-
-install:
-    - docker pull $DOCKER_IMAGE
-    - git clone https://github.com/pymor/pymor
-    - pip install pytest
-    - pip install -U pip
-
 script:
-    - |
-     if [ "${TRAVIS_PYTHON_VERSION}" == "2.7" ] ; then
-        export PYVER=cp27-cp27mu
-     fi
-     if [ "${TRAVIS_PYTHON_VERSION}" == "3.4" ] ; then
-        export PYVER=cp34-cp34m
-     fi
-     if [ "${TRAVIS_PYTHON_VERSION}" == "3.5" ] ; then
-        export PYVER=cp35-cp35m
-     fi
-    - docker run --rm -v `pwd`:/io -e PYVER="${PYVER}" $DOCKER_IMAGE /io/build-wheels.sh
-    - ls wheelhouse/
-    # Install packages and test
-    - python -c "import pip; print(pip.pep425tags.get_supported())"
-    - python -c 'import distutils.util; print(distutils.util.get_platform())'
-    - pip install --pre --no-index -f file://${PWD}/wheelhouse/ wheelhouse/pymor-*-${PYVER}-manylinux1_x86_64.whl
-    - xvfb-run -a py.test --pyargs pymortests -c ./pymor/.installed_pytest.ini
+    - make ${TRAVIS_PYTHON_VERSION}
+    - ls -l wheelhouse/*
