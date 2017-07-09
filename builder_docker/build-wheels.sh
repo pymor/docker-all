@@ -9,8 +9,7 @@ fi
 PYBIN=/opt/python/${PYVER}/bin
 WHEEL_DIR=/io/wheelhouse
 
-# evtk fails to install w/o numpy present
-${PYBIN}/pip install -r /io/pymor/requirements.txt
+sudo ${PYBIN}/pip install -r /io/pymor/requirements.txt
 
 ${PYBIN}/pip wheel /io/pymor/ -w ${WHEEL_DIR}/
 

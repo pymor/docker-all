@@ -17,11 +17,12 @@ BRANCH=origin/py3_debs
 wheel: docker
 	[ -d pymor ] || git clone https://github.com/pymor/pymor
 	cd pymor && git fetch && git reset --hard $(BRANCH) && cd -
-	docker run --rm -v ${PWD}:/io -e PYVER="$(PYVER)" pymor/manylinux:latest /io/build-wheels.sh
-	ls wheelhouse/
+	docker run --rm -t -v ${PWD}:/io -e PYVER="$(PYVER)" pymor/manylinux:latest /usr/local/bin/build-wheels.sh
+	ls ${PWD}/wheelhouse/
 	# Install packages and test
-	REV=$(REV) PYVER=$(PYVER) ./test.bash
+	docker run --rm -t -v ${PWD}/wheelhouse:/io -e REV=$(REV) -e PYVER=$(PYVER) pymor/wheeltester:$(REV) wheeltester.bash
 
 docker:
-	docker build -t pymor/manylinux:latest docker/
+	docker build -t pymor/manylinux:latest builder_docker/
+	make -C tester_docker pythons
 

@@ -1,0 +1,16 @@
+FROM pymor/testing:PYTHONREV
+
+MAINTAINER René Milk <rene.milk@wwu.de>
+
+ADD entrypoint.sh /usr/local/bin/
+ADD xvfb-run /usr/local/bin/
+
+RUN git clone --branch=py3_debs https://github.com/pymor/pymor /usr/local/src/pymor && \
+    ls -la /usr/local/src/pymor
+RUN ls -la /usr/local/src/pymor
+
+ADD wheeltester.bash /usr/local/bin/
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/usr/local/bin/wheeltester.bash"]
+
