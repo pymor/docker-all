@@ -1,4 +1,4 @@
-language: python
+language: generic
 
 notifications:
   email:
@@ -9,16 +9,16 @@ sudo: required
 services: docker
 os: linux
 
-python:
+env:
     # we do not build wheels for:
     # cPython 2.6 - pymor's incompatible with it
     # cPython 3.3 - there's no scipy wheel for it
-    - 2.7
-    - 3.4
-    - 3.5
+    - PYTHON_VERSION=2.7
+    - PYTHON_VERSION=3.4
+    - PYTHON_VERSION=3.5
 
 script:
-    - make ${TRAVIS_PYTHON_VERSION}
+    - make ${PYTHON_VERSION}
     - ls -l wheelhouse/*
 
 deploy:
