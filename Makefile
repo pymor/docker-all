@@ -24,5 +24,7 @@ wheel: docker
 
 docker:
 	docker build -t pymor/manylinux:latest builder_docker/
-	make -C tester_docker pythons
+	make -C tester_docker $(REV)
 
+push: docker
+	make -C tester_docker push
