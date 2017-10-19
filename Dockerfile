@@ -1,4 +1,6 @@
-FROM debian:stretch
+ARG PYVER=3.5
+
+FROM pymor/python:$PYVER
 MAINTAINER René Milk <rene.milk@wwu.de>
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -13,7 +15,7 @@ RUN apt-get update && ${APTINSTALL} wget git curl ca-certificates\
         rm -rf /var/lib/apt/lists/*
 
 ENV DEBIAN_FRONTEND=teletype \
-    PETSC_VERSION=3.7.4
+    PETSC_VERSION=3.7.6
 ENV PETSC_SRC_DIR=/root/petsc-${PETSC_VERSION}
 
 RUN mkdir ${PETSC_SRC_DIR} && cd ${PETSC_SRC_DIR} && \
