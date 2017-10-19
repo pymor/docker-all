@@ -5,7 +5,7 @@ services: docker
 
 script:
   - cd ${TRAVIS_BUILD_DIR}
-  - travis_wait 50 make petsc
+  - travis_wait 50 make $PY
   - |
     if [[ "${TRAVIS_PULL_REQUEST}" == "false" ]] ; then
         docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
@@ -21,3 +21,13 @@ addons:
   apt:
     packages:
       - docker-ce
+
+matrix:
+  include:
+  - env: PY=2.7
+  - env: PY=3.7-rc
+  - env: PY=3.5
+  - env: PY=3.6
+  allow_failures:
+  # cython does not yet work with it, apparently
+  - env: PY=3.7-rc
