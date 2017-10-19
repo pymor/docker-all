@@ -1,0 +1,24 @@
+sudo: required
+dist: trusty
+language: generic
+services: docker
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - travis_wait 50 make petsc
+  - |
+    if [[ "${TRAVIS_PULL_REQUEST}" == "false" ]] ; then
+        docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
+        make push
+    fi
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+addons:
+  apt:
+    packages:
+      - docker-ce
+
