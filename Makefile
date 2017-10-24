@@ -6,9 +6,9 @@ pythons: $(PYTHONS)
 
 $(PYTHONS):
 	docker build --build-arg PYVER=$@ \
-		-t pymor/fenics:py$@ .
+		-t pymor/petsc:py$@ .
 
 push:
-	docker push pymor/fenics
+	docker push pymor/petsc
 
 all: pythons
