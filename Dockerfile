@@ -1,6 +1,6 @@
 ARG PYVER=3.5
 FROM pymor/python:$PYVER
-MAINTAINER fenics-project <fenics-support@googlegroups.com>
+MAINTAINER René Milk <rene.milk@wwu.de>
 
 # Get Ubuntu updates
 USER root
