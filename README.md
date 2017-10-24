@@ -1,2 +1,2 @@
-# docker-fenics
-mix-in image for our testing infrastructing
+# docker-petsc
+base image for docker-fenics to get around build time limits on travis
