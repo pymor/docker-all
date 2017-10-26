@@ -24,9 +24,7 @@ RUN echo "/usr/local/lib/python3/dist-packages" >> /usr/local/lib/python3.5/dist
 
 
 ENV FENICS_HOME /root/fenics
-RUN mkdir ${FENICS_HOME} && touch $FENICS_HOME/.sudo_as_admin_successful && \
-    mkdir $FENICS_HOME/shared
-VOLUME /root/fenics/shared
+RUN mkdir ${FENICS_HOME} && touch $FENICS_HOME/.sudo_as_admin_successful
 
 WORKDIR /tmp
 
@@ -39,8 +37,7 @@ ENV PETSC_VERSION=3.7.6 \
     SLEPC4PY_VERSION=3.7.0 \
     TRILINOS_VERSION=12.10.1 \
     OPENBLAS_NUM_THREADS=1 \
-    OPENBLAS_VERBOSE=0 \
-    FENICS_PREFIX=$FENICS_HOME/local
+    OPENBLAS_VERBOSE=0
 
 # Non-Python utilities and libraries
 RUN apt-get -qq update && \
