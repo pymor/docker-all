@@ -63,14 +63,14 @@ RUN apt-get -qq update && \
         libboost-timer-dev \
         libeigen3-dev \
         liblapack-dev \
-        libmpich-dev \
+        libopenmpi-dev \
         libopenblas-dev \
         libpcre3-dev \
-        libhdf5-mpich-dev \
+        libhdf5-mpi-dev \
         libgmp-dev \
         libcln-dev \
         libmpfr-dev \
-        mpich \
+        openmpi-bin \
         nano \
         pkg-config \
         man \
