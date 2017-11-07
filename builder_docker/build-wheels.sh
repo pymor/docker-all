@@ -2,14 +2,15 @@
 set -e -x
 
 if [ -z ${PYVER+x} ]; then
-    PYVER="cp34-cp34m"
+    PYVER="cp35-cp35m"
 fi
 
 # Compile wheels
 PYBIN=/opt/python/${PYVER}/bin
 WHEEL_DIR=/io/wheelhouse
 
-sudo ${PYBIN}/pip install -r /io/pymor/requirements.txt
+sudo ${PYBIN}/pip download -d ${WHEEL_DIR}/ -r /io/pymor/requirements-optional.txt
+sudo ${PYBIN}/pip install --find-links ${WHEEL_DIR}/ -r /io/pymor/requirements-optional.txt
 
 ${PYBIN}/pip wheel /io/pymor/ -w ${WHEEL_DIR}/
 

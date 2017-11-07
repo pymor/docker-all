@@ -1,12 +1,11 @@
-PYTHONS = 2.7 3.4 3.5 3.6
+PYTHONS = 2.7 3.5 3.6 3.7-rc
 
 .PHONY: pythons $(PYTHONS) push
 
 pythons: $(PYTHONS)
 
 $(PYTHONS):
-	sed -e "s/PYTHONREV/$@/g" Dockerfile.in > Dockerfile
-	docker build -t pymor/wheeltester:$@ .
+	docker build --build-arg PYVER=$@ -t pymor/wheeltester:py$@ .
 
 push: pythons
 	docker push pymor/wheeltester
