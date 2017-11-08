@@ -2,7 +2,6 @@
 
 set -e
 
-sudo pip install -U pip pytest setuptools
 sudo pip install --no-index --find-links=/io/ pymor[full-nompi]
 cd /tmp
 xvfb-run -a py.test --pyargs pymortests -c /usr/local/src/installed_pytest.ini

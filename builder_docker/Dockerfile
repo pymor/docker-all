@@ -2,6 +2,8 @@ FROM quay.io/pypa/manylinux1_x86_64
 
 MAINTAINER René Milk <rene.milk@wwu.de>
 
+ARG PYVER
+
 RUN yum install -y atlas-devel openmpi-devel sudo \
         fltk freeglut libpng libjpeg \
         tk tcl xorg-x11-server-Xvfb xauth && \
@@ -15,11 +17,11 @@ RUN yum install -y atlas-devel openmpi-devel sudo \
 
 ENV MPICC /usr/lib64/openmpi/1.4-gcc/bin/mpicc
 
-ADD gmsh-r8692-1.el5.x86_64.rpm /tmp
 ADD entrypoint.sh /usr/local/bin/
 ADD build-wheels.sh /usr/local/bin/
-RUN rpm -ivh /tmp/gmsh-r8692-1.el5.x86_64.rpm && \
-    rm /tmp/gmsh-r8692-1.el5.x86_64.rpm
 
+ENV PYBIN=/opt/python/${PYVER}/bin \
+    WHEEL_DIR=/io/wheelhouse
+RUN ${PYBIN}/pip install ipython numpy cython scipy
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/local/bin/build-wheels.sh"]

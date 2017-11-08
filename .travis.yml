@@ -21,6 +21,7 @@ env:
 script:
     - make ${PYTHON_VERSION}
     - ls -l wheelhouse/*
+    - make push
 
 deploy:
     provider: releases
