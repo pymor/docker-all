@@ -9,6 +9,12 @@ sudo: required
 services: docker
 os: linux
 
+# auto-updates docker engine
+addons:
+  apt:
+    packages:
+      - docker-ce
+
 env:
     # we do not build wheels for:
     # cPython 2.6 - pymor's incompatible with it
