@@ -14,7 +14,7 @@ source:
 
 ${WHEELS}: wheel%: FORCE builder% source
 	docker run --rm  -t -e LOCAL_USER_ID=$(shell id -u)  \
-		-v ${PWD}:/io pymor/manylinux:py$* /usr/local/bin/build-wheels.sh
+		-v ${PWD}:/io pymor/wheelbuilder:py$* /usr/local/bin/build-wheels.sh
 
 ${TESTS}: test%: FORCE tester% wheel%
 	# Install packages and test
@@ -28,7 +28,7 @@ tester%: FORCE
 
 builder%: FORCE
 	cd builder_docker && docker build --build-arg PYTHON_VERSION="$*" \
-		-t pymor/manylinux:py$* .
+		-t pymor/wheelbuilder:py$* .
 
 ${IMAGES}: image%: builder% tester%
 
@@ -40,5 +40,5 @@ tests: ${TESTS}
 
 .PHONY: push
 push:
-	docker push pymor/manylinux
+	docker push pymor/wheelbuilder
 	docker push pymor/wheeltester
