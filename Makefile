@@ -22,11 +22,12 @@ test%: FORCE tester%
 		pymor/wheeltester:py$* wheeltester.bash
 
 tester%: FORCE
-	cd tester_docker && docker build --build-arg PYVER=$* -t pymor/wheeltester:py$* .
+	cd tester_docker && docker build --build-arg PYVER=$* \
+		-t pymor/wheeltester:py$* .
 
 builder%: FORCE
-	docker build --build-arg PYTHON_VERSION="$*" \
-		-t pymor/manylinux:py$* builder_docker/
+	cd builder_docker && docker build --build-arg PYTHON_VERSION="$*" \
+		-t pymor/manylinux:py$* .
 
 ${IMAGES}: image%: builder% tester%
 
