@@ -18,8 +18,7 @@ env:
     - PYTHON_VERSION=3.6
 
 script:
-    - make ${PYTHON_VERSION}
-    - ls -l wheelhouse/*
+    - make image${PYTHON_VERSION}
 
 before_deploy:
     - docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
