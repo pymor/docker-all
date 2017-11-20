@@ -2,7 +2,11 @@ FROM quay.io/pypa/manylinux1_x86_64
 
 MAINTAINER René Milk <rene.milk@wwu.de>
 
-ARG PYVER
+ARG PYTHON_VERSION
+
+ENV MPICC=/usr/lib64/openmpi/1.4-gcc/bin/mpicc \
+    PYTHON_VERSION=${PYTHON_VERSION} \
+    WHEEL_DIR=/io/wheelhouse
 
 RUN yum install -y atlas-devel openmpi-devel sudo \
         fltk freeglut libpng libjpeg \
@@ -15,13 +19,10 @@ RUN yum install -y atlas-devel openmpi-devel sudo \
     && rm -r /root/.gnupg/ \
     && chmod +x /usr/local/bin/gosu
 
-ENV MPICC /usr/lib64/openmpi/1.4-gcc/bin/mpicc
-
+ADD pybin.sh /etc/profile.d/
 ADD entrypoint.sh /usr/local/bin/
 ADD build-wheels.sh /usr/local/bin/
 
-ENV PYBIN=/opt/python/${PYVER}/bin \
-    WHEEL_DIR=/io/wheelhouse
-RUN ${PYBIN}/pip install ipython numpy cython scipy
+RUN bash -l -c '${PYBIN}/pip install ipython numpy cython scipy'
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/local/bin/build-wheels.sh"]
