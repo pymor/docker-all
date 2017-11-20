@@ -1,6 +1,7 @@
 VERSIONS:=2.7 3.5 3.6
 IMAGES:=$(addprefix image, ${VERSIONS})
 WHEELS:=$(addprefix wheel, ${VERSIONS})
+TESTS:=$(addprefix test, ${VERSIONS})
 PYMOR_BRANCH=wheel_building
 
 all: images
@@ -15,7 +16,7 @@ ${WHEELS}: wheel%: FORCE builder% source
 	docker run --rm  -t -e LOCAL_USER_ID=$(shell id -u)  \
 		-v ${PWD}:/io pymor/manylinux:py$* /usr/local/bin/build-wheels.sh
 
-test%: FORCE tester%
+${TESTS}: test%: FORCE tester% wheel%
 	# Install packages and test
 	docker run --rm -t -e LOCAL_USER_ID=$(shell id -u)  \
 		-v ${PWD}/wheelhouse:/io \
@@ -34,6 +35,8 @@ ${IMAGES}: image%: builder% tester%
 images: ${IMAGES}
 
 wheels: ${WHEELS}
+
+tests: ${TESTS}
 
 .PHONY: push
 push:
