@@ -5,7 +5,7 @@ set -e
 FENICS_PYTHON="${FENICS_PYTHON:-python3}"
 FENICS_BUILD_TYPE="${FENICS_BUILD_TYPE:-Release}"
 
-USE_PYTHON3=$(${FENICS_PYTHON} -c "import sys; print('OFF' if sys.version_info.major == 2 else 'ON')")
+USE_PYTHON3='ON'
 CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DDOLFIN_USE_PYTHON3=${USE_PYTHON3}"
 
 if [ -z "${FENICS_SRC_DIR}" ]; then
