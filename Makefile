@@ -5,8 +5,8 @@ all: testing
 python:
 	make -C python
 
-qt5: python
-	make -C qt5
+pyqt5: python
+	make -C pyqt5
 
 petsc: python
 	make -C petsc
@@ -17,14 +17,14 @@ fenics: petsc
 ngsolve: petsc python
 	make -C ngsolve
 
-testing: ngsolve qt5 fenics
+testing: ngsolve pyqt5 fenics
 	make -C testing
 
 push_python:
 	make -C python push
 
-push_qt5: push_python
-	make -C qt5 push
+push_pyqt5: push_python
+	make -C pyqt5 push
 
 push_petsc: push_python
 	make -C petsc push
@@ -35,7 +35,7 @@ push_fenics: push_petsc
 push_ngsolve: push_python
 	make -C ngsolve push
 
-push_testing: push_ngsolve push_qt5 push_fenics
+push_testing: push_ngsolve push_pyqt5 push_fenics
 	make -C testing push
 
 push: push_testing
