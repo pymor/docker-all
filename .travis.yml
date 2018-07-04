@@ -1,0 +1,23 @@
+
+sudo: required
+dist: trusty
+language: generic
+
+before_install:
+  # workaround for gnutls bug is using git built against curl-openssl
+  - sudo -E rm /etc/apt/sources.list.d/*git*.list
+  - sudo -E add-apt-repository -y ppa:pymor/travis && sudo -E aptitude update && sudo -E aptitude install git -yq
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - git submodule update --init --recursive
+  - git submodule status
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+git:
+  # we do that manually in script section to be able to use our own git binary
+  submodules: false

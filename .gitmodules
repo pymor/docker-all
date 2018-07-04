@@ -1,0 +1,18 @@
+[submodule "testing"]
+	path = testing
+	url = https://github.com/pymor/Dockerfiles.git
+[submodule "python"]
+	path = python
+	url = https://github.com/pymor/python-docker.git
+[submodule "ngsolve"]
+	path = ngsolve
+	url = https://github.com/pymor/docker-ngsolve.git
+[submodule "petsc"]
+	path = petsc
+	url = https://github.com/pymor/docker-petsc.git
+[submodule "fenics"]
+	path = fenics
+	url = https://github.com/pymor/docker-fenics.git
+[submodule "pyqt5"]
+	path = pyqt5
+	url = https://github.com/pymor/docker-pyqt5.git
