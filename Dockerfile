@@ -28,17 +28,6 @@ RUN mkdir ${FENICS_HOME} && touch $FENICS_HOME/.sudo_as_admin_successful
 
 WORKDIR /tmp
 
-# Environment variables
-ENV PETSC_VERSION=3.7.6 \
-    SLEPC_VERSION=3.7.4 \
-    SWIG_VERSION=3.0.12 \
-    MPI4PY_VERSION=2.0.0 \
-    PETSC4PY_VERSION=3.7.0 \
-    SLEPC4PY_VERSION=3.7.0 \
-    TRILINOS_VERSION=12.10.1 \
-    OPENBLAS_NUM_THREADS=1 \
-    OPENBLAS_VERBOSE=0
-
 # Non-Python utilities and libraries
 RUN apt-get -qq update && \
     apt-get -y --with-new-pkgs \
@@ -98,6 +87,16 @@ RUN apt-get -qq update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Environment variables
+ENV PETSC_VERSION=3.9.2 \
+    SLEPC_VERSION=3.9.1 \
+    SWIG_VERSION=3.0.12 \
+    MPI4PY_VERSION=3.0.0 \
+    PETSC4PY_VERSION=3.9.1 \
+    SLEPC4PY_VERSION=3.9.0 \
+    TRILINOS_VERSION=12.10.1 \
+    OPENBLAS_NUM_THREADS=1 \
+    OPENBLAS_VERBOSE=0
 
 # Install PETSc from source
 RUN wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz && \
@@ -106,27 +105,23 @@ RUN wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-li
     python2 ./configure --COPTFLAGS="-O2" \
                 --CXXOPTFLAGS="-O2" \
                 --FOPTFLAGS="-O2" \
-                --with-c-support \
                 --with-debugging=0 \
-                --with-shared-libraries \
                 --download-blacs \
                 --download-hypre \
                 --download-metis \
                 --download-mumps \
-                --download-parmetis \
                 --download-ptscotch \
                 --download-scalapack \
                 --download-spai \
                 --download-suitesparse \
                 --download-superlu \
-                --download-superlu_dist \
                 --prefix=/usr/local/petsc-32 && \
      make && \
      make install && \
      rm -rf /tmp/*
 
 # Install SLEPc from source
-RUN wget -nc --quiet https://bitbucket.org/slepc/slepc/get/v${SLEPC_VERSION}.tar.gz -O slepc-${SLEPC_VERSION}.tar.gz && \
+RUN wget -nc --quiet http://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION}.tar.gz -O slepc-${SLEPC_VERSION}.tar.gz && \
     mkdir -p slepc-src && tar -xf slepc-${SLEPC_VERSION}.tar.gz -C slepc-src --strip-components 1 && \
     export PETSC_DIR=/usr/local/petsc-32 && \
     cd slepc-src && \
