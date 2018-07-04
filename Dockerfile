@@ -4,7 +4,7 @@ MAINTAINER René Milk <rene.milk@wwu.de>
 
 ENV FENICS_BUILD_TYPE=Release \
     FENICS_PREFIX=/usr/local \
-    FENICS_VERSION=2017.1.0 \
+    FENICS_VERSION=2017.2.0 \
     FENICS_PYTHON=python
 WORKDIR /tmp
 
