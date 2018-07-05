@@ -4,8 +4,12 @@ MAINTAINER René Milk <rene.milk@wwu.de>
 
 ENV FENICS_BUILD_TYPE=Release \
     FENICS_PREFIX=/usr/local \
-    FENICS_VERSION=2017.2.0 \
-    FENICS_PYTHON=python
+    FENICS_VERSION=2018.1.0 \
+    FENICS_PYTHON=python \
+    DOLFIN_VERSION="2018.1.0.post1" \
+    MSHR_VERSION="2018.1.0" \
+    PYBIND11_VERSION=2.2.3 \
+    PYPI_FENICS_VERSION=">=2018.1.0,<2018.2.0"
 WORKDIR /tmp
 
 # Install Python environment
@@ -21,10 +25,12 @@ RUN pip install --no-cache-dir numpy && \
     pip install --no-cache-dir https://bitbucket.org/mpi4py/mpi4py/downloads/mpi4py-${MPI4PY_VERSION}.tar.gz && \
     pip install --no-cache-dir https://bitbucket.org/petsc/petsc4py/downloads/petsc4py-${PETSC4PY_VERSION}.tar.gz && \
     pip install --no-cache-dir https://bitbucket.org/slepc/slepc4py/downloads/slepc4py-${SLEPC4PY_VERSION}.tar.gz && \
-    wget -nc --quiet http://downloads.sourceforge.net/swig/swig-${SWIG_VERSION}.tar.gz -O swig-${SWIG_VERSION}.tar.gz && \
-    tar -xf swig-${SWIG_VERSION}.tar.gz && \
-    cd swig-${SWIG_VERSION} && \
-    ./configure && \
+    wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
+    tar -xf v${PYBIND11_VERSION}.tar.gz && \
+    cd pybind11-${PYBIND11_VERSION} && \
+    mkdir build && \
+    cd build && \
+    cmake -DPYBIND11_TEST=False ../ && \
     make && \
     make install && \
     rm -rf /tmp/*
@@ -32,33 +38,70 @@ RUN pip install --no-cache-dir numpy && \
 # Our helper scripts
 WORKDIR $FENICS_HOME
 COPY fenics.env.conf $FENICS_HOME/fenics.env.conf
-COPY bin $FENICS_HOME/bin
+
 RUN PYTHON_SITE_DIR=$(python -c "import site; print(site.getsitepackages()[0])") && \
     PYTHON_VERSION=$(python -c 'import sys; print(str(sys.version_info[0]) + "." + str(sys.version_info[1]))') && \
     echo "$FENICS_HOME/local/lib/python$PYTHON_VERSION/site-packages" >> $PYTHON_SITE_DIR/fenics-user.pth
 
 # Python3 build.
-ENV FENICS_PYTHON=python
+ENV FENICS_PYTHON=python \
+    MJ=4
 
-RUN /bin/bash -c "FENICS_SRC_DIR=/tmp/src /root/fenics/bin/fenics-pull"
+
+WORKDIR /tmp
+RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${PYPI_FENICS_VERSION}' && \
+                  git clone https://bitbucket.org/fenics-project/dolfin.git && \
+                  cd dolfin && \
+                  git checkout ${DOLFIN_VERSION} && \
+                  mkdir build && \
+                  cd build && \
+                  cmake ../ && \
+                  make -j ${MJ} && \
+                  make install && \
+                  mv /usr/local/share/dolfin/demo /tmp/demo && \
+                  mkdir -p /usr/local/share/dolfin/demo && \
+                  mv /tmp/demo /usr/local/share/dolfin/demo/cpp && \
+                  cd ../python && \
+                  PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install . && \
+                  cd demo && \
+                  python3 generate-demo-files.py && \
+                  mkdir -p /usr/local/share/dolfin/demo/python && \
+                  cp -r documented /usr/local/share/dolfin/demo/python && \
+                  cp -r undocumented /usr/local/share/dolfin/demo/python && \
+                  cd /tmp/ && \
+                  git clone https://bitbucket.org/fenics-project/mshr.git && \
+                  cd mshr && \
+                  git checkout ${MSHR_VERSION} && \
+                  mkdir build && \
+                  cd build && \
+                  cmake ../ && \
+                  make -j ${MJ} && \
+                  make install "
+RUN /bin/bash -c "ls -l /tmp/ && \
+                  cd /tmp/dolfin/python && \
+                  PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install . && \
+                  ldconfig && \
+                  rm -rf /tmp/*"
+
 # Install fenics as root user into /usr/local then remove the fenics-* scripts
-# the fenics.env.conf file and the unnecessary /root/fenics/local directory as
+# the fenics.env.conf file and the unnecessary /home/fenics/local directory as
 # the user does not need them in the stable image!
-RUN /bin/bash -c "FENICS_SRC_DIR=/tmp/src /root/fenics/bin/fenics-build && \
-               ldconfig && \
-               cp -r $FENICS_PREFIX/share/dolfin/demo $FENICS_HOME/demo && \
-               rm -rf /root/fenics/local && \
-               rm -rf /tmp/src && \
-               rm -rf $FENICS_HOME/bin"
+RUN /bin/bash -c "cp -r /usr/local/share/dolfin/demo $FENICS_HOME/demo && \
+                  rm -rf /home/fenics/local && \
+                  rm -rf $FENICS_HOME/bin && \
+                  echo '' >> $FENICS_HOME/.profile" 
+            
 # Make sure we get something that basically works on this stable build.  It
 # would be better to run unit tests, but at the moment even the quick tests
 # take too long to run.
 # RUN apt-get update && apt-get -y install xvfb
 # RUN /bin/bash -l -c "mkdir -p /tmp/poisson_test && \
 #     cd /tmp/poisson_test && \
-#     xvfb-run python $FENICS_HOME/demo/documented/poisson/python/demo_poisson.py && \
+#     ls -l $FENICS_HOME/demo/python/documented/poisson && \ 
+#     time xvfb-run python $FENICS_HOME/demo/python/documented/poisson/demo_poisson.py && \
 #     instant-clean && \
 #     rm -r /tmp/poisson_test"
-ONBUILD RUN echo "export SLEPC_DIR=/usr/local/slepc-32 \
+ONBUILD RUN echo "export MPLBACKEND=Agg \
+    SLEPC_DIR=/usr/local/slepc-32 \
     PETSC_DIR=/usr/local/petsc-32" >> /etc/profile && \
     echo "source /usr/local/share/dolfin/dolfin.conf" >> /etc/profile
