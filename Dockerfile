@@ -20,7 +20,8 @@ RUN pip install --no-cache-dir numpy && \
     pip install --no-cache-dir six && \
     pip install --no-cache-dir urllib3 && \
 # Install Jupyter, sympy, mpi4py, petsc4py and slepc4py and Swig from source.
-    pip install --no-cache-dir sympy && \
+# sympy 1.2 has a regression that fails dolfin
+    pip install --no-cache-dir sympy==1.1.1 && \
     pip install --no-cache-dir matplotlib && \
     pip install --no-cache-dir https://bitbucket.org/mpi4py/mpi4py/downloads/mpi4py-${MPI4PY_VERSION}.tar.gz && \
     pip install --no-cache-dir https://bitbucket.org/petsc/petsc4py/downloads/petsc4py-${PETSC4PY_VERSION}.tar.gz && \
@@ -89,15 +90,15 @@ RUN /bin/bash -c "ls -l /tmp/ && \
 RUN /bin/bash -c "cp -r /usr/local/share/dolfin/demo $FENICS_HOME/demo && \
                   rm -rf /home/fenics/local && \
                   rm -rf $FENICS_HOME/bin && \
-                  echo '' >> $FENICS_HOME/.profile" 
-            
+                  echo '' >> $FENICS_HOME/.profile"
+
 # Make sure we get something that basically works on this stable build.  It
 # would be better to run unit tests, but at the moment even the quick tests
 # take too long to run.
 # RUN apt-get update && apt-get -y install xvfb
 # RUN /bin/bash -l -c "mkdir -p /tmp/poisson_test && \
 #     cd /tmp/poisson_test && \
-#     ls -l $FENICS_HOME/demo/python/documented/poisson && \ 
+#     ls -l $FENICS_HOME/demo/python/documented/poisson && \
 #     time xvfb-run python $FENICS_HOME/demo/python/documented/poisson/demo_poisson.py && \
 #     instant-clean && \
 #     rm -r /tmp/poisson_test"
