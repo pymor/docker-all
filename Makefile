@@ -1,4 +1,4 @@
-.PHONY: python qt5 testing petsc fenics ngsolve
+.PHONY: python qt5 testing petsc fenics ngsolve update
 
 all: testing
 
@@ -39,4 +39,8 @@ push_testing: push_ngsolve push_pyqt5 push_fenics
 	make -C testing push
 
 push: push_testing
+
+update:
+	git submodule foreach git fetch
+	git submodule foreach git checkout origin/master
 
