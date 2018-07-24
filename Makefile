@@ -48,9 +48,9 @@ update:
 	git submodule foreach git checkout origin/master
 
 $(PYTHONS): python-%:
-	make -n PY=$* testing
+	make PY=$* testing
 
 $(PUSH_PYTHONS): push-python-%:
-	make -n PY=$* push_testing
+	make PY=$* push_testing
 
 push: $(PUSH_PYTHONS)
