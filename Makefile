@@ -8,49 +8,49 @@ PY=3.6
 all: $(PYTHONS)
 
 testing: ngsolve pyqt5 fenics
-	make -C testing $(PY)
+	$(MAKE) -C testing $(PY)
 
 python:
-	make -C python $(PY)
+	$(MAKE) -C python $(PY)
 
 pyqt5: python
-	make -C pyqt5 $(PY)
+	$(MAKE) -C pyqt5 $(PY)
 
 petsc: python
-	make -C petsc $(PY)
+	$(MAKE) -C petsc $(PY)
 
 fenics: petsc
-	make -C fenics $(PY)
+	$(MAKE) -C fenics $(PY)
 
 ngsolve: petsc python
-	make -C ngsolve $(PY)
+	$(MAKE) -C ngsolve $(PY)
 
 push_python:
-	make -C python push
+	$(MAKE) -C python push
 
 push_pyqt5: push_python
-	make -C pyqt5 push
+	$(MAKE) -C pyqt5 push
 
 push_petsc: push_python
-	make -C petsc push
+	$(MAKE) -C petsc push
 
 push_fenics: push_petsc
-	make -C fenics push
+	$(MAKE) -C fenics push
 
 push_ngsolve: push_python
-	make -C ngsolve push
+	$(MAKE) -C ngsolve push
 
 push_testing: push_ngsolve push_pyqt5 push_fenics
-	make -C testing push
+	$(MAKE) -C testing push
 
 update:
 	git submodule foreach git fetch
 	git submodule foreach git checkout origin/master
 
 $(PYTHONS): python-%:
-	make PY=$* testing
+	$(MAKE) PY=$* testing
 
 $(PUSH_PYTHONS): push-python-%:
-	make PY=$* push_testing
+	$(MAKE) PY=$* push_testing
 
 push: $(PUSH_PYTHONS)
