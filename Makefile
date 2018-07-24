@@ -1,24 +1,26 @@
 .PHONY: python qt5 testing petsc fenics ngsolve update
 
+PY=3.6
+
 all: testing
 
 python:
-	make -C python
+	make -C python $(PY)
 
 pyqt5: python
-	make -C pyqt5
+	make -C pyqt5 $(PY)
 
 petsc: python
-	make -C petsc
+	make -C petsc $(PY)
 
 fenics: petsc
-	make -C fenics
+	make -C fenics $(PY)
 
 ngsolve: petsc python
-	make -C ngsolve
+	make -C ngsolve $(PY)
 
 testing: ngsolve pyqt5 fenics
-	make -C testing
+	make -C testing $(PY)
 
 push_python:
 	make -C python push
