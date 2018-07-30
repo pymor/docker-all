@@ -77,10 +77,11 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
                   cd build && \
                   cmake ../ && \
                   make -j ${MJ} && \
-                  make install "
-RUN /bin/bash -c "ls -l /tmp/ && \
+                  make install && \
+                  ls -l /tmp/ && \
                   cd /tmp/dolfin/python && \
                   PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install . && \
+                  find /usr/local -type f | xargs strip -p -d ; \
                   ldconfig && \
                   rm -rf /tmp/*"
 
