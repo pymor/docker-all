@@ -1,9 +1,9 @@
 [submodule "testing"]
 	path = testing
-	url = https://github.com/pymor/Dockerfiles.git
+	url = https://github.com/pymor/docker-ci-testing.git
 [submodule "python"]
 	path = python
-	url = https://github.com/pymor/python-docker.git
+	url = https://github.com/pymor/docker-python.git
 [submodule "ngsolve"]
 	path = ngsolve
 	url = https://github.com/pymor/docker-ngsolve.git
