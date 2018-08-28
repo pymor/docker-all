@@ -1,0 +1,17 @@
+pipeline:
+  build:
+    image: dunecommunity/gitlabci_dockerindocker-dockerindocker
+    commands:
+      - echo $DOCKER_PW | docker login --username="$DOCKER_USER" --password-stdin
+      - make python-$PY
+      - make push-python-$PY
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    secrets: [ docker_user, docker_pw ]
+
+matrix:
+  PY:
+    - 3.5
+    - 3.6
+    - 3.7
