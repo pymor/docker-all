@@ -1,4 +1,4 @@
-.PHONY: python qt5 testing petsc fenics ngsolve update
+.PHONY: python qt5 testing petsc fenics ngsolve dealii update
 
 PYTHONS=$(addprefix python-,3.5 3.6 3.7)
 PUSH_PYTHONS=$(addprefix push-,$(PYTHONS))
@@ -15,6 +15,9 @@ python:
 
 pyqt5: python
 	$(MAKE) -C pyqt5 $(PY)
+
+dealii: python
+	$(MAKE) -C deal.II $(PY)
 
 petsc: python
 	$(MAKE) -C petsc $(PY)

@@ -16,3 +16,6 @@
 [submodule "pyqt5"]
 	path = pyqt5
 	url = https://github.com/pymor/docker-pyqt5.git
+[submodule "deal.II"]
+	path = deal.II
+	url = https://github.com/pymor/docker-deal.II.git
