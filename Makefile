@@ -7,7 +7,7 @@ PY=3.6
 
 all: $(PYTHONS)
 
-testing: ngsolve pyqt5 fenics
+testing: ngsolve pyqt5 fenics dealii
 	$(MAKE) -C testing $(PY)
 
 python:
@@ -31,6 +31,9 @@ ngsolve: petsc python
 push_python:
 	$(MAKE) -C python push
 
+push_dealii: push_python
+	$(MAKE) -C dealii push
+
 push_pyqt5: push_python
 	$(MAKE) -C pyqt5 push
 
@@ -43,7 +46,7 @@ push_fenics: push_petsc
 push_ngsolve: push_python
 	$(MAKE) -C ngsolve push
 
-push_testing: push_ngsolve push_pyqt5 push_fenics
+push_testing: push_ngsolve push_pyqt5 push_fenics push_dealii
 	$(MAKE) -C testing push
 
 update:
