@@ -10,6 +10,14 @@ pipeline:
       - /var/run/docker.sock:/var/run/docker.sock
     secrets: [ docker_user, docker_pw ]
 
+  notify:
+    image: drillster/drone-email
+    host: mail.milk.pm
+    from: drone@pymor.org
+    when:
+      status: [ changed, failure ]
+    secrets:  [ email_username, email_password ]
+
 matrix:
   PY:
     - 3.5
