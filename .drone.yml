@@ -2,6 +2,7 @@ pipeline:
   build:
     image: dunecommunity/gitlabci_dockerindocker-dockerindocker
     commands:
+      - apk add bash
       - echo $DOCKER_PW | docker login --username="$DOCKER_USER" --password-stdin
       - make python-$PY
       - make push-python-$PY
