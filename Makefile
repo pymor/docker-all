@@ -32,7 +32,7 @@ push_python:
 	$(MAKE) -C python push
 
 push_dealii: push_python
-	$(MAKE) -C dealii push
+	$(MAKE) -C deal.II push
 
 push_pyqt5: push_python
 	$(MAKE) -C pyqt5 push
