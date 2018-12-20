@@ -19,9 +19,9 @@ env:
     # we do not build wheels for:
     # cPython 2.6 - pymor's incompatible with it
     # cPython 3.3 - there's no scipy wheel for it
-    - PYTHON_VERSION=2.7
     - PYTHON_VERSION=3.5
     - PYTHON_VERSION=3.6
+    - PYTHON_VERSION=3.7
 
 script:
     - make image${PYTHON_VERSION}
