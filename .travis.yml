@@ -25,5 +25,4 @@ addons:
 matrix:
   include:
   - env: PY=3.7
-  - env: PY=3.5
   - env: PY=3.6
