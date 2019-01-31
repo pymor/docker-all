@@ -11,9 +11,9 @@ popd
 # Compile wheels
 
 # pre-downloading deps makes testing easier, use full set here
-${PYBIN}/pip download -d ${WHEEL_DIR}/ -r /io/pymor/requirements-optional.txt
+${PYBIN}/pip download -q -d ${WHEEL_DIR}/ -r /io/pymor/requirements-optional.txt
 # installing requirements assures working setup.py scripts
-sudo ${PYBIN}/pip install -r /io/pymor/requirements.txt
+sudo ${PYBIN}/pip install -q -r /io/pymor/requirements.txt
 
 ${PYBIN}/pip wheel /io/pymor/ -w ${WHEEL_DIR}/
 
