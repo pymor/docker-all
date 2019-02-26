@@ -1,6 +1,6 @@
 [submodule "testing"]
 	path = testing
-	url = https://github.com/pymor/docker-ci-testing.git
+	url = https://github.com/pymor/docker-testing.git
 [submodule "python"]
 	path = python
 	url = https://github.com/pymor/docker-python.git
