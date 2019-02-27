@@ -116,7 +116,7 @@ RUN wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-li
                 --download-suitesparse \
                 --download-superlu \
                 --prefix=/usr/local/petsc-32 && \
-     make && \
+     make -j "$(nproc)" && \
      make install && \
      rm -rf /tmp/*
 
@@ -126,7 +126,7 @@ RUN wget -nc --quiet http://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION}
     export PETSC_DIR=/usr/local/petsc-32 && \
     cd slepc-src && \
     python2 ./configure --prefix=/usr/local/slepc-32 && \
-    make && \
+    make -j "$(nproc)" && \
     make install && \
     rm -rf /tmp/*
 
