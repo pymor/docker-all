@@ -9,7 +9,8 @@ ENV FENICS_BUILD_TYPE=Release \
     DOLFIN_VERSION="2018.1.0.post1" \
     MSHR_VERSION="2018.1.0" \
     PYBIND11_VERSION=2.2.3 \
-    PYPI_FENICS_VERSION=">=2018.1.0,<2018.2.0"
+    PYPI_FENICS_VERSION=">=2018.1.0,<2018.2.0" \
+    FENICS_PYTHON=python
 WORKDIR /tmp
 
 # Install Python environment
@@ -32,7 +33,7 @@ RUN pip install --no-cache-dir numpy && \
     mkdir build && \
     cd build && \
     cmake -DPYBIND11_TEST=False ../ && \
-    make && \
+    make -j "$(nproc)" && \
     make install && \
     rm -rf /tmp/*
 
@@ -44,11 +45,6 @@ RUN PYTHON_SITE_DIR=$(python -c "import site; print(site.getsitepackages()[0])")
     PYTHON_VERSION=$(python -c 'import sys; print(str(sys.version_info[0]) + "." + str(sys.version_info[1]))') && \
     echo "$FENICS_HOME/local/lib/python$PYTHON_VERSION/site-packages" >> $PYTHON_SITE_DIR/fenics-user.pth
 
-# Python3 build.
-ENV FENICS_PYTHON=python \
-    MJ=4
-
-
 WORKDIR /tmp
 RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${PYPI_FENICS_VERSION}' && \
                   git clone https://bitbucket.org/fenics-project/dolfin.git && \
@@ -57,7 +53,7 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
                   mkdir build && \
                   cd build && \
                   cmake ../ && \
-                  make -j ${MJ} && \
+                  make -j "$(nproc)" && \
                   make install && \
                   mv /usr/local/share/dolfin/demo /tmp/demo && \
                   mkdir -p /usr/local/share/dolfin/demo && \
@@ -76,7 +72,7 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
                   mkdir build && \
                   cd build && \
                   cmake ../ && \
-                  make -j ${MJ} && \
+                  make -j "$(nproc)"  && \
                   make install && \
                   ls -l /tmp/ && \
                   cd /tmp/dolfin/python && \
