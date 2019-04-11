@@ -2,7 +2,7 @@ VERSIONS:=3.6 3.7
 IMAGES:=$(addprefix image, ${VERSIONS})
 WHEELS:=$(addprefix wheel, ${VERSIONS})
 TESTS:=$(addprefix test, ${VERSIONS})
-PYMOR_BRANCH=wheel_building
+PYMOR_BRANCH=master
 
 all: images
 
@@ -12,9 +12,11 @@ FORCE:
 source:
 	[ -d pymor ] || git clone --branch=$(PYMOR_BRANCH) https://github.com/pymor/pymor
 
-${WHEELS}: wheel%: FORCE builder% source
+${WHEELS}: wheel%: FORCE manylinux1_builder% manylinux2010_builder%  source
 	docker run --rm  -t -e LOCAL_USER_ID=$(shell id -u)  \
-		-v ${PWD}:/io pymor/wheelbuilder:py$* /usr/local/bin/build-wheels.sh
+		-v ${PWD}:/io pymor/wheelbuilder:manylinux2010_py$* /usr/local/bin/build-wheels.sh
+		docker run --rm  -t -e LOCAL_USER_ID=$(shell id -u)  \
+			-v ${PWD}:/io pymor/wheelbuilder:manylinux1_py$* /usr/local/bin/build-wheels.sh
 
 ${TESTS}: test%: FORCE tester% wheel%
 	# Install packages and test
@@ -26,11 +28,15 @@ tester%: FORCE
 	cd tester_docker && docker build --build-arg PYVER=$* \
 		-t pymor/wheeltester:py$* .
 
-builder%: FORCE
-	cd builder_docker && docker build --build-arg PYTHON_VERSION="$*" \
-		-t pymor/wheelbuilder:py$* .
+manylinux2010_builder%: FORCE
+	cd manylinux2010_builder && docker build --build-arg PYTHON_VERSION="$*" \
+		-t pymor/wheelbuilder:manylinux2010_py$* .
 
-${IMAGES}: image%: builder% tester%
+manylinux1_builder%: FORCE
+	cd manylinux1_builder && docker build --build-arg PYTHON_VERSION="$*" \
+		-t pymor/wheelbuilder:manylinux1_py$* .
+
+${IMAGES}: image%: manylinux1_builder% manylinux2010_builder% tester%
 
 images: ${IMAGES}
 
