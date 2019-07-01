@@ -5,7 +5,7 @@ PYTHONS = 3.6 3.7
 pythons: $(PYTHONS)
 
 $(PYTHONS):
-	docker build --pull --build-arg PYVER=$@ \
+	docker build --build-arg PYVER=$@ \
 		-t pymor/petsc:py$@ .
 
 push:
