@@ -1,6 +1,6 @@
-ARG PYVER=3.5
+ARG PYVER=3.7
 FROM pymor/python:$PYVER
-MAINTAINER René Milk <rene.milk@wwu.de>
+MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # Get Ubuntu updates
 USER root
@@ -15,12 +15,6 @@ RUN apt-get update && \
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
     LANGUAGE=C.UTF-8
-
-
-# Bug fix for Debian python3 site path issue
-# https://bitbucket.org/fenics-project/dolfin/issues/787/debian-ubuntu-python-bug-leads-to-python3
-# https://bugs.launchpad.net/ubuntu/+source/python3.5/+bug/1408092?comments=all
-RUN echo "/usr/local/lib/python3/dist-packages" >> /usr/local/lib/python3.5/dist-packages/debian-ubuntu-sitepath-fix.pth
 
 
 ENV FENICS_HOME /root/fenics
