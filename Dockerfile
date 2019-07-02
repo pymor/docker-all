@@ -1,6 +1,6 @@
-ARG PYVER=3.5
+ARG PYVER=3.7
 FROM pymor/petsc:py$PYVER as petsclayer
-MAINTAINER René Milk <rene.milk@wwu.de>
+MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 ENV FENICS_BUILD_TYPE=Release \
     FENICS_PREFIX=/usr/local \
