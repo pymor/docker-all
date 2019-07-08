@@ -8,6 +8,8 @@ jobs:
         PY: '3.6'
       Python37:
         PY: '3.7'
+      Python38:
+        PY: '3.8'
     maxParallel: 4
 
   steps:
@@ -22,3 +24,4 @@ jobs:
 
     - script: make $(PY)
     - script: make push
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
