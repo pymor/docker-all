@@ -82,12 +82,11 @@ RUN apt-get -qq update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Environment variables
-ENV PETSC_VERSION=3.9.2 \
-    SLEPC_VERSION=3.9.1 \
-    SWIG_VERSION=3.0.12 \
-    MPI4PY_VERSION=3.0.0 \
-    PETSC4PY_VERSION=3.9.1 \
-    SLEPC4PY_VERSION=3.9.0 \
+ENV PETSC_VERSION=3.11.1 \
+    SLEPC_VERSION=3.11.1 \
+    MPI4PY_VERSION=3.0.1 \
+    PETSC4PY_VERSION=3.11.0 \
+    SLEPC4PY_VERSION=3.11.0 \
     TRILINOS_VERSION=12.10.1 \
     OPENBLAS_NUM_THREADS=1 \
     OPENBLAS_VERBOSE=0
