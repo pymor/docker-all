@@ -3,7 +3,7 @@
 PYTHONS=$(addprefix python-,3.6 3.7)
 PUSH_PYTHONS=$(addprefix push-,$(PYTHONS))
 
-PY=3.6
+PY=3.7
 
 all: $(PYTHONS)
 
