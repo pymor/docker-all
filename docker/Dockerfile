@@ -4,12 +4,12 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 ENV FENICS_BUILD_TYPE=Release \
     FENICS_PREFIX=/usr/local \
-    FENICS_VERSION=2018.1.0 \
+    FENICS_VERSION=2019.1.0 \
     FENICS_PYTHON=python \
-    DOLFIN_VERSION="2018.1.0.post1" \
-    MSHR_VERSION="2018.1.0" \
-    PYBIND11_VERSION=2.2.3 \
-    PYPI_FENICS_VERSION=">=2018.1.0,<2018.2.0" \
+    DOLFIN_VERSION="2019.1.0.post0" \
+    MSHR_VERSION="2019.1.0" \
+    PYBIND11_VERSION=2.2.4 \
+    PYPI_FENICS_VERSION=">=2019.1.0,<2019.2.0" \
     FENICS_PYTHON=python
 WORKDIR /tmp
 
@@ -52,7 +52,11 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
                   git checkout ${DOLFIN_VERSION} && \
                   mkdir build && \
                   cd build && \
-                  cmake ../ && \
+                  cmake ../ \
+                    -DDOLFIN_ENABLE_MPI=on \
+                    -DDOLFIN_ENABLE_PETSC=on \
+                    -DDOLFIN_ENABLE_SCOTCH=on \
+                    -DDOLFIN_ENABLE_HDF5=on && \
                   make -j "$(nproc)" && \
                   make install && \
                   mv /usr/local/share/dolfin/demo /tmp/demo && \
