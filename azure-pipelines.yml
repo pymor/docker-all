@@ -21,5 +21,6 @@ jobs:
         containerregistrytype: Container Registry
         dockerRegistryEndpoint: dockerhub
 
+    - script: python -m pip install docker-squash
     - script: make python-$(PY)
     - script: make push-python-$(PY)
