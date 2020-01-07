@@ -1,4 +1,4 @@
-VERSIONS:=3.6 3.7
+VERSIONS:=3.6 3.7 3.8
 IMAGES:=$(addprefix image, ${VERSIONS})
 WHEELS:=$(addprefix wheel, ${VERSIONS})
 TESTS:=$(addprefix test, ${VERSIONS})

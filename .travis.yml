@@ -18,6 +18,7 @@ addons:
 env:
     - PYTHON_VERSION=3.6
     - PYTHON_VERSION=3.7
+    - PYTHON_VERSION=3.8
 
 script:
     - make image${PYTHON_VERSION}
