@@ -1,0 +1,28 @@
+jobs:
+- job: 'DockerBuild'
+  timeoutInMinutes: 0
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    matrix:
+      Python36:
+        PYTHON_VERSION: '3.6'
+      Python37:
+        PYTHON_VERSION: '3.7'
+      Python38:
+        PYTHON_VERSION: '3.8'
+    maxParallel: 4
+
+  steps:
+    - checkout: self
+      submodules: true
+    - task: Docker@1
+      displayName: Container registry login
+      inputs:
+        command: login
+        containerregistrytype: Container Registry
+        dockerRegistryEndpoint: dockerhub
+
+    - script: python -m pip install docker-squash
+    - script: make image${PYTHON_VERSION}
+    - script: make push
