@@ -7,14 +7,11 @@ PY=3.7
 
 all: $(PYTHONS)
 
-testing: ngsolve pyqt5 fenics dealii
+testing: ngsolve fenics dealii
 	$(MAKE) -C testing $(PY)
 
 python:
 	$(MAKE) -C python $(PY)
-
-pyqt5: python
-	$(MAKE) -C pyqt5 $(PY)
 
 dealii: python
 	$(MAKE) -C deal.II $(PY)
@@ -34,9 +31,6 @@ push_python:
 push_dealii: push_python
 	$(MAKE) -C deal.II push
 
-push_pyqt5: push_python
-	$(MAKE) -C pyqt5 push
-
 push_petsc: push_python
 	$(MAKE) -C petsc push
 
@@ -46,7 +40,7 @@ push_fenics: push_petsc
 push_ngsolve: push_python
 	$(MAKE) -C ngsolve push
 
-push_testing: push_ngsolve push_pyqt5 push_fenics push_dealii
+push_testing: push_ngsolve push_fenics push_dealii
 	$(MAKE) -C testing push
 
 update:
@@ -60,4 +54,3 @@ $(PUSH_PYTHONS): push-python-%:
 	$(MAKE) PY=$* push_testing
 
 push: $(PUSH_PYTHONS)
-
