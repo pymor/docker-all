@@ -84,7 +84,7 @@ RUN apt-get -qq update && \
 # Environment variables
 ENV PETSC_VERSION=3.11.1 \
     SLEPC_VERSION=3.11.1 \
-    MPI4PY_VERSION=3.0.1 \
+    MPI4PY_VERSION=3.0.3 \
     PETSC4PY_VERSION=3.11.0 \
     SLEPC4PY_VERSION=3.11.0 \
     TRILINOS_VERSION=12.10.1 \
