@@ -1,15 +1,18 @@
 .PHONY: python testing petsc fenics ngsolve dealii update
 
-PYTHONS=$(addprefix python-,3.6 3.7 3.8)
+include common.mk
+PYTHONS=$(addprefix python-,$(PYTHONS))
 PUSH_PYTHONS=$(addprefix push-,$(PYTHONS))
-VER=$(shell git log -1 --pretty=format:"%H")
 
 PY=3.7
 
 $(PYTHONS): python-%:
 	$(MAKE) PY=$* testing
 
-testing: ngsolve fenics dealii
+cibase: ngsolve fenics dealii
+	$(MAKE) -C cibase $(PY)
+
+testing: cibase
 	$(MAKE) -C testing $(PY)
 
 python:
@@ -24,8 +27,14 @@ petsc: python
 fenics: petsc
 	$(MAKE) -C fenics $(PY)
 
-ngsolve: petsc python
+ngsolve: petsc
 	$(MAKE) -C ngsolve $(PY)
+
+demo: testing
+	$(MAKE) -C demo
+
+deploy_checks:
+	$(MAKE) -C deploy_checks
 
 push_python:
 	$(MAKE) -C python push

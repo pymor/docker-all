@@ -9,10 +9,6 @@ FROM $PYTHON_BASE
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
-ARG NGSOLVE_VERSION
-# if it's not repeated it's only usable in FROM
-ARG PYVER
-
 RUN apt-get update && \
     apt-get -y install libxmu-dev tk-dev tcl-dev cmake git g++ \
     libglu1-mesa-dev ccache openssh-client openmpi-bin libopenmpi-dev \
@@ -20,6 +16,7 @@ RUN apt-get update && \
     liboce-ocaf-dev libsuitesparse-dev python3-tk && \
     pip3 install sphinx_rtd_theme
 ENV PATH="/opt/netgen/bin:${PATH}" \
+    NGSOLVE_VERSION=v6.2.1905 \
     NGSOLVE_SRC_DIR=/root/src/ngsolve_src \
     NGSOLVE_BUILD_DIR=/root/src/ngsolve_build \
     PETSC_DIR=/usr/local/petsc-32
@@ -27,7 +24,7 @@ ENV MUMPS_DIR=${PETSC_DIR}
 
 COPY --from=petsclayer ${PETSC_DIR} ${PETSC_DIR}
 
-ADD catch.hpp /usr/local/include/
+COPY catch.hpp /usr/local/include/
 # fake lsb-release to get ngsolve cmake to configure for deb package building
 RUN echo "DISTRIB_CODENAME=buster" > /etc/lsb-release && \
     git clone https://github.com/NGSolve/ngsolve.git ${NGSOLVE_SRC_DIR} && \

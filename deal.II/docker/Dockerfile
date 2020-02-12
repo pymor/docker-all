@@ -3,7 +3,7 @@ FROM $BASE
 
 MAINTAINER rene.milk@wwu.de
 
-ARG DEALIIVERSION
+ARG DEALII_VERSION
 
 USER root
 ENV DEBIAN_FRONTEND noninteractive
@@ -33,9 +33,10 @@ RUN apt-get install -y software-properties-common \
     openmpi-bin gosu && \
     pip install numpy
 
-RUN cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALIIVERSION}-src && \
-    cd dealii-${DEALIIVERSION}-src && \
-    git checkout v${DEALIIVERSION} && \
+ENV DEALII_VERSION=9.0.1
+RUN cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VERSION}-src && \
+    cd dealii-${DEALII_VERSION}-src && \
+    git checkout v${DEALII_VERSION} && \
     mkdir build && cd build && \
     cmake -DDEAL_II_WITH_MPI=ON \
           -DDEAL_II_COMPONENT_EXAMPLES=OFF \

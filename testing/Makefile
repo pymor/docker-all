@@ -1,34 +1,14 @@
-PYTHONS = 3.6 3.7 3.8
-BASE := $(foreach t,$(PYTHONS),$(addsuffix $t,base))
-NAMESPACE ?= pymor
-
-.PHONY: pythons $(PYTHONS) base push deploy_checks
-
-pythons: $(PYTHONS)
-
-base:
-	$(MAKE) -C base
-
-%_base :
-	$(MAKE) -C base $(subst _base,,$@)
+include ../common.mk
 
 $(PYTHONS):
-	$(MAKE) $@_base
-	docker build -t pymor/testing:$@ $@
-	docker-squash -h &> /dev/null && docker-squash pymor/testing:$@
+	docker build -t $(call TESTING_IMAGE,$@,$(VER)) $@
+	docker tag $(call TESTING_IMAGE,$@,$(VER)) $(call TESTING_IMAGE,$@,latest)
 
-push:
-	$(MAKE) -C base push
-	docker push pymor/testing
-	docker push pymor/demo || echo pushing demo failed
+squash:
+	echo docker-squash -h &> /dev/null && docker-squash pymor/testing:$@
 
-demo: 3.7
-	$(MAKE) -C demo
+push_%:
+	docker push $(call TESTING_IMAGE,$*,$(VER))
 
-packaging:
-	$(MAKE) -C packaging
-
-deploy_checks:
-	$(MAKE) -C deploy_checks
-
-all: pythons
+pull_latest_%:
+	docker pull $(call TESTING_IMAGE,$@,latest)
