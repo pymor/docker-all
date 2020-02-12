@@ -1,5 +1,5 @@
-ARG PYVER=3.7
-FROM pymor/python:$PYVER
+ARG BASE=pymor/python:3.7
+FROM $BASE
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # Get Ubuntu updates
@@ -82,11 +82,11 @@ RUN apt-get -qq update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Environment variables
-ENV PETSC_VERSION=3.11.1 \
-    SLEPC_VERSION=3.11.1 \
+ENV PETSC_VERSION=3.12.3 \
+    SLEPC_VERSION=3.12.1 \
     MPI4PY_VERSION=3.0.3 \
-    PETSC4PY_VERSION=3.11.0 \
-    SLEPC4PY_VERSION=3.11.0 \
+    PETSC4PY_VERSION=3.12.0 \
+    SLEPC4PY_VERSION=3.12.0 \
     TRILINOS_VERSION=12.10.1 \
     OPENBLAS_NUM_THREADS=1 \
     OPENBLAS_VERBOSE=0
