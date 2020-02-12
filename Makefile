@@ -13,7 +13,7 @@ IS_DIRTY:
 $(PYTHONS): IS_DIRTY
 	docker build --build-arg PETSC=pymor/petsc_py$@:$(PETSC_TAG) \
 		-t pymor/fenics_py$@:$(VER) docker
-	docker tag pymor/fenics_py$@:$(VER) pymor/fenics_py$@:$(VER)
+	docker tag pymor/fenics_py$@:$(VER) pymor/fenics_py$@:latest
 
 push_%:
 	docker push pymor/fenics_py$*
