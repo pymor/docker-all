@@ -1,0 +1,27 @@
+jobs:
+- job: 'DockerBuild'
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    matrix:
+      Python36:
+        PY: '3.6'
+      Python37:
+        PY: '3.7'
+      Python38:
+        PY: '3.8'
+    maxParallel: 4
+
+  steps:
+    - checkout: self
+      submodules: true
+    - task: Docker@1
+      displayName: Container registry login
+      inputs:
+        command: login
+        containerregistrytype: Container Registry
+        dockerRegistryEndpoint: dockerhub
+
+    - script: make $(PY)
+    - script: make push_$(PY)
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
