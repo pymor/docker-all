@@ -1,11 +1,13 @@
-.PHONY: python qt5 testing petsc fenics ngsolve dealii update
+.PHONY: python testing petsc fenics ngsolve dealii update
 
 PYTHONS=$(addprefix python-,3.6 3.7 3.8)
 PUSH_PYTHONS=$(addprefix push-,$(PYTHONS))
+VER=$(shell git log -1 --pretty=format:"%H")
 
 PY=3.7
 
-all: $(PYTHONS)
+$(PYTHONS): python-%:
+	$(MAKE) PY=$* testing
 
 testing: ngsolve fenics dealii
 	$(MAKE) -C testing $(PY)
@@ -42,13 +44,6 @@ push_ngsolve: push_python
 
 push_testing: push_ngsolve push_fenics push_dealii
 	$(MAKE) -C testing push
-
-update:
-	git submodule foreach git fetch
-	git submodule foreach git checkout origin/master
-
-$(PYTHONS): python-%:
-	$(MAKE) PY=$* testing
 
 $(PUSH_PYTHONS): push-python-%:
 	$(MAKE) PY=$* push_testing
