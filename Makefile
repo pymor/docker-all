@@ -1,6 +1,6 @@
 .PHONY: python qt5 testing petsc fenics ngsolve dealii update
 
-PYTHONS=$(addprefix python-,3.6 3.7)
+PYTHONS=$(addprefix python-,3.6 3.7 3.8)
 PUSH_PYTHONS=$(addprefix push-,$(PYTHONS))
 
 PY=3.7
