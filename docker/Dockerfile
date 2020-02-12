@@ -95,13 +95,13 @@ RUN /bin/bash -c "cp -r /usr/local/share/dolfin/demo $FENICS_HOME/demo && \
 # Make sure we get something that basically works on this stable build.  It
 # would be better to run unit tests, but at the moment even the quick tests
 # take too long to run.
-# RUN apt-get update && apt-get -y install xvfb
-# RUN /bin/bash -l -c "mkdir -p /tmp/poisson_test && \
-#     cd /tmp/poisson_test && \
-#     ls -l $FENICS_HOME/demo/python/documented/poisson && \
-#     time xvfb-run python $FENICS_HOME/demo/python/documented/poisson/demo_poisson.py && \
-#     instant-clean && \
-#     rm -r /tmp/poisson_test"
+RUN apt-get update && apt-get -y install xvfb
+RUN /bin/bash -l -c "mkdir -p /tmp/poisson_test && \
+    cd /tmp/poisson_test && \
+    ls -l $FENICS_HOME/demo/python/documented/poisson && \
+    time xvfb-run python $FENICS_HOME/demo/python/documented/poisson/demo_poisson.py && \
+    instant-clean && \
+    rm -r /tmp/poisson_test"
 ONBUILD RUN echo "export MPLBACKEND=Agg \
     SLEPC_DIR=/usr/local/slepc-32 \
     PETSC_DIR=/usr/local/petsc-32" >> /etc/profile && \
