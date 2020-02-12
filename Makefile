@@ -14,7 +14,7 @@ $(PYTHONS): IS_DIRTY
 		-t pymor/petsc_py$@:$(VER) docker/
 	docker tag pymor/petsc_py$@:$(VER) pymor/petsc_py$@:latest
 
-push:
-	for PY in $(PYTHONS) ; do \
-		docker push pymor/petsc_py$${PY} ; \
-	done
+push_%:
+	docker push pymor/petsc_py$*
+
+push: $(addprefix push_,$(PYTHONS))
