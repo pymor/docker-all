@@ -21,8 +21,7 @@ RUN pip install --no-cache-dir numpy && \
     pip install --no-cache-dir six && \
     pip install --no-cache-dir urllib3 && \
 # Install Jupyter, sympy, mpi4py, petsc4py and slepc4py and Swig from source.
-# sympy 1.2 has a regression that fails dolfin
-    pip install --no-cache-dir sympy==1.1.1 && \
+    pip install --no-cache-dir sympy==1.5.1 && \
     pip install --no-cache-dir matplotlib && \
     pip install --no-cache-dir https://bitbucket.org/mpi4py/mpi4py/downloads/mpi4py-${MPI4PY_VERSION}.tar.gz && \
     pip install --no-cache-dir https://bitbucket.org/petsc/petsc4py/downloads/petsc4py-${PETSC4PY_VERSION}.tar.gz && \
