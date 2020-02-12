@@ -1,5 +1,5 @@
-ARG PYVER=3.7
-FROM pymor/petsc:py$PYVER as petsclayer
+ARG PETSC=pymor/petsc_py3.7:latest
+FROM $PETSC as petsclayer
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 ENV FENICS_BUILD_TYPE=Release \

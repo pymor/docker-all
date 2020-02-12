@@ -23,5 +23,5 @@ jobs:
         dockerRegistryEndpoint: dockerhub
 
     - script: make $(PY)
-    - script: make push
+    - script: make push_$(PY)
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
