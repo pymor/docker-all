@@ -57,4 +57,4 @@ push_%: FORCE
 	$(MAKE) PY=$* push_testing
 
 pull_latest_%: FORCE
-	$(MAKE) -C testing pull_latest_$@
+	$(MAKE) -C testing pull_latest_$*

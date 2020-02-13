@@ -9,4 +9,4 @@ push_%:
 	$(DOCKER_PUSH) $(call PETSC_IMAGE,$*,$(VER))
 
 pull_latest_%:
-	docker pull $(call PETSC_IMAGE,$@,latest)
+	docker pull $(call PETSC_IMAGE,$*,latest)

@@ -12,4 +12,4 @@ push_%:
 	$(DOCKER_PUSH) $(call TESTING_IMAGE,$*,$(VER))
 
 pull_latest_%:
-	docker pull $(call TESTING_IMAGE,$@,latest)
+	docker pull $(call TESTING_IMAGE,$*,latest)

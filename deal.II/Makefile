@@ -9,4 +9,4 @@ push_%:
 	$(DOCKER_PUSH) $(call DEALII_IMAGE,$*,$(VER))
 
 pull_latest_%:
-	docker pull $(call DEALII_IMAGE,$@,latest)
+	docker pull $(call DEALII_IMAGE,$*,latest)

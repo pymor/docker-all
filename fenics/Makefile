@@ -9,4 +9,4 @@ push_%:
 	$(DOCKER_PUSH) $(call FENICS_IMAGE,$*,$(VER))
 
 pull_latest_%:
-	docker pull $(call FENICS_IMAGE,$@,latest)
+	docker pull $(call FENICS_IMAGE,$*,latest)

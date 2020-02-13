@@ -8,4 +8,4 @@ push_%:
 	$(DOCKER_PUSH) $(call CIBASE_IMAGE,$*,$(VER))
 
 pull_latest_%:
-	docker pull $(call CIBASE_IMAGE,$@,latest)
+	docker pull $(call CIBASE_IMAGE,$*,latest)

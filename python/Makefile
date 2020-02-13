@@ -11,4 +11,4 @@ push_%:
 	$(DOCKER_PUSH) $(call PYTHON_IMAGE,$*,$(VER))
 
 pull_latest_%:
-	docker pull $(call PYTHON_IMAGE,$@,latest)
+	docker pull $(call PYTHON_IMAGE,$*,latest)

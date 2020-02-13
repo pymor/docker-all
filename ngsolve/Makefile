@@ -11,4 +11,4 @@ push_%:
 	$(DOCKER_PUSH) $(call NGSOLVE_IMAGE,$*,$(VER))
 
 pull_latest_%:
-	docker pull $(call NGSOLVE_IMAGE,$@,latest)
+	docker pull $(call NGSOLVE_IMAGE,$*,latest)
