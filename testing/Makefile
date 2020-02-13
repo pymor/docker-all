@@ -1,6 +1,6 @@
 include ../common.mk
 
-$(PYTHONS):
+$(PYTHONS): IS_DIRTY
 	$(DOCKER_BUILD) -t $(call TESTING_IMAGE,$@,$(VER)) $@
 	$(DOCKER_TAG) $(call TESTING_IMAGE,$@,$(VER)) $(call TESTING_IMAGE,$@,latest)
 

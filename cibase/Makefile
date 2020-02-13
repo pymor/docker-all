@@ -1,6 +1,6 @@
 include ../common.mk
 
-$(PYTHONS):
+$(PYTHONS): IS_DIRTY
 	$(DOCKER_BUILD) --build-arg PYVER=$@ \
 		-t $(call CIBASE_IMAGE,$@,$(VER)) buster
 
