@@ -48,7 +48,7 @@ RUN cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VE
     ninja -j "$(nproc)"  && \
     ninja -j 1 install && \
     cd / && rm -rf /tmp/deal*
-RUN cd /tmp && git clone --recurse-submodules --branch=non_release https://github.com/pymor/pymor-deal.II deal && \
+RUN cd /tmp && git clone --recurse-submodules --branch=master https://github.com/pymor/pymor-deal.II deal && \
     cd deal && python setup.py bdist_wheel && \
     mkdir /usr/local/tmp/ && \
     mv dist/*.whl /usr/local/tmp/
