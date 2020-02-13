@@ -36,22 +36,22 @@ deploy_checks: FORCE
 	$(MAKE) -C deploy_checks
 
 push_python: FORCE
-	$(MAKE) -C python push
+	$(MAKE) -C python push_$(PY)
 
 push_dealii: FORCE push_python
-	$(MAKE) -C deal.II push
+	$(MAKE) -C deal.II push_$(PY)
 
 push_petsc: FORCE push_python
-	$(MAKE) -C petsc push
+	$(MAKE) -C petsc push_$(PY)
 
 push_fenics: FORCE push_petsc
-	$(MAKE) -C fenics push
+	$(MAKE) -C fenics push_$(PY)
 
 push_ngsolve: FORCE push_python
-	$(MAKE) -C ngsolve push
+	$(MAKE) -C ngsolve push_$(PY)
 
 push_testing: FORCE push_ngsolve push_fenics push_dealii
-	$(MAKE) -C testing push
+	$(MAKE) -C testing push_$(PY)
 
 push_%: FORCE
 	$(MAKE) PY=$* push_testing
