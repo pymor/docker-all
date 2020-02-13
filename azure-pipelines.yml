@@ -1,28 +1,50 @@
-jobs:
-- job: 'DockerBuild'
-  timeoutInMinutes: 0
+stages:
+- stage: Testing
   pool:
     vmImage: 'ubuntu-16.04'
-  strategy:
-    matrix:
-      Python36:
-        PY: '3.6'
-      Python37:
-        PY: '3.7'
-        #Python38:
-        #PY: '3.8'
-    maxParallel: 4
+  jobs:
+  - job: 'TestingImages'
+    timeoutInMinutes: 0
+    strategy:
+      matrix:
+        Python36:
+          PY: '3.6'
+        Python37:
+          PY: '3.7'
+          #Python38:
+          #PY: '3.8'
+      maxParallel: 4
+    steps:
+      - checkout: self
+        submodules: true
+      - task: Docker@1
+        displayName: Container registry login
+        inputs:
+          command: login
+          containerregistrytype: Container Registry
+          dockerRegistryEndpoint: dockerhub
 
-  steps:
-    - checkout: self
-      submodules: true
-    - task: Docker@1
-      displayName: Container registry login
-      inputs:
-        command: login
-        containerregistrytype: Container Registry
-        dockerRegistryEndpoint: dockerhub
+      # this makes testing images and upwards
+      - script: make pull_latest_$(PY)
+      - script: make $(PY)
+      - script: make push-$(PY)
 
-    # this makes testing images and upwards
-    - script: make $(PY)
-    - script: make push-$(PY)
+- stage: Demo
+  pool:
+    vmImage: 'ubuntu-16.04'
+  jobs:
+  - job: 'DemoImage'
+    timeoutInMinutes: 0
+    steps:
+      - checkout: self
+        submodules: true
+      - task: Docker@1
+        displayName: Container registry login
+        inputs:
+          command: login
+          containerregistrytype: Container Registry
+          dockerRegistryEndpoint: dockerhub
+
+      # this makes testing images and upwards
+      - script: make -C demo master
+      - script: docker push pymor/demo:master
