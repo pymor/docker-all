@@ -53,9 +53,6 @@ push_ngsolve: push_python
 push_testing: push_ngsolve push_fenics push_dealii
 	$(MAKE) -C testing push
 
-$(PUSH_PYTHONS):
-	$(MAKE) PY=$* push_testing
-
 push_%:
 	$(MAKE) PY=$* push_testing
 
