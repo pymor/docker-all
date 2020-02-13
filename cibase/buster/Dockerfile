@@ -2,8 +2,8 @@ ARG PYVER
 ARG VERTAG=latest
 
 FROM pymor/fenics_py${PYVER}:${VERTAG} as fenicslayer
-FROM pymor/ngsolve_v6.2.1905_py${PYVER}:${VERTAG} as ngsolve
-FROM pymor/dealii_v9.0.1_py${PYVER}:${VERTAG} as dealii
+FROM pymor/ngsolve_py${PYVER}:${VERTAG} as ngsolve
+FROM pymor/dealii_py${PYVER}:${VERTAG} as dealii
 FROM pymor/python_${PYVER}:${VERTAG}
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
