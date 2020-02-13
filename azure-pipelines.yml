@@ -23,5 +23,6 @@ jobs:
         containerregistrytype: Container Registry
         dockerRegistryEndpoint: dockerhub
 
-    - script: make python-$(PY)
-    - script: make push-python-$(PY)
+    # this makes testing images and upwards
+    - script: make $(PY)
+    - script: make push-$(PY)

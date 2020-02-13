@@ -1,4 +1,4 @@
-include ../../common.mk
+include ../common.mk
 
 $(PYTHONS):
 	$(DOCKER_BUILD) --build-arg PYVER=$@ \
