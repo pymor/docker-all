@@ -8,53 +8,53 @@ FORCE:
 $(PYTHONS): FORCE
 	$(MAKE) PY=$@ testing
 
-cibase: ngsolve fenics dealii
+cibase: FORCE ngsolve fenics dealii
 	$(MAKE) -C cibase $(PY)
 
-testing: cibase
+testing: FORCE cibase
 	$(MAKE) -C testing $(PY)
 
 python: FORCE
 	$(MAKE) -C python $(PY)
 
-dealii: python
+dealii: FORCE python
 	$(MAKE) -C deal.II $(PY)
 
-petsc: python
+petsc: FORCE python
 	$(MAKE) -C petsc $(PY)
 
-fenics: petsc
+fenics: FORCE petsc
 	$(MAKE) -C fenics $(PY)
 
-ngsolve: petsc
+ngsolve: FORCE petsc
 	$(MAKE) -C ngsolve $(PY)
 
-demo: testing
+demo: FORCE testing
 	$(MAKE) -C demo
 
-deploy_checks:
+deploy_checks: FORCE
 	$(MAKE) -C deploy_checks
 
-push_python:
+push_python: FORCE
 	$(MAKE) -C python push
 
-push_dealii: push_python
+push_dealii: FORCE push_python
 	$(MAKE) -C deal.II push
 
-push_petsc: push_python
+push_petsc: FORCE push_python
 	$(MAKE) -C petsc push
 
-push_fenics: push_petsc
+push_fenics: FORCE push_petsc
 	$(MAKE) -C fenics push
 
-push_ngsolve: push_python
+push_ngsolve: FORCE push_python
 	$(MAKE) -C ngsolve push
 
-push_testing: push_ngsolve push_fenics push_dealii
+push_testing: FORCE push_ngsolve push_fenics push_dealii
 	$(MAKE) -C testing push
 
-push_%:
+push_%: FORCE
 	$(MAKE) PY=$* push_testing
 
-pull_latest_%:
+pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$@
