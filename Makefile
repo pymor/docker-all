@@ -1,13 +1,12 @@
-.PHONY: python testing petsc fenics ngsolve dealii update
-
 include common.mk
-PYTHONS=$(addprefix python-,$(PYTHONS))
-PUSH_PYTHONS=$(addprefix push-,$(PYTHONS))
+.PHONY: FORCE
 
 PY=3.7
 
-$(PYTHONS): python-%:
-	$(MAKE) PY=$* testing
+FORCE:
+
+$(PYTHONS): FORCE
+	$(MAKE) PY=$@ testing
 
 cibase: ngsolve fenics dealii
 	$(MAKE) -C cibase $(PY)
@@ -15,7 +14,7 @@ cibase: ngsolve fenics dealii
 testing: cibase
 	$(MAKE) -C testing $(PY)
 
-python:
+python: FORCE
 	$(MAKE) -C python $(PY)
 
 dealii: python
@@ -54,7 +53,11 @@ push_ngsolve: push_python
 push_testing: push_ngsolve push_fenics push_dealii
 	$(MAKE) -C testing push
 
-$(PUSH_PYTHONS): push-python-%:
+$(PUSH_PYTHONS):
 	$(MAKE) PY=$* push_testing
 
-push: $(PUSH_PYTHONS)
+push_%:
+	$(MAKE) PY=$* push_testing
+
+pull_latest_%:
+	$(MAKE) -C testing pull_latest_$@

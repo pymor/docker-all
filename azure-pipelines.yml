@@ -9,6 +9,8 @@ jobs:
         PY: '3.6'
       Python37:
         PY: '3.7'
+        #Python38:
+        #PY: '3.8'
     maxParallel: 4
 
   steps:
@@ -21,6 +23,5 @@ jobs:
         containerregistrytype: Container Registry
         dockerRegistryEndpoint: dockerhub
 
-    - script: python -m pip install docker-squash
     - script: make python-$(PY)
     - script: make push-python-$(PY)
