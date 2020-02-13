@@ -1,4 +1,4 @@
-FROM pymor/testing:3.7
+FROM pymor/testing_py3.7:latest
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 USER root
@@ -19,6 +19,9 @@ RUN apt-get update && apt-get install \
     && useradd --shell /bin/bash -u 1000 -o -c "" -m pymor
 
 USER pymor
+
+RUN pymor-demo --help && python -c "from pymor.basic import *"
+
 ENV LIBGL_DEBUG=verbose
 # ENTRYPOINT ["/usr/local/bin/pymor-demo"]
 # CMD ["--help"]
