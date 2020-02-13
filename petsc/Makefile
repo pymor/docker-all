@@ -7,6 +7,7 @@ $(PYTHONS): IS_DIRTY
 
 push_%:
 	$(DOCKER_PUSH) $(call PETSC_IMAGE,$*,$(VER))
+	$(DOCKER_PUSH) $(call PETSC_IMAGE,$*,latest)
 
 pull_latest_%:
 	docker pull $(call PETSC_IMAGE,$*,latest)

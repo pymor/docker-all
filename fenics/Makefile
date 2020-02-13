@@ -7,6 +7,7 @@ $(PYTHONS): IS_DIRTY
 
 push_%:
 	$(DOCKER_PUSH) $(call FENICS_IMAGE,$*,$(VER))
+	$(DOCKER_PUSH) $(call FENICS_IMAGE,$*,latest)
 
 pull_latest_%:
 	docker pull $(call FENICS_IMAGE,$*,latest)

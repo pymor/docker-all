@@ -6,6 +6,7 @@ $(PYTHONS): IS_DIRTY
 
 push_%:
 	$(DOCKER_PUSH) $(call CIBASE_IMAGE,$*,$(VER))
+	$(DOCKER_PUSH) $(call CIBASE_IMAGE,$*,latest)
 
 pull_latest_%:
 	docker pull $(call CIBASE_IMAGE,$*,latest)

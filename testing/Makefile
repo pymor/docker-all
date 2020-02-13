@@ -10,6 +10,7 @@ squash:
 
 push_%:
 	$(DOCKER_PUSH) $(call TESTING_IMAGE,$*,$(VER))
+	$(DOCKER_PUSH) $(call TESTING_IMAGE,$*,latest)
 
 pull_latest_%:
 	docker pull $(call TESTING_IMAGE,$*,latest)

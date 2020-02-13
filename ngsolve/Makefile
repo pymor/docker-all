@@ -9,6 +9,7 @@ $(PYTHONS): IS_DIRTY
 
 push_%:
 	$(DOCKER_PUSH) $(call NGSOLVE_IMAGE,$*,$(VER))
+	$(DOCKER_PUSH) $(call NGSOLVE_IMAGE,$*,latest)
 
 pull_latest_%:
 	docker pull $(call NGSOLVE_IMAGE,$*,latest)
