@@ -25,7 +25,7 @@ stages:
           dockerRegistryEndpoint: dockerhub
 
       # this makes testing images and upwards
-      - script: make pull_latest_$(PY)
+      - script: make pull_all_latest_$(PY)
       - script: make $(PY)
       - script: make push-$(PY)
 

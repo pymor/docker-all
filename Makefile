@@ -45,12 +45,18 @@ push_petsc: FORCE push_python
 	$(MAKE) -C petsc push_$(PY)
 
 push_fenics: FORCE push_petsc
+	$(MAKE) -C cibase push_$(PY)
+
+push_fenics: FORCE push_petsc
 	$(MAKE) -C fenics push_$(PY)
 
 push_ngsolve: FORCE push_python
 	$(MAKE) -C ngsolve push_$(PY)
 
-push_testing: FORCE push_ngsolve push_fenics push_dealii
+push_cibase: FORCE push_ngsolve push_fenics push_dealii
+	$(MAKE) -C cibase push_$(PY)
+
+push_testing: FORCE push_cibase
 	$(MAKE) -C testing push_$(PY)
 
 push_%: FORCE
@@ -58,3 +64,12 @@ push_%: FORCE
 
 pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
+
+pull_all_latest_%: FORCE
+	$(DOCKER_PULL) $(call TESTING_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call CIBASE_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call DEALII_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call FENICS_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call PYTHON_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call PETSC_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call NGSOLVE_IMAGE,$*,latest)
