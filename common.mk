@@ -8,6 +8,9 @@ DEALII_IMAGE = pymor/dealii_py$1:$2
 CIBASE_IMAGE = pymor/cibase_py$1:$2
 TESTING_IMAGE = pymor/testing_py$1:$2
 DOCKER_BUILD=docker build --squash
+DOCKER_TAG=docker tag
+DOCKER_PUSH=docker push
+DOCKER_PULL=docker pull
 PYTHON_TAG=$(VER)
 PETSC_TAG=$(VER)
 

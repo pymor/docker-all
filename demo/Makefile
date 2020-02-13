@@ -5,6 +5,6 @@ TAGS = 0.5 master 2019.2
 TAGS: $(TAGS)
 
 $(TAGS):
-	docker build -t pymor/demo:$@ $@
+	$(DOCKER_BUILD) -t pymor/demo:$@ $@
 
 all: TAGS
