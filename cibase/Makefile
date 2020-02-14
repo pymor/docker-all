@@ -3,6 +3,7 @@ include ../common.mk
 $(PYTHONS): IS_DIRTY
 	$(DOCKER_BUILD) --build-arg PYVER=$@ \
 		-t $(call CIBASE_IMAGE,$@,$(VER)) buster
+	$(DOCKER_TAG) $(call CIBASE_IMAGE,$@,$(VER)) $(call CIBASE_IMAGE,$@,latest)
 
 push_%:
 	$(DOCKER_PUSH) $(call CIBASE_IMAGE,$*,$(VER))
