@@ -1,0 +1,22 @@
+ARG PYVER=3.7
+FROM python:${PYVER}
+
+ENV MIRROR_VERSION=4.0.2 \
+  PIP_VERSION=20.0.1 \
+  SERVER_ROOT=/pymor
+RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
+  && useradd --shell /bin/bash -u 1000 -o -m -d /data -c "" -m pymor \
+  && mkdir ${SERVER_ROOT} \
+  && chown pymor ${SERVER_ROOT}
+
+USER pymor
+
+COPY requirements* ${SERVER_ROOT}/requirements/
+RUN cd ${SERVER_ROOT}/ \
+  && for fn in ${SERVER_ROOT}/requirements/*.txt ; do \
+    pip download -d downloads -r ${fn} ; \
+  done \
+  && pypi-mirror create -d downloads -m simple
+
+WORKDIR ${SERVER_ROOT}
+ENTRYPOINT ["python", "-m", "http.server", "--bind", "0.0.0.0", "8080" ]
