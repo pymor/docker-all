@@ -5,6 +5,7 @@ stages:
 .docker:
   tags:
     - docker-in-docker
+    - long execution time
   retry:
       max: 2
       when:

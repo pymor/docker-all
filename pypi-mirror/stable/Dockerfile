@@ -11,10 +11,13 @@ RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
 
 USER pymor
 
-COPY requirements* ${SERVER_ROOT}/requirements/
+# needs repeat after FROM
+ARG PYVER
+
+COPY requirements*.txt constraints_py${PYVER}.txt ${SERVER_ROOT}/requirements/
 RUN cd ${SERVER_ROOT}/ \
   && for fn in ${SERVER_ROOT}/requirements/*.txt ; do \
-    pip download -d downloads -r ${fn} ; \
+    pip download -d downloads -r ${fn} -c ${SERVER_ROOT}/requirements/constraints_py${PYVER}.txt ; \
   done \
   && pypi-mirror create -d downloads -m simple
 
