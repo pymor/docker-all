@@ -27,7 +27,7 @@ stages:
       # this makes testing images and upwards
       - script: make pull_all_latest_$(PY)
       - script: make $(PY)
-      - script: make push-$(PY)
+      - script: make push_$(PY)
 
 - stage: Demo
   pool:

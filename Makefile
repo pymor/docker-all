@@ -45,9 +45,6 @@ push_petsc: FORCE push_python
 	$(MAKE) -C petsc push_$(PY)
 
 push_fenics: FORCE push_petsc
-	$(MAKE) -C cibase push_$(PY)
-
-push_fenics: FORCE push_petsc
 	$(MAKE) -C fenics push_$(PY)
 
 push_ngsolve: FORCE push_python
