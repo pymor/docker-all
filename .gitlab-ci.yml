@@ -1,0 +1,44 @@
+stages:
+  - testing
+  - demo
+
+.docker:
+  tags:
+    - docker-in-docker
+  retry:
+      max: 2
+      when:
+          - always
+  image: docker:stable
+  variables:
+      DOCKER_HOST: tcp://docker:2375/
+      DOCKER_DRIVER: overlay2
+  before_script:
+      - apk --update add openssh-client rsync git file make bash
+      - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+  services:
+      - docker:dind
+  environment:
+      name: unsafe
+  script:
+      - make pull_all_latest_${PY}
+      - make ${PY}
+
+python 3.6:
+  stage: testing
+  extends: .docker
+  variables:
+      PY: "3.6"
+
+python 3.7:
+  extends: .docker
+  stage: testing
+  variables:
+    PY: "3.7"
+
+master demo:
+  extends: .docker
+  stage: demo
+  script:
+    - make -C demo master
+    - docker push pymor/demo:master
