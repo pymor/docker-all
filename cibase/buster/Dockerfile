@@ -59,25 +59,6 @@ RUN ln -s /usr/lib/python${PYVER}/site-packages/ngsolve \
     rm -rf /var/lib/apt/lists/* && \
     python -c "import ngsolve"
 
-ONBUILD RUN git clone https://github.com/pymor/pymor /tmp/pymor && \
-    ${PIP_INSTALL} -U pip pytest-pycharm && \
-    ${PIP_INSTALL} -r /tmp/pymor/requirements.txt && \
-    ${PIP_INSTALL} -r /tmp/pymor/requirements-ci.txt && \
-    (${PIP_INSTALL} -r /tmp/pymor/requirements-optional.txt || echo optional failed) && \
-    /bin/bash -l -c "(find /usr \( -name '*.a*' -o -name '*.so*' \) -type f | grep -v mess | grep -v freetype | grep -v _imaging | grep -v libtiff | xargs strip -p --strip-unneeded -d &> /dev/null ; du -sch .) || true " && \
-    cd /tmp/pymor/ && \
-    pip install -e .[full] && \
-     python -c "import pymor.core.config as cfg;import sys; sys.exit(not cfg.config.HAVE_FENICS)" && \
-     python -c "from pymor.bindings.ngsolve import NGSolveVectorSpace" && \
-     python -c "import ngsolve" && \
-     python -c "import dolfin" && \
-     python -c "import Qt" && \
-     python -c "import pymor_dealii.pymor.demo" && \
-     python -c "from PIL import Image, ImageDraw, ImageFont, _imagingft" && \
-     python -c "import petsc4py" && \
-     pip uninstall -y pymor && \
-     rm -rf /tmp/pymor
-
-ADD entrypoint.sh /usr/local/bin/
+COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["./.ci/gitlab/script.bash"]
