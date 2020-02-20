@@ -8,7 +8,10 @@ FORCE:
 $(PYTHONS): FORCE
 	$(MAKE) PY=$@ testing
 
-cibase: FORCE ngsolve fenics dealii
+pypi-mirror: FORCE
+	$(MAKE) -C pypi-mirror $(PY)
+
+cibase: FORCE ngsolve fenics dealii pypi-mirror
 	$(MAKE) -C cibase $(PY)
 
 testing: FORCE cibase
@@ -35,6 +38,9 @@ demo: FORCE testing
 deploy_checks: FORCE
 	$(MAKE) -C deploy_checks
 
+push_pypi-mirror: FORCE
+	$(MAKE) -C pypi-mirror push_$(PY)
+
 push_python: FORCE
 	$(MAKE) -C python push_$(PY)
 
@@ -50,7 +56,7 @@ push_fenics: FORCE push_petsc
 push_ngsolve: FORCE push_python
 	$(MAKE) -C ngsolve push_$(PY)
 
-push_cibase: FORCE push_ngsolve push_fenics push_dealii
+push_cibase: FORCE push_ngsolve push_fenics push_dealii push_pypi-mirror
 	$(MAKE) -C cibase push_$(PY)
 
 push_testing: FORCE push_cibase

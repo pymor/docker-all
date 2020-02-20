@@ -60,5 +60,6 @@ RUN ln -s /usr/lib/python${PYVER}/site-packages/ngsolve \
     python -c "import ngsolve"
 
 COPY entrypoint.sh /usr/local/bin/
+COPY *.pip.conf /usr/local/share/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["./.ci/gitlab/script.bash"]

@@ -5,7 +5,6 @@ get_requirements_%:
 	cd pymor_source && git checkout origin/master
 	cp pymor_source/requirements* stable/
 
-
 $(PYTHONS): IS_DIRTY
 	$(DOCKER_BUILD) --build-arg PYVER=$@ \
 		-t $(call PYPI_MIRROR_STABLE_IMAGE,$@,$(VER)) stable
