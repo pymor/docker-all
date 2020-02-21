@@ -82,7 +82,7 @@ pybind11==2.4.3
 pycparser==2.19
 pyevtk==1.1.1
 Pygments==2.5.2
-pygmsh==6.0.5
+pygmsh==6.0.2
 pymess==1.0.0
 pymor==2019.2.0
 pymor-dealii==2019.2rc0
