@@ -16,9 +16,9 @@ ARG PYVER
 
 COPY requirements*.txt constraints_py${PYVER}.txt ${SERVER_ROOT}/requirements/
 RUN cd ${SERVER_ROOT}/ \
-  && for fn in ${SERVER_ROOT}/requirements/*.txt ; do \
+  && (for fn in ${SERVER_ROOT}/requirements/*.txt ; do \
     pip download -d downloads -r ${fn} -c ${SERVER_ROOT}/requirements/constraints_py${PYVER}.txt ; \
-  done \
+  done || exit 1) \
   && pypi-mirror create -d downloads -m simple
 
 WORKDIR ${SERVER_ROOT}
