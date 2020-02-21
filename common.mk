@@ -21,6 +21,8 @@ all: $(PYTHONS)
 .PHONY: push IS_DIRTY
 
 IS_DIRTY:
+	# diff-index sometimes produces false postives during docker build
+	git diff-index --quiet HEAD || git update-index -q --really-refresh
 	git diff-index --quiet HEAD
 
 push: $(addprefix push_,$(PYTHONS))
