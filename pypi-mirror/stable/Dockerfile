@@ -4,7 +4,8 @@ FROM python:${PYVER}
 ENV MIRROR_VERSION=4.0.2 \
   PIP_VERSION=20.0.1 \
   SERVER_ROOT=/pymor
-RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
+RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} pypi-oldest-requirements>=2020.3.5 \
+      requests-toolbelt \
   && useradd --shell /bin/bash -u 1000 -o -m -d /data -c "" -m pymor \
   && mkdir ${SERVER_ROOT} \
   && chown pymor ${SERVER_ROOT}
@@ -18,8 +19,10 @@ COPY requirements*.txt constraints_py${PYVER}.txt ${SERVER_ROOT}/requirements/
 RUN cd ${SERVER_ROOT}/ \
   && (for fn in ${SERVER_ROOT}/requirements/*.txt ; do \
     pip download -d downloads -r ${fn} -c ${SERVER_ROOT}/requirements/constraints_py${PYVER}.txt ; \
+    pypi_minimal_requirements_pinned ${fn} /tmp/pinned ; \
   done || exit 1) \
-  && pypi-mirror create -d downloads -m simple
+  && pypi-mirror create -d downloads -m simple \
+  && rm -rf /tmp/*
 
 WORKDIR ${SERVER_ROOT}
 ENTRYPOINT ["python", "-m", "http.server", "--bind", "0.0.0.0", "8080" ]
