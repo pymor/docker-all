@@ -23,8 +23,7 @@ all: $(PYTHONS)
 
 IS_DIRTY:
 	# diff-index sometimes produces false postives during docker build
-	git diff-index --quiet HEAD || git update-index -q --really-refresh
-	git diff-index --quiet HEAD
+	git diff-index --quiet HEAD || (git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code)
 
 push: $(addprefix push_,$(PYTHONS))
 pull_latest: $(addprefix pull_latest_,$(PYTHONS))
