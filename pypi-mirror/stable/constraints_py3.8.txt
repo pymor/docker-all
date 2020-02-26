@@ -65,7 +65,7 @@ pytest-runner==5.2
 pytest-xdist==1.31.0
 python-dateutil==2.8.1
 pyzmq==18.1.1
-Qt.py==1.2.4
+Qt.py==1.2.5
 qtconsole==4.6.0
 readme-renderer==24.0
 requests==2.23.0
