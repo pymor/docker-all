@@ -8,7 +8,7 @@ FORCE:
 $(PYTHONS): FORCE
 	$(MAKE) PY=$@ testing
 
-pypi-mirror: FORCE python
+pypi-mirror: FORCE testing
 	$(MAKE) -C pypi-mirror $(PY)
 
 cibase: FORCE ngsolve fenics dealii pypi-mirror

@@ -17,7 +17,7 @@ $(PYTHONS): % : constraints-%
 constraints: $(addprefix constraints-,$(PYTHONS))
 
 constraints-%: IS_DIRTY
-	$(DOCKER_BUILD) --no-cache --build-arg BASE=pymor/testing_py$*:b91332bb45ed1950647b572cc01b550f9009d977 \
+	$(DOCKER_BUILD) --no-cache --build-arg BASE=pymor/testing_py$*:latest \
 		-t pymor/local_requirements_py$*:$(VER) constrainer
 	docker run pymor/local_requirements_py$*:$(VER) > stable/constraints_py$*.txt
 
