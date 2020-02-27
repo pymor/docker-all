@@ -38,6 +38,12 @@ python 3.7:
   variables:
     PY: "3.7"
 
+python 3.8:
+  extends: .docker
+  stage: testing
+  variables:
+    PY: "3.8"
+
 master demo:
   extends: .docker
   stage: demo
