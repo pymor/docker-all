@@ -65,6 +65,9 @@ push_cibase: FORCE push_ngsolve push_fenics push_dealii push_pypi-mirror
 push_testing: FORCE push_cibase
 	$(MAKE) -C testing push_$(PY)
 
+push_jupyter: FORCE push_testing
+	$(MAKE) -C jupyter push_$(PY)
+
 push_%: FORCE
 	$(MAKE) PY=$* push_testing
 
