@@ -6,6 +6,7 @@ stages:
   tags:
     - docker-in-docker
     - long execution time
+    - amm-only
   retry:
       max: 2
       when:
