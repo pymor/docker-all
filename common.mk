@@ -21,9 +21,12 @@ all: $(PYTHONS)
 
 .PHONY: push IS_DIRTY
 
+# diff-index sometimes produces false postives during docker build
+# but if there's still a diff, we want to see it and _still_ fail the target
 IS_DIRTY:
-	# diff-index sometimes produces false postives during docker build
-	git diff-index --quiet HEAD || (git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code)
+	git diff-index --quiet HEAD || \
+	(git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code) || \
+	(git diff --no-ext-diff ; exit 1)
 
 push: $(addprefix push_,$(PYTHONS))
 pull_latest: $(addprefix pull_latest_,$(PYTHONS))
