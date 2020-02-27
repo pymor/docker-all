@@ -35,6 +35,9 @@ ngsolve: FORCE petsc
 demo: FORCE testing
 	$(MAKE) -C demo
 
+jupyter: FORCE testing
+	$(MAKE) -C jupyter
+
 deploy_checks: FORCE
 	$(MAKE) -C deploy_checks
 
