@@ -16,7 +16,7 @@ RUN apt-get update && \
     liboce-ocaf-dev libsuitesparse-dev python3-tk && \
     pip3 install sphinx_rtd_theme
 ENV PATH="/opt/netgen/bin:${PATH}" \
-    NGSOLVE_VERSION=v6.2.1905 \
+    NGSOLVE_VERSION=v6.2.2001 \
     NGSOLVE_SRC_DIR=/root/src/ngsolve_src \
     NGSOLVE_BUILD_DIR=/root/src/ngsolve_build \
     PETSC_DIR=/usr/local/petsc-32
@@ -37,7 +37,7 @@ RUN echo "DISTRIB_CODENAME=buster" > /etc/lsb-release && \
     cmake ${NGSOLVE_SRC_DIR} \
     -DUSE_NATIVE_ARCH=OFF \
     -DUSE_OCC=ON \
-    -DUSE_MPI=ON \
+    -DUSE_MPI=OFF \
     -DUSE_HYPRE=OFF \
     -DUSE_MUMPS=OFF \
     -DOpenGL_GL_PREFERENCE=GLVND \
@@ -49,11 +49,8 @@ RUN echo "DISTRIB_CODENAME=buster" > /etc/lsb-release && \
     -DCMAKE_BUILD_TYPE=Release \
     -DNG_INSTALL_DIR_LIB=lib/netgen \
     -DNG_INSTALL_DIR_INCLUDE=include/netgen \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCPACK_PACKAGING_INSTALL_PREFIX=/usr \
-    "-DCPACK_DEBIAN_PACKAGE_NAME=ngsolve${PACKAGE_NAME_SUFFIX}" && \
+    -DCMAKE_INSTALL_PREFIX=/usr/local && \
     make -j "$(nproc)" && \
     cd ${NGSOLVE_BUILD_DIR} && \
-    make package && \
-    mv ${NGSOLVE_BUILD_DIR}/ngsolve-*_amd64.deb /root/ && \
+    make install && \
     rm -rf ${NGSOLVE_BUILD_DIR} ${NGSOLVE_SRC_DIR}

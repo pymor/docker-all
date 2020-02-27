@@ -46,15 +46,11 @@ ENV DEBIAN_FRONTEND=teletype \
 
 COPY --from=fenicslayer /usr/local/ /usr/local/
 COPY --from=dealii /usr/local/ /usr/local/
-COPY --from=ngsolve /root/ngsolve*deb /root
+COPY --from=ngsolve /usr/local/ /usr/local/
 
-RUN ln -s /usr/lib/python${PYVER}/site-packages/ngsolve \
-          /usr/local/lib/python${PYVER}/site-packages/ngsolve && \
-    ln -s /usr/lib/python${PYVER}/site-packages/netgen \
-          /usr/local/lib/python${PYVER}/site-packages/netgen && \
-    apt update && apt install -y /root/ngsolve-*_amd64.deb && \
-    apt-get install -q -y --no-install-recommends libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23 &&\
-    rm /root/ngsolve-*.deb && \
+RUN apt update && \
+    apt-get install -q -y --no-install-recommends liboce-modeling11 liboce-ocaf11 libopengl0 \
+      libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23 &&\
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     python -c "import ngsolve"
