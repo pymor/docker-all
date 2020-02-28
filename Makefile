@@ -36,7 +36,7 @@ demo: FORCE testing
 	$(MAKE) -C demo
 
 jupyter: FORCE testing
-	$(MAKE) -C jupyter
+	$(MAKE) -C jupyter $(PY)
 
 deploy_checks: FORCE
 	$(MAKE) -C deploy_checks
