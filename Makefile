@@ -6,7 +6,7 @@ PY=3.7
 FORCE:
 
 $(PYTHONS): FORCE
-	$(MAKE) PY=$@ testing
+	$(MAKE) PY=$@ jupyter
 
 pypi-mirror: FORCE testing
 	$(MAKE) -C pypi-mirror $(PY)
