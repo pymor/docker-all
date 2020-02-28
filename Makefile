@@ -69,7 +69,7 @@ push_jupyter: FORCE push_testing
 	$(MAKE) -C jupyter push_$(PY)
 
 push_%: FORCE
-	$(MAKE) PY=$* push_testing
+	$(MAKE) PY=$* push_jupyter
 
 pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
