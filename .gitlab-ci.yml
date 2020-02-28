@@ -25,6 +25,7 @@ stages:
   script:
       - make pull_all_latest_${PY}
       - make ${PY}
+      - make push_${PY}
 
 python 3.6:
   stage: testing
