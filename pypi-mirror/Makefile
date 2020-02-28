@@ -9,7 +9,7 @@ download_source: IS_DIRTY
 	cp pymor_source/requirements* stable/
 	cp pymor_source/requirements* constrainer/
 
-$(PYTHONS): % : constraints-%
+$(PYTHONS): % : 
 	$(DOCKER_BUILD) --no-cache --build-arg PYVER=$@  \
 		-t $(call PYPI_MIRROR_STABLE_IMAGE,$@,$(VER)) stable
 	$(DOCKER_TAG) $(call PYPI_MIRROR_STABLE_IMAGE,$@,$(VER)) $(call PYPI_MIRROR_STABLE_IMAGE,$@,latest)
