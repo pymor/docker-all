@@ -4,6 +4,7 @@ check-manifest
 codecov
 nbconvert
 pypi-oldest-requirements>=2020.2
+pytest-test-groups
 pytest-cov
 pytest-memprof
 pytest-xdist
