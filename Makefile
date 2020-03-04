@@ -82,3 +82,6 @@ pull_all_latest_%: FORCE
 	$(DOCKER_PULL) $(call PYTHON_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call PETSC_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call NGSOLVE_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call DOC_RELEASES_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)

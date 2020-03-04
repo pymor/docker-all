@@ -45,6 +45,13 @@ python 3.8:
   variables:
     PY: "3.8"
 
+python 3.9:
+  extends: .docker
+  stage: testing
+  variables:
+    PY: "3.9"
+  allow_failure: true
+
 master demo:
   extends: .docker
   stage: demo

@@ -18,7 +18,7 @@ DOCKER_PULL=docker pull
 PYTHON_TAG=$(VER)
 PETSC_TAG=$(VER)
 
-all: $(PYTHONS)
+all: $(filter-out 3.9,$(PYTHONS))
 
 .PHONY: push IS_DIRTY
 
@@ -29,5 +29,5 @@ IS_DIRTY:
 	(git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code) || \
 	(git diff --no-ext-diff ; exit 1)
 
-push: $(addprefix push_,$(PYTHONS))
-pull_latest: $(addprefix pull_latest_,$(PYTHONS))
+push: $(addprefix push_,$(filter-out 3.9,$(PYTHONS)))
+pull_latest: $(addprefix pull_latest_,$(filter-out 3.9,$(PYTHONS)))
