@@ -23,12 +23,6 @@ docutils==0.16
 entrypoints==0.3
 envparse==0.2.0
 execnet==1.7.1
-fenics==2019.1.0
-fenics-dijitso==2019.1.0
-fenics-dolfin==2019.1.0
-fenics-ffc==2019.1.0.post0
-fenics-fiat==2019.1.0
-fenics-ufl==2019.1.0
 future==0.18.2
 idna==2.9
 imagesize==1.2.0
@@ -39,7 +33,7 @@ ipython==7.12.0
 ipython-genutils==0.2.0
 ipywidgets==7.5.1
 jedi==0.16.0
-jeepney==0.4.2
+jeepney==0.4.3
 Jinja2==2.11.1
 jsonschema==3.2.0
 jupyter==1.0.0
@@ -50,6 +44,7 @@ keyring==21.1.0
 kiwisolver==1.1.0
 MarkupSafe==1.1.1
 matplotlib==3.1.3
+memory-profiler==0.57.0
 meshio==3.3.1
 mistune==0.8.4
 more-itertools==8.2.0
@@ -79,7 +74,7 @@ ptyprocess==0.6.0
 py==1.8.1
 pyamg==4.0.0
 pybind11==2.4.3
-pycparser==2.19
+pycparser==2.20
 pyevtk==1.1.1
 Pygments==2.5.2
 pygmsh==6.0.2
@@ -94,10 +89,13 @@ pyrsistent==0.15.7
 PySide2==5.14.1
 pytest==5.3.5
 pytest-cov==2.8.1
+pytest-deadfixtures==2.1.0
 pytest-forked==1.1.3
 pytest-memprof==0.2.0
+pytest-monitor==1.0.0
+pytest-parallel==0.0.10
 pytest-runner==5.2
-pytest-test-groups==1.0.3
+pytest-timeout==1.3.4
 pytest-xdist==1.31.0
 python-dateutil==2.8.1
 pythreejs==2.1.1
@@ -130,6 +128,7 @@ sphinxcontrib-qthelp==1.0.2
 sphinxcontrib-serializinghtml==1.1.3
 sphinxtesters==0.2.3
 sympy==1.5.1
+tblib==1.6.0
 terminado==0.8.3
 testipynb==0.0.2
 testpath==0.4.4
