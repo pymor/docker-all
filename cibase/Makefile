@@ -1,13 +1,8 @@
 include ../common.mk
 
+IMAGE_NAME:=CIBASE_IMAGE
+
 $(PYTHONS): IS_DIRTY
 	$(DOCKER_BUILD) --build-arg PYVER=$@ \
-		-t $(call CIBASE_IMAGE,$@,$(VER)) buster
-	$(DOCKER_TAG) $(call CIBASE_IMAGE,$@,$(VER)) $(call CIBASE_IMAGE,$@,latest)
-
-push_%:
-	$(DOCKER_PUSH) $(call CIBASE_IMAGE,$*,$(VER))
-	$(DOCKER_PUSH) $(call CIBASE_IMAGE,$*,latest)
-
-pull_latest_%:
-	docker pull $(call CIBASE_IMAGE,$*,latest)
+		-t $(call $(IMAGE_NAME),$@,$(VER)) buster
+	$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER)) $(call $(IMAGE_NAME),$@,latest)

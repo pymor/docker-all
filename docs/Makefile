@@ -4,18 +4,13 @@ push: push_releases
 
 include ../common.mk
 
+IMAGE_NAME:=DOC_RELEASES_IMAGE
+
 .PHONY: FORCE
 
 FORCE:
 
 releases: FORCE
 	$(DOCKER_BUILD) \
-		-t $(call DOC_RELEASES_IMAGE,$(VER)) releases
-	$(DOCKER_TAG) $(call DOC_RELEASES_IMAGE,$(VER)) $(call DOC_RELEASES_IMAGE,latest)
-
-push_releases:
-	$(DOCKER_PUSH) $(call DOC_RELEASES_IMAGE,$(VER))
-	$(DOCKER_PUSH) $(call DOC_RELEASES_IMAGE,latest)
-
-pull_latest_%:
-	docker pull $(call DOC_RELEASES_IMAGE,latest)
+		-t $(call $(IMAGE_NAME),$(VER)) releases
+	$(DOCKER_TAG) $(call $(IMAGE_NAME),$(VER)) $(call $(IMAGE_NAME),latest)

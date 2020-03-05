@@ -1,16 +1,11 @@
 include ../common.mk
 
+IMAGE_NAME:=TESTING_IMAGE
+
 $(PYTHONS): IS_DIRTY
 	$(DOCKER_BUILD) --build-arg BASETAG=$(VER) \
-		-t $(call TESTING_IMAGE,$@,$(VER)) $@
-	$(DOCKER_TAG) $(call TESTING_IMAGE,$@,$(VER)) $(call TESTING_IMAGE,$@,latest)
+		-t $(call $(IMAGE_NAME),$@,$(VER)) $@
+	$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER)) $(call $(IMAGE_NAME),$@,latest)
 
 squash:
 	echo docker-squash -h &> /dev/null && docker-squash pymor/testing:$@
-
-push_%:
-	$(DOCKER_PUSH) $(call TESTING_IMAGE,$*,$(VER))
-	$(DOCKER_PUSH) $(call TESTING_IMAGE,$*,latest)
-
-pull_latest_%:
-	docker pull $(call TESTING_IMAGE,$*,latest)

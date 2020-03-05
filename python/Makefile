@@ -1,15 +1,9 @@
 include ../common.mk
 
 VARIANT?=buster/slim
+IMAGE_NAME:=PYTHON_IMAGE
 
 $(PYTHONS): IS_DIRTY
 	cd "$@/$(VARIANT)" && \
-		$(DOCKER_BUILD) -t $(call PYTHON_IMAGE,$@,$(VER)) .
-	$(DOCKER_TAG) $(call PYTHON_IMAGE,$@,$(VER)) $(call PYTHON_IMAGE,$@,latest)
-
-push_%:
-	$(DOCKER_PUSH) $(call PYTHON_IMAGE,$*,$(VER))
-	$(DOCKER_PUSH) $(call PYTHON_IMAGE,$*,latest)
-
-pull_latest_%:
-	docker pull $(call PYTHON_IMAGE,$*,latest)
+		$(DOCKER_BUILD) -t $(call $(IMAGE_NAME),$@,$(VER)) .
+	$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER)) $(call $(IMAGE_NAME),$@,latest)

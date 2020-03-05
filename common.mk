@@ -31,3 +31,13 @@ IS_DIRTY:
 
 push: $(addprefix push_,$(filter-out 3.9,$(PYTHONS)))
 pull_latest: $(addprefix pull_latest_,$(filter-out 3.9,$(PYTHONS)))
+
+push_%:
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER))
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest)
+
+pull_latest_%:
+	docker pull $(call $(IMAGE_NAME),$*,latest)
+
+run_%:
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER))
