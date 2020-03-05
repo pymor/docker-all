@@ -8,12 +8,10 @@ FROM pymor/testing_py${PYVER}:${VERTAG}
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # needs repeating to be usable outside FROM
-ARG PYVER
-COPY --from=dependencies /pymor/downloads/* /tmp/dependencies/
+ARG VERTAG
 
 # the pythreejs needs npm/nodejs installed for the jupter lab extension
-RUN /bin/bash -c "pip install /tmp/dependencies/* &&\
-    curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+RUN /bin/bash -c "curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     &&  apt update && apt install nodejs &&\
     pip install jupyterlab && \
     jupyter nbextension install --py --symlink --sys-prefix pythreejs && \
@@ -27,5 +25,10 @@ RUN /bin/bash -c "pip install /tmp/dependencies/* &&\
     jupyter nbextension enable scroll_down/main"
 COPY dev-entrypoint.bash /usr/local/bin/
 COPY ipython_kernel_config.py /etc/ipython/
+
+# automatic cache busting since docker will otherwise NOT rebuild if VERTAG (and thereby the mirror image) changes 
+RUN echo ${VERTAG} > /tmp/vertag
+COPY --from=dependencies /pymor/downloads/* /tmp/dependencies/
+RUN /bin/bash -c "pip install /tmp/dependencies/*"
 
 ENTRYPOINT ["/usr/local/bin/dev-entrypoint.bash"]
