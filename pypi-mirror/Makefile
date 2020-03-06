@@ -15,9 +15,9 @@ $(PYTHONS): % :
 		-t $(call $(IMAGE_NAME),$@,$(VER)) stable
 	$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER)) $(call $(IMAGE_NAME),$@,latest)
 
-constraints: $(addprefix constraints-,$(PYTHONS))
+constraints: $(addprefix constraints_,$(PYTHONS))
 
-constraints-%: IS_DIRTY
+constraints_%: IS_DIRTY
 	$(DOCKER_BUILD) --no-cache --build-arg BASE=pymor/testing_py$*:latest \
 		-t pymor/local_requirements_py$*:$(VER) constrainer
 	docker run pymor/local_requirements_py$*:$(VER) > stable/constraints_py$*.txt

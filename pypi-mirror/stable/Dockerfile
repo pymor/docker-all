@@ -24,13 +24,13 @@ RUN cd ${SERVER_ROOT}/requirements \
 
 RUN set -e ; cd ${SERVER_ROOT}/requirements \
   && for fn in req*.txt ; do \
-    pip download -d downloads -r filtered_req -c constraints_py${PYVER}.txt && \
+    pip download -d ../downloads -r filtered_req -c constraints_py${PYVER}.txt && \
     echo 'done part 1 ************************************* ' ${fn} && \
-    pip download -d downloads -r only_mess && \
+    pip download -d ../downloads -r only_mess && \
     echo 'done part 2 ************************************* ' ${fn} && \
     pypi_minimal_requirements_pinned ${fn} pinned && \
     cat pinned | sort | uniq > pinned_u && cat pinned_u && \
-    pip download -d downloads -r pinned_u && \
+    pip download -d ../downloads -r pinned_u && \
     echo 'done part 3 ************************************* '${fn} ; \
   done
 RUN cd ${SERVER_ROOT}/ \
