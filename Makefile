@@ -1,3 +1,7 @@
+# this target needs to be used instead of the one in common.mk
+push_%: FORCE
+	$(MAKE) PY=$* push_jupyter
+
 include common.mk
 .PHONY: FORCE
 
@@ -68,8 +72,6 @@ push_testing: FORCE push_cibase
 push_jupyter: FORCE push_testing
 	$(MAKE) -C jupyter push_$(PY)
 
-push_%: FORCE
-	$(MAKE) PY=$* push_jupyter
 
 pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
@@ -85,3 +87,6 @@ pull_all_latest_%: FORCE
 	$(DOCKER_PULL) $(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call DOC_RELEASES_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
+
+push:
+	echo frfr

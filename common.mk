@@ -15,6 +15,7 @@ DOCKER_BUILD=docker build
 DOCKER_TAG=docker tag
 DOCKER_PUSH=docker push
 DOCKER_PULL=docker pull
+DOCKER_RUN=docker run  -it
 PYTHON_TAG=$(VER)
 PETSC_TAG=$(VER)
 
@@ -40,4 +41,4 @@ pull_latest_%:
 	docker pull $(call $(IMAGE_NAME),$*,latest)
 
 run_%:
-	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER))
+	$(DOCKER_RUN) $(call $(IMAGE_NAME),$*,$(VER)) 
