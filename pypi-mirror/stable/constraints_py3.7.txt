@@ -83,7 +83,7 @@ pymor==2019.2.0
 pymor-nb2plots==0.7
 PyOpenGL==3.1.5
 pyparsing==2.4.6
-pypi-oldest-requirements==2020.3.5
+pypi-oldest-requirements==2020.4.1
 PyQt5-sip==12.7.1
 pyrsistent==0.15.7
 PySide2==5.14.1
