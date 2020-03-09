@@ -7,7 +7,7 @@ FROM python:${PYVER}
 ENV MIRROR_VERSION=4.0.2 \
   PIP_VERSION=20.0.1 \
   SERVER_ROOT=/pymor
-RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} pypi-oldest-requirements>=2020.4.1 \
+RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
       requests-toolbelt \
   && useradd --shell /bin/bash -u 1000 -o -m -d /data -c "" -m pymor \
   && mkdir ${SERVER_ROOT} \
@@ -25,7 +25,7 @@ RUN cd ${SERVER_ROOT}/requirements \
     (grep pymess ${fn} > only_mess) ; \
     grep -v pymess ${fn} | grep -v fenics | grep -v pymor-dealii > filtered_req ; \
     set -e ; \
-    pip download -d ../downloads -r filtered_req -c ${SERVER_ROOT}/requirements/constraints.txt && \
+    pip download -d ../downloads -r filtered_req -c ${SERVER_ROOT}/requirements/oldest_constraints.txt && \
     echo 'done part 1 ************************************* ' ${fn} && \
     pip download -d ../downloads -r only_mess && \
     echo 'done part 2 ************************************* ' ${fn} ; \
@@ -33,7 +33,6 @@ RUN cd ${SERVER_ROOT}/requirements \
 RUN cd ${SERVER_ROOT}/ \
   && pypi-mirror create -d downloads -m simple \
   && rm -rf /tmp/*
-
 USER pymor
 WORKDIR ${SERVER_ROOT}
 ENTRYPOINT ["python", "-m", "http.server", "--bind", "0.0.0.0", "8080" ]

@@ -7,7 +7,7 @@ FENICS_IMAGE = pymor/fenics_py$1:$2
 DEALII_IMAGE = pymor/dealii_py$1:$2
 CIBASE_IMAGE = pymor/cibase_py$1:$2
 TESTING_IMAGE = pymor/testing_py$1:$2
-PYPI_MIRROR_STABLE_IMAGE = pymor/pypi-mirror_stable_py$1:$2
+PYPI_MIRROR_IMAGE = pymor/pypi-mirror_$3_py$1:$2
 DOC_RELEASES_IMAGE = pymor/doc_releases:$1
 JUPYTER_IMAGE = pymor/jupyter_py$1:$2
 # DOCKER_BUILD=docker build --squash
@@ -41,4 +41,4 @@ pull_latest_%:
 	docker pull $(call $(IMAGE_NAME),$*,latest)
 
 run_%:
-	$(DOCKER_RUN) $(call $(IMAGE_NAME),$*,$(VER)) 
+	$(DOCKER_RUN) $(call $(IMAGE_NAME),$*,$(VER))

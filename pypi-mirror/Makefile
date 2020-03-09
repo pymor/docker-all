@@ -1,7 +1,13 @@
+push_%:
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER),oldest)
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER),stable)
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest,oldest)
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest,stable)
+
 include ../common.mk
 
 PYMOR_BRANCH?=master
-IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE
+IMAGE_NAME:=PYPI_MIRROR_IMAGE
 
 # this a manual target
 download_source: IS_DIRTY
@@ -11,13 +17,15 @@ download_source: IS_DIRTY
 	cp pymor_source/requirements* constrainer/
 
 $(PYTHONS): % :
-	$(DOCKER_BUILD) --no-cache --build-arg PYVER=$@  \
-		-t $(call $(IMAGE_NAME),$@,$(VER)) stable
-	$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER)) $(call $(IMAGE_NAME),$@,latest)
+	$(DOCKER_BUILD) --build-arg BASE=pymor/testing_py$@:latest \
+		-t pymor/constraints_py$@:$(VER) constrainer
+	$(DOCKER_BUILD) --build-arg PYVER=$@ --build-arg VER=$(VER) \
+		-t $(call $(IMAGE_NAME),$@,$(VER),stable) stable
+	$(DOCKER_BUILD) --build-arg PYVER=$@ --build-arg VER=$(VER) \
+		-t $(call $(IMAGE_NAME),$@,$(VER),oldest) oldest
+	$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER),oldest) $(call $(IMAGE_NAME),$@,latest,oldest)
+	$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER),stable) $(call $(IMAGE_NAME),$@,latest,stable)
 
 constraints: $(addprefix constraints_,$(PYTHONS))
 
 constraints_%: IS_DIRTY
-	$(DOCKER_BUILD) --no-cache --build-arg BASE=pymor/testing_py$*:latest \
-		-t pymor/local_requirements_py$*:$(VER) constrainer
-	docker run pymor/local_requirements_py$*:$(VER) > stable/constraints_py$*.txt

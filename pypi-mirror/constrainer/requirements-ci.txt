@@ -9,7 +9,6 @@ pytest-deadfixtures
 pytest-memprof
 pytest-monitor
 pytest-parallel
-pytest-timeout
 pytest-xdist
 pytest>=4.4
 readme_renderer[md]
