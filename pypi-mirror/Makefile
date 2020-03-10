@@ -1,9 +1,3 @@
-push_%:
-	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER),oldest)
-	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER),stable)
-	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest,oldest)
-	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest,stable)
-
 include ../common.mk
 
 PYMOR_BRANCH?=master
@@ -29,3 +23,9 @@ $(PYTHONS): % :
 constraints: $(addprefix constraints_,$(PYTHONS))
 
 constraints_%: IS_DIRTY
+
+push_%:
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER),oldest)
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER),stable)
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest,oldest)
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest,stable)
