@@ -95,6 +95,5 @@ pull_all_latest_%: FORCE
 	$(DOCKER_PULL) $(call NGSOLVE_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call PYPI_MIRROR_IMAGE,$*,latest,stable)
 	$(DOCKER_PULL) $(call PYPI_MIRROR_IMAGE,$*,latest,oldest)
-	$(DOCKER_PULL) $(call DOC_RELEASES_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call DIND_IMAGE,latest)
