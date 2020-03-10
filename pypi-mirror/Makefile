@@ -29,3 +29,9 @@ push_%:
 	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER),stable)
 	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest,oldest)
 	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest,stable)
+
+test_%:
+	VARIANT=stable PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) DOCKER_BASE_PYTHON=$* docker-compose up --build test
+	VARIANT=oldest PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) DOCKER_BASE_PYTHON=$* docker-compose up --build test
+
+test: $(addprefix test_,$(filter-out 3.9,$(PYTHONS)))

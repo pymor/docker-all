@@ -1,0 +1,34 @@
+version: '3'
+
+# you should not use this file directly, but rather via the targets in ../Makefile
+
+# this service runs a jupyter notebook server with all of pymor's
+# requirements installed and the src directory added to PYTHONPATH
+
+# you should have a preset PYMOR_JUPYTER_TOKEN environment variable,
+# then start with ```docker-compose up --build```
+# and connect to the server at http://localhost:9180/?token=${PYMOR_JUPYTER_TOKEN}
+
+# 3rd party libraries that need editing can be put in .binder/local_packages/
+# These are "installed" at build time of the image and will be available
+# via mount at container runtime
+
+services:
+  test:
+    depends_on:
+      - pypi_mirror
+    build:
+        context: test
+        dockerfile: Dockerfile
+        args:
+            BASE: pymor/testing_py${DOCKER_BASE_PYTHON}:${CI_IMAGE_TAG}
+
+    restart: "no"
+    command: >
+      bash -c 'cd /pymor ; pip install -r requirements-optional.txt'
+    volumes:
+      - ./pymor_source:/pymor
+
+  pypi_mirror:
+    image: pymor/pypi-mirror_${VARIANT}_py${DOCKER_BASE_PYTHON}:${PYPI_MIRROR_TAG}
+    restart: "no"
