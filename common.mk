@@ -6,6 +6,7 @@ PYTHON_IMAGE = pymor/python_$1:$2
 FENICS_IMAGE = pymor/fenics_py$1:$2
 DEALII_IMAGE = pymor/dealii_py$1:$2
 CIBASE_IMAGE = pymor/cibase_py$1:$2
+DIND_IMAGE = pymor/docker-in-docker:$2
 TESTING_IMAGE = pymor/testing_py$1:$2
 PYPI_MIRROR_IMAGE = pymor/pypi-mirror_$3_py$1:$2
 DOC_RELEASES_IMAGE = pymor/doc_releases:$1

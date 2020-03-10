@@ -1,6 +1,9 @@
-# this target needs to be used instead of the one in common.mk
+# these target needs to be used instead of the one in common.mk
+
+all: $(filter-out 3.9,$(PYTHONS)) docker-in-docker
+
 push_%: FORCE
-	$(MAKE) PY=$* push_jupyter
+	$(MAKE) PY=$* push_jupyter push_docker-in-docker
 
 include common.mk
 .PHONY: FORCE
@@ -11,6 +14,9 @@ FORCE:
 
 $(PYTHONS): FORCE
 	$(MAKE) PY=$@ jupyter
+
+docker-in-docker: FORCE
+	$(MAKE) -C docker-in-docker
 
 pypi-mirror: FORCE testing
 	$(MAKE) -C pypi-mirror $(PY)
@@ -66,6 +72,9 @@ push_ngsolve: FORCE push_python
 push_cibase: FORCE push_ngsolve push_fenics push_dealii push_pypi-mirror
 	$(MAKE) -C cibase push_$(PY)
 
+push_docker-in-docker: FORCE
+	$(MAKE) -C docker-in-docker push
+
 push_testing: FORCE push_cibase
 	$(MAKE) -C testing push_$(PY)
 
@@ -84,9 +93,8 @@ pull_all_latest_%: FORCE
 	$(DOCKER_PULL) $(call PYTHON_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call PETSC_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call NGSOLVE_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call PYPI_MIRROR_IMAGE,$*,latest,stable)
+	$(DOCKER_PULL) $(call PYPI_MIRROR_IMAGE,$*,latest,oldest)
 	$(DOCKER_PULL) $(call DOC_RELEASES_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
-
-push:
-	echo frfr
+	$(DOCKER_PULL) $(call DIND_IMAGE,latest)

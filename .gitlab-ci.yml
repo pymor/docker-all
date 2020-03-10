@@ -58,3 +58,10 @@ master demo:
   script:
     - make -C demo master
     - docker push pymor/demo:master
+
+py independent:
+  extends: .docker
+  stage: testing
+  script:
+    - make docker-in-docker
+    - make push_docker-in-docker

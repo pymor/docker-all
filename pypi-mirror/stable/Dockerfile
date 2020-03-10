@@ -5,9 +5,10 @@ FROM pymor/constraints_py${PYVER}:${VER} as constraints
 FROM python:${PYVER}
 
 ENV MIRROR_VERSION=4.0.2 \
-  PIP_VERSION=20.0.1 \
+  PIP_VERSION=20.0.2 \
   SERVER_ROOT=/pymor
-RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} pypi-oldest-requirements>=2020.4.1 \
+RUN pip install --no-cache -qq "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
+    pypi-oldest-requirements>=2020.4.1 \
       requests-toolbelt \
   && useradd --shell /bin/bash -u 1000 -o -m -d /data -c "" -m pymor \
   && mkdir ${SERVER_ROOT} \
