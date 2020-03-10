@@ -10,7 +10,7 @@ download_source: IS_DIRTY
 	cp pymor_source/requirements* stable/
 	cp pymor_source/requirements* constrainer/
 
-$(PYTHONS): % :
+$(PYTHONS): % : IS_DIRTY
 	$(DOCKER_BUILD) --build-arg BASE=pymor/testing_py$@:latest \
 		-t pymor/constraints_py$@:$(VER) constrainer
 	$(DOCKER_BUILD) --build-arg PYVER=$@ --build-arg VER=$(VER) \
