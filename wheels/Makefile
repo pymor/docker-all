@@ -12,7 +12,7 @@ FORCE:
 
 IMAGE_NAME:=$(WHEELBUILDER_IMAGE)
 
-$(PYTHONS): IS_DIRTY image$@
+$(PYTHONS): IS_DIRTY image$*
 	$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER)) $(call $(IMAGE_NAME),$@,latest)
 
 
