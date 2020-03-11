@@ -1,5 +1,6 @@
 ARG PYTHON_VERSION
-FROM pymor/pypi-mirror_oldest_py${PYTHON_VERSION}:latest as dependencies
+ARG VER
+FROM pymor/pypi-mirror_oldest_py${PYTHON_VERSION}:${VER} as dependencies
 
 FROM quay.io/pypa/manylinux2014_x86_64
 

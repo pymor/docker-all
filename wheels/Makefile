@@ -6,7 +6,7 @@ IMAGE_NAME:=WHEELBUILDER_IMAGE
 
 $(PYTHONS): IS_DIRTY
 	for ml in 1 2010 2014 ; do \
-		docker build --build-arg PYTHON_VERSION=$@ \
+		docker build --build-arg PYTHON_VERSION=$@ --build-arg VER=$(VER) \
 			-t $(call $(IMAGE_NAME),$@,$(VER),$${ml}) manylinux$${ml}_builder && \
 			$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER),$${ml}) $(call $(IMAGE_NAME),$@,latest,$${ml}) ; \
 		done
