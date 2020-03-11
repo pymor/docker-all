@@ -12,11 +12,11 @@ FORCE:
 
 IMAGE_NAME:=WHEELBUILDER_IMAGE
 
-$(PYTHONS):
+$(PYTHONS): IS_DIRTY
 	for ml in 1 2010 2014 ; do \
 		docker build --build-arg PYTHON_VERSION=$@ \
 			-t $(call $(IMAGE_NAME),$@,$(VER),$${ml}) manylinux$${ml}_builder && \
-			$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER),${ml}) $(call $(IMAGE_NAME),$@,latest,${ml}) ; \
+			$(DOCKER_TAG) $(call $(IMAGE_NAME),$@,$(VER),$${ml}) $(call $(IMAGE_NAME),$@,latest,$${ml}) ; \
 		done
 
 source:
@@ -46,7 +46,8 @@ wheels: ${WHEELS}
 
 tests: ${TESTS}
 
-.PHONY: push
-push:
-	docker push pymor/wheelbuilder
-	docker push pymor/wheeltester
+push_%:
+	for ml in 1 2010 2014 ; do \
+		$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,$(VER),$${ml}) && \
+		$(DOCKER_PUSH) $(call $(IMAGE_NAME),$*,latest,$${ml}) ; \
+	done
