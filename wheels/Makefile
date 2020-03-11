@@ -1,14 +1,6 @@
 include ../common.mk
-MYPYTHONS:=$(filter-out 3.9,$(PYTHONS))
-IMAGES:=$(addprefix image, ${MYPYTHONS})
-WHEELS:=$(addprefix wheel, ${MYPYTHONS})
-TESTS:=$(addprefix test, ${MYPYTHONS})
+WHEELS:=$(addprefix wheel, $(filter-out 3.9,$(PYTHONS)))
 PYMOR_BRANCH=master
-
-all: images
-
-# for implicit phony on wildcards
-FORCE:
 
 IMAGE_NAME:=WHEELBUILDER_IMAGE
 
@@ -28,23 +20,7 @@ ${WHEELS}: wheel%: FORCE $(PYTHONS) source
 			-v ${PWD}:/io $(call $(IMAGE_NAME),$*,$(VER),${ml}) /usr/local/bin/build-wheels.sh ; \
 	done
 
-${TESTS}: test%: FORCE tester% wheel%
-	# Install packages and test
-	docker run --rm -t -e LOCAL_USER_ID=$(shell id -u)  \
-		-v ${PWD}/wheelhouse:/io \
-		pymor/wheeltester:py$* wheeltester.bash
-
-tester%: FORCE
-	cd tester_docker && docker build --build-arg PYVER=$* \
-		-t pymor/wheeltester:py$* .
-
-${IMAGES}: image%: manylinux1_builder% manylinux2010_builder% manylinux2014_builder% tester%
-
-images: ${IMAGES}
-
 wheels: ${WHEELS}
-
-tests: ${TESTS}
 
 push_%:
 	for ml in 1 2010 2014 ; do \
