@@ -16,7 +16,7 @@ RUN pip install pypi-oldest-requirements>=2020.4.1
 RUN cd /requirements/ \
   && (for fn in *.txt ; do \
     pip uninstall -y -r ${fn} && \
-    pip install pypi-oldest-requirements>=2020.4.1 setuptools && \
+    pip install pypi-oldest-requirements setuptools && \
     pypi_minimal_requirements_pinned ${fn} oldest_${fn} && \
     pip install -r oldest_${fn} ; \
   done || exit 1) \

@@ -1,6 +1,6 @@
 # these target needs to be used instead of the one in common.mk
 
-all: $(filter-out 3.9,$(PYTHONS)) docker-in-docker
+all: $(filter-out 3.9,$(PYTHONS)) docker-in-docker wheels
 
 push_%: FORCE
 	$(MAKE) PY=$* push_jupyter push_docker-in-docker
@@ -84,7 +84,6 @@ push_testing: FORCE push_cibase
 push_jupyter: FORCE push_testing
 	$(MAKE) -C jupyter push_$(PY)
 
-
 pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
 
@@ -100,3 +99,4 @@ pull_all_latest_%: FORCE
 	$(DOCKER_PULL) $(call PYPI_MIRROR_IMAGE,$*,latest,oldest)
 	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call DIND_IMAGE,latest)
+	$(DOCKER_PULL) $(call WHEELBUILDER_IMAGE,$*,latest)
