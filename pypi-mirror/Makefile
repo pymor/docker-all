@@ -13,6 +13,7 @@ download_source: IS_DIRTY
 $(PYTHONS): % : IS_DIRTY
 	$(DOCKER_BUILD) --build-arg BASE=pymor/testing_py$@:latest \
 		-t pymor/constraints_py$@:$(VER) constrainer
+	$(DOCKER_TAG) pymor/constraints_py$@:$(VER) pymor/constraints_py$@:latest
 	$(DOCKER_BUILD) --build-arg PYVER=$@ --build-arg VER=$(VER) \
 		-t $(call $(IMAGE_NAME),$@,$(VER),stable) stable
 	$(DOCKER_BUILD) --build-arg PYVER=$@ --build-arg VER=$(VER) \

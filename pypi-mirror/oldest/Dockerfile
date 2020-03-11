@@ -18,17 +18,15 @@ RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
 ARG PYVER
 
 COPY --from=constraints /requirements/*.txt ${SERVER_ROOT}/requirements/
-# file url downloads for mess cannot be constrained and would error out the whoe process
+# non-installable packages need to be filtered from download
 RUN cd ${SERVER_ROOT}/requirements \
   && (for fn in req*.txt ; do \
     set +e ; \
-    (grep pymess ${fn} > only_mess) ; \
-    grep -v pymess ${fn} | grep -v fenics | grep -v pymor-dealii > filtered_req ; \
+    grep -v fenics ${fn} | grep -v pymor-dealii > filtered_req ; \
     set -e ; \
     pip download -d ../downloads -r filtered_req -c ${SERVER_ROOT}/requirements/oldest_constraints.txt && \
-    echo 'done part 1 ************************************* ' ${fn} && \
-    pip download -d ../downloads -r only_mess && \
-    echo 'done part 2 ************************************* ' ${fn} ; \
+    ls -lh ../downloads && \
+    echo 'done part 1 ************************************* ' ${fn} ; \
   done)
 RUN cd ${SERVER_ROOT}/ \
   && pypi-mirror create -d downloads -m simple \
