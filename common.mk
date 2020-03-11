@@ -11,6 +11,7 @@ TESTING_IMAGE = pymor/testing_py$1:$2
 PYPI_MIRROR_IMAGE = pymor/pypi-mirror_$3_py$1:$2
 DOC_RELEASES_IMAGE = pymor/doc_releases:$2
 JUPYTER_IMAGE = pymor/jupyter_py$1:$2
+WHEELBUILDER_IMAGE = pymor/wheelbuilder_manylinux$3_py$1:$2
 # DOCKER_BUILD=docker build --squash
 DOCKER_BUILD=docker build
 DOCKER_TAG=docker tag

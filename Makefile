@@ -21,6 +21,9 @@ docker-in-docker: FORCE
 pypi-mirror: FORCE testing
 	$(MAKE) -C pypi-mirror $(PY)
 
+wheels: FORCE pypi-mirror
+	$(MAKE) -C wheels $(PY)
+
 cibase: FORCE ngsolve fenics dealii pypi-mirror
 	$(MAKE) -C cibase $(PY)
 
