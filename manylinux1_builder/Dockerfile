@@ -1,7 +1,11 @@
+ARG PYTHON_VERSION
+FROM pymor/pypi-mirror_oldest_py${PYTHON_VERSION}:latest as dependencies
+
 FROM quay.io/pypa/manylinux2010_x86_64
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
+# needs repeat after being consumed in FROM
 ARG PYTHON_VERSION
 
 ENV MPICC=/usr/lib64/openmpi/bin/mpicc \
@@ -19,10 +23,16 @@ RUN yum install -y atlas-devel openmpi-devel sudo \
     && rm -r /root/.gnupg/ \
     && chmod +x /usr/local/bin/gosu
 
-ADD pybin.sh /etc/profile.d/
-ADD entrypoint.sh /usr/local/bin/
-ADD build-wheels.sh /usr/local/bin/
+COPY --from=dependencies /pymor/downloads/* ${WHEEL_DIR}/
+COPY pybin.sh /etc/profile.d/
+# some packages get installed manually because others haev broken dependency settings
+RUN source /etc/profile.d/pybin.sh && \
+  rm ${WHEEL_DIR}/slycot* && \
+  ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* ${WHEEL_DIR}/scipy* && \
+  ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/*
 
-RUN bash -l -c '${PYBIN}/pip install ipython numpy cython scipy'
+COPY entrypoint.sh /usr/local/bin/
+COPY build-wheels.sh /usr/local/bin/
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/local/bin/build-wheels.sh"]
