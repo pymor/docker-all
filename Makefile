@@ -98,5 +98,6 @@ pull_all_latest_%: FORCE
 	$(DOCKER_PULL) $(call PYPI_MIRROR_IMAGE,$*,latest,stable)
 	$(DOCKER_PULL) $(call PYPI_MIRROR_IMAGE,$*,latest,oldest)
 	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call DIND_IMAGE,latest)
-	$(DOCKER_PULL) $(call WHEELBUILDER_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call DIND_IMAGE,dummy,latest)
+	$(DOCKER_PULL) $(call WHEELBUILDER_IMAGE,$*,latest,2010)
+	$(DOCKER_PULL) $(call WHEELBUILDER_IMAGE,$*,latest,2014)
