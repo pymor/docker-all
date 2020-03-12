@@ -53,7 +53,8 @@ RUN apt update && \
       libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23 &&\
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    python -c "import ngsolve"
+    python -c "import ngsolve" && \
+    pip uninstall -y pymor
 
 COPY entrypoint.sh /usr/local/bin/
 COPY *.pip.conf /usr/local/share/
