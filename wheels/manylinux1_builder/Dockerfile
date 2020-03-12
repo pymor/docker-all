@@ -29,6 +29,7 @@ COPY pybin.sh /etc/profile.d/
 # some packages get installed manually because others haev broken dependency settings
 RUN source /etc/profile.d/pybin.sh && \
   rm ${WHEEL_DIR}/slycot* && \
+  ${PYBIN}/pip install -U pip && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* ${WHEEL_DIR}/scipy* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/*
 
