@@ -1,14 +1,13 @@
 DISTROS = centos_8 debian_stretch debian_buster debian_bullseye
-NAMESPACE ?= pymor
 
-.PHONY: distros $(DISTROS) push
+all: distros
+	
+include ../common.mk
 
 distros: $(DISTROS)
 
-$(DISTROS):
-	cd $@ && $(DOCKER_BUILD) -t $(NAMESPACE)/deploy_checks:$@ .
+$(DISTROS): FORCE
+	$(DOCKER_BUILD) -t pymor/deploy_checks:$@ $@
 
 push:
-	$(DOCKER_PUSH) $(NAMESPACE)/deploy_checks
-
-all: distros
+	$(DOCKER_PUSH) pymor/deploy_checks

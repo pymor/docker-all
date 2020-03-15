@@ -1,0 +1,24 @@
+version: '3'
+
+# you should not use this file directly, but rather via the targets in the Makefile
+
+services:
+  test:
+    depends_on:
+      - pypi_mirror
+    image: pymor/pypi-mirror_test_py${DOCKER_BASE_PYTHON}:${CI_IMAGE_TAG}
+    build:
+        context: pypi-mirror_test
+        dockerfile: Dockerfile
+        args:
+            BASE: pymor/testing_py${DOCKER_BASE_PYTHON}:${CI_IMAGE_TAG}
+
+    restart: "no"
+    command: >
+      bash -c 'cd /pymor ; pip install -r requirements-optional.txt'
+    volumes:
+      - ./pymor_source:/pymor
+
+  pypi_mirror:
+    image: pymor/pypi-mirror_${VARIANT}_py${DOCKER_BASE_PYTHON}:${PYPI_MIRROR_TAG}
+    restart: "no"
