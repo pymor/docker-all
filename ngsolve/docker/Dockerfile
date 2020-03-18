@@ -50,7 +50,7 @@ RUN echo "DISTRIB_CODENAME=buster" > /etc/lsb-release && \
     -DNG_INSTALL_DIR_LIB=lib/netgen \
     -DNG_INSTALL_DIR_INCLUDE=include/netgen \
     -DCMAKE_INSTALL_PREFIX=/usr/local && \
-    make -j "$(nproc)" && \
+    make && \
     cd ${NGSOLVE_BUILD_DIR} && \
     make install && \
     rm -rf ${NGSOLVE_BUILD_DIR} ${NGSOLVE_SRC_DIR}

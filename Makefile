@@ -46,6 +46,9 @@ docker-in-docker push_docker-in-docker: IMAGE_NAME:=DIND_IMAGE
 docker-in-docker: FORCE
 	$(DOCKER_BUILD) -t $(call $(IMAGE_NAME),dummy,$(VER)) docker-in-docker
 	$(DOCKER_TAG) $(call $(IMAGE_NAME),dummy,$(VER)) $(call $(IMAGE_NAME),dummy,latest)
+push_docker-in-docker: FORCE
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),dummy,$(VER))
+	$(DOCKER_PUSH) $(call $(IMAGE_NAME),dummy,latest)
 
 tag_wheelbuilder_manylinux1_% real_wheelbuilder_manylinux1_% rp_wheelbuilder_manylinux1_%: IMAGE_NAME:=WB1_IMAGE
 real_wheelbuilder_manylinux1_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
@@ -122,7 +125,8 @@ $(DEMO_TAGS): IS_DIRTY
 	$(DOCKER_BUILD) -t pymor/demo:$@ demo/$@
 demo: FORCE testing_3.7 $(DEMO_TAGS)
 
-push_%:
+push_demo: $(addprefix push_demo_,$(DEMO_TAGS))
+push_demo_%:
 	$(DOCKER_PUSH) pymor/demo:$*
 
 tag_jupyter_% real_jupyter_% rp_jupyter_%: IMAGE_NAME:=JUPYTER_IMAGE

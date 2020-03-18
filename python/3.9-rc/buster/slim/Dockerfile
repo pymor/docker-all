@@ -115,7 +115,7 @@ deb http://cloudfront.debian.net/debian-security/ buster/updates main contrib" >
 		--with-system-expat \
 		--with-system-ffi \
 		--without-ensurepip \
-	&& make -j "$(nproc)" \
+	&& make \
 	&& make install \
 	&& ldconfig \
 	\
