@@ -16,6 +16,8 @@ push: $(PYPUSH) $(PUSH)
 
 $(PYPUSH): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
 
+$(PYTHONS): % : $(addsuffix _%,$(PY_SUBDIRS))
+
 IS_DIRTY:
 	git diff-index --quiet HEAD || \
 	(git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code) || \
@@ -157,9 +159,12 @@ pull_all_latest_%: FORCE
 	$(DOCKER_PULL) $(call PYTHON_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call PETSC_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call NGSOLVE_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call PYPI_MIRROR_IMAGE,$*,latest,stable)
-	$(DOCKER_PULL) $(call PYPI_MIRROR_IMAGE,$*,latest,oldest)
+	$(DOCKER_PULL) $(call PYPI_MIRROR_OLDEST_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call CONSTRAINTS_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
 	$(DOCKER_PULL) $(call DIND_IMAGE,dummy,latest)
-	$(DOCKER_PULL) $(call WHEELBUILDER_IMAGE,$*,latest,2010)
-	$(DOCKER_PULL) $(call WHEELBUILDER_IMAGE,$*,latest,2014)
+	$(DOCKER_PULL) $(call WB2010_IMAGE,$*,latest)
+	$(DOCKER_PULL) $(call WB2014_IMAGE,$*,latest)
