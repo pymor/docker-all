@@ -16,7 +16,7 @@ push: $(PYPUSH) $(PUSH)
 
 $(PYPUSH): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
 
-$(PYTHONS): % : $(addsuffix _%,$(PY_SUBDIRS))
+$(PYTHONS): % : $(addsuffix _%,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 
 IS_DIRTY:
 	git diff-index --quiet HEAD || \
