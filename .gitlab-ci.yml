@@ -23,7 +23,6 @@ stages:
   environment:
       name: unsafe
   script:
-      - make pull_all_latest_${PY}
       - make ${PY}
       - make push_${PY}
 
