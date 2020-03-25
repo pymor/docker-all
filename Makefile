@@ -4,7 +4,8 @@ SUBDIRS = $(patsubst %/,%,$(sort $(dir $(wildcard */))))
 PY_INDEPENDENT = demo deploy_checks docker-in-docker docs
 PY_SUBDIRS = $(filter-out $(PY_INDEPENDENT),$(SUBDIRS))
 EXCLUDE_FROM_ALL = pypi-mirror_test wheelbuilder_manylinux1
-PYPUSH = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
+PUSH_PYTHON_SUBDIRS = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
+PUSH_PYTHON_VERSIONS = $(addprefix push_,$(PYTHONS))
 PUSH = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
 DEPLOY_CHECKS = $(addprefix deploy_checks_,$(DISTROS))
 
@@ -12,12 +13,13 @@ all: FORCE $(foreach subd,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)),$(addp
 
 $(PY_SUBDIRS): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
 
-push: $(PYPUSH) $(PUSH)
+push: $(PUSH_PYTHON_SUBDIRS) $(PUSH)
 
-$(PYPUSH): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
+$(PUSH_PYTHON_SUBDIRS): % : $(addsuffix %_,$(filter-out 3.9,$(PYTHONS)))
 
 $(PYTHONS): % : $(addsuffix _%,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 
+$(PUSH_PYTHON_VERSIONS): push_% : $(addsuffix _%,$(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS))))
 IS_DIRTY:
 	git diff-index --quiet HEAD || \
 	(git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code) || \
@@ -145,8 +147,8 @@ push_deploy_checks:
 	$(DOCKER_PUSH) pymor/deploy_checks
 
 
-pull_testing_%:
-	echo '****************** IMPLEMENT ME **************************'
+pull_testing_%: FORCE
+	$(DOCKER_PULL) $(call TESTING_IMAGE,$*,latest)
 
 pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
