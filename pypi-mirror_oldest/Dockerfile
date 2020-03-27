@@ -25,7 +25,6 @@ RUN cd ${SERVER_ROOT}/requirements \
     grep -v fenics ${fn} | grep -v pymor-dealii > filtered_req ; \
     set -e ; \
     pip download -d ../downloads -r filtered_req -c ${SERVER_ROOT}/requirements/oldest_constraints.txt && \
-    ls -lh ../downloads && \
     echo 'done part 1 ************************************* ' ${fn} ; \
   done)
 RUN cd ${SERVER_ROOT}/ \

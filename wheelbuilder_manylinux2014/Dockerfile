@@ -13,10 +13,11 @@ ENV MPICC=/usr/lib64/openmpi/bin/mpicc \
     PYTHON_VERSION=${PYTHON_VERSION} \
     WHEEL_DIR=/io/wheelhouse
 
+COPY gosu.gpg /tmp/
 RUN yum install -y atlas-devel openmpi-devel sudo \
         fltk freeglut libpng libjpeg \
         tk tcl xorg-x11-server-Xvfb xauth && \
-    yum install -y gpg && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+    yum install -y gpg && gpg --import /tmp/gosu.gpg \
     && curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64" \
     && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64.asc" \
     && gpg --verify /usr/local/bin/gosu.asc \
