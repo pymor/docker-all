@@ -44,7 +44,7 @@ rp_% : FORCE
 	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
 	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
 
-run_%:
+run_%: %
 	$(DOCKER_RUN) --entrypoint=/bin/bash $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
 
 pymor_source:

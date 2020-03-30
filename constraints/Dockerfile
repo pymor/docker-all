@@ -9,15 +9,17 @@ RUN cd /requirements/ \
   && (for fn in *.txt ; do \
     pip install -r ${fn} ; \
   done || exit 1)\
-  && pip freeze | grep -v pymess | grep -v fenics | grep -v pymor-dealii  > /requirements/constraints.txt
+  && pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii  > /requirements/constraints.txt
 
 RUN pip install pypi-oldest-requirements>=2020.4.1
 
 RUN cd /requirements/ \
   && (for fn in *.txt ; do \
-    pip uninstall -y -r ${fn} && \
-    pip install pypi-oldest-requirements setuptools && \
-    pypi_minimal_requirements_pinned ${fn} oldest_${fn} && \
-    pip install -r oldest_${fn} ; \
+    pypi_minimal_requirements_pinned ${fn} oldest_${fn} ; \
+  done || exit 1)
+RUN cd /requirements/ \
+  && virtualenv /tmp/venv_old \
+  && (for fn in oldest_require*.txt ; do \
+    /tmp/venv_old/bin/pip install -r ${fn} ; \
   done || exit 1) \
-  && pip freeze | grep -v pymess | grep -v fenics | grep -v pymor-dealii  > /requirements/oldest_constraints.txt
+  && /tmp/venv_old/bin/pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii  > /requirements/oldest_constraints.txt
