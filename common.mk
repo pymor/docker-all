@@ -24,6 +24,7 @@ DOCKER_TAG=docker tag
 DOCKER_PUSH=docker push
 DOCKER_PULL=docker pull -q
 DOCKER_RUN=docker run  -it
+DOCKER_RMI=docker rmi -f
 PYTHON_TAG=$(VER)
 PETSC_TAG=$(VER)
 PYMOR_BRANCH=master

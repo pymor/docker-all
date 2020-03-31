@@ -3,20 +3,25 @@ include common.mk
 SUBDIRS = $(patsubst %/,%,$(sort $(dir $(wildcard */))))
 PY_INDEPENDENT = demo deploy_checks docker-in-docker docs
 PY_SUBDIRS = $(filter-out $(PY_INDEPENDENT),$(SUBDIRS))
-EXCLUDE_FROM_ALL = pypi-mirror_test wheelbuilder_manylinux1
+EXCLUDE_FROM_ALL = pypi-mirror_test wheelbuilder_manylinux1 docs
 PUSH_PYTHON_SUBDIRS = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
+CLEAN_PYTHON_SUBDIRS = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 PUSH_PYTHON_VERSIONS = $(addprefix push_,$(PYTHONS))
 PUSH = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
+CLEAN = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
 DEPLOY_CHECKS = $(addprefix deploy_checks_,$(DISTROS))
-IMAGE_TARGETS=tag real rp run
+IMAGE_TARGETS=tag real rp run cl
 
 all: FORCE $(foreach subd,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)),$(addprefix $(subd)_,$(filter-out 3.9,$(PYTHONS)))) $(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT))
 
 $(PY_SUBDIRS): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
 
 push: $(PUSH_PYTHON_SUBDIRS) $(PUSH)
+clean: $(CLEAN_PYTHON_SUBDIRS) $(CLEAN)
 
-$(PUSH_PYTHON_SUBDIRS): % : $(addsuffix %_,$(filter-out 3.9,$(PYTHONS)))
+$(CLEAN_PYTHON_SUBDIRS): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
+
+$(PUSH_PYTHON_SUBDIRS): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
 
 $(PYTHONS): % : $(addsuffix _%,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 
@@ -35,10 +40,15 @@ FORCE:
 $(foreach subd,$(PY_SUBDIRS),$(addprefix $(subd)_,$(PYTHONS))): % : real_% tag_%
 $(foreach subd,$(PY_SUBDIRS),$(addprefix tag_$(subd)_,$(PYTHONS))): tag_% : real_%
 $(foreach subd,$(PY_SUBDIRS),$(addprefix push_$(subd)_,$(PYTHONS))): push_% : rp_%
+$(foreach subd,$(PY_SUBDIRS),$(addprefix clean_$(subd)_,$(PYTHONS))): clean_% : cl_%
 
 # the actual IMAGE_NAME is set via target variable from tag_subdir% rules
 tag_% : FORCE
 	$(DOCKER_TAG) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER)) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
+
+cl_% : FORCE
+	for img in $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),)) ; \
+		do $(DOCKER_RMI) $${img} ; done
 
 rp_% : FORCE
 	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
@@ -50,13 +60,17 @@ run_%: %
 pymor_source:
 	test -d pymor_source || git clone --branch=$(PYMOR_BRANCH) https://github.com/pymor/pymor pymor_source
 
-docker-in-docker push_docker-in-docker: IMAGE_NAME:=DIND_IMAGE
+docker-in-docker push_docker-in-docker clean_docker-in-docker: IMAGE_NAME:=DIND_IMAGE
 docker-in-docker: FORCE
 	$(DOCKER_BUILD) -t $(call $(IMAGE_NAME),dummy,$(VER)) docker-in-docker
 	$(DOCKER_TAG) $(call $(IMAGE_NAME),dummy,$(VER)) $(call $(IMAGE_NAME),dummy,latest)
 push_docker-in-docker: FORCE
 	$(DOCKER_PUSH) $(call $(IMAGE_NAME),dummy,$(VER))
 	$(DOCKER_PUSH) $(call $(IMAGE_NAME),dummy,latest)
+clean_docker-in-docker: FORCE
+	for img in $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep $(call $(IMAGE_NAME),dummy,)) ; \
+		do $(DOCKER_RMI) $${img} ; done
+
 
 $(addsuffix _wheelbuilder_manylinux1_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB1_IMAGE
 real_wheelbuilder_manylinux1_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
@@ -138,13 +152,19 @@ $(DEMO_TAGS): IS_DIRTY
 	$(DOCKER_BUILD) -t pymor/demo:$@ demo/$@
 demo: FORCE testing_3.7 $(DEMO_TAGS)
 
+clean_demo: $(addprefix clean_demo_,$(DEMO_TAGS))
 push_demo: $(addprefix push_demo_,$(DEMO_TAGS))
 push_demo_%:
 	$(DOCKER_PUSH) pymor/demo:$*
+clean_demo_%:
+	$(DOCKER_RMI) pymor/demo:$*
 
+clean_deploy_checks: $(addprefix clean_,$(DEPLOY_CHECKS))
 deploy_checks: $(DEPLOY_CHECKS)
 $(DEPLOY_CHECKS): deploy_checks_% : FORCE
 	$(DOCKER_BUILD) -t pymor/deploy_checks:$@ deploy_checks/$*
+$(addprefix clean_,$(DEPLOY_CHECKS)): clean_deploy_checks_% : FORCE
+	$(DOCKER_RMI) pymor/deploy_checks:$@
 
 push_deploy_checks:
 	$(DOCKER_PUSH) pymor/deploy_checks
