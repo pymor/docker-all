@@ -55,8 +55,8 @@ master demo:
   extends: .docker
   stage: demo
   script:
-    - make -C demo master
-    - docker push pymor/demo:master
+    - make demo_master
+    - make push_demo_master
 
 py independent:
   extends: .docker

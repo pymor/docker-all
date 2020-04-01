@@ -11,6 +11,7 @@ PUSH = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
 CLEAN = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
 DEPLOY_CHECKS = $(addprefix deploy_checks_,$(DISTROS))
 IMAGE_TARGETS=tag real rp run cl
+DEMOS = $(addprefix demo_,$(DEMO_TAGS))
 
 all: FORCE $(foreach subd,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)),$(addprefix $(subd)_,$(filter-out 3.9,$(PYTHONS)))) $(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT))
 
@@ -148,12 +149,12 @@ real_jupyter_%: FORCE testing_% pypi-mirror_stable_%
 	$(DOCKER_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) jupyter
 
-$(DEMO_TAGS): IS_DIRTY
-	$(DOCKER_BUILD) -t pymor/demo:$@ demo/$@
-demo: FORCE testing_3.7 $(DEMO_TAGS)
+$(DEMOS): demo_% : IS_DIRTY
+	$(DOCKER_BUILD) -t pymor/demo:$* demo/$*
+demo: FORCE testing_3.7 $(DEMOS)
 
-clean_demo: $(addprefix clean_demo_,$(DEMO_TAGS))
-push_demo: $(addprefix push_demo_,$(DEMO_TAGS))
+clean_demo: $(addprefix clean_,$(DEMOS))
+push_demo: $(addprefix push_,$(DEMOS))
 push_demo_%:
 	$(DOCKER_PUSH) pymor/demo:$*
 clean_demo_%:
@@ -168,7 +169,6 @@ $(addprefix clean_,$(DEPLOY_CHECKS)): clean_deploy_checks_% : FORCE
 
 push_deploy_checks:
 	$(DOCKER_PUSH) pymor/deploy_checks
-
 
 pull_testing_%: FORCE
 	$(DOCKER_PULL) $(call TESTING_IMAGE,$*,latest)
