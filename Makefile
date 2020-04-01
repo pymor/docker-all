@@ -89,7 +89,7 @@ real_wheelbuilder_manylinux2014_%: FORCE pull_testing_% pypi-mirror_stable_% pyp
 			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux2014
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
-real_constraints_%: FORCE pull_testing_%
+real_constraints_%: FORCE ensure_testing_%
 	$(DOCKER_BUILD) --build-arg BASE=pymor/testing_py$*:latest \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) constraints
 
@@ -113,10 +113,12 @@ real_cibase_%: FORCE ngsolve_% fenics_% dealii_%
 	$(DOCKER_BUILD) --build-arg PYVER=$* \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) cibase/buster
 
-$(addsuffix _testing_%,$(IMAGE_TARGETS)): IMAGE_NAME=TESTING_IMAGE
+$(addsuffix _testing_%,$(IMAGE_TARGETS)) ensure_testing_%: IMAGE_NAME=TESTING_IMAGE
 real_testing_%: FORCE cibase_%
 	$(DOCKER_BUILD) --build-arg BASETAG=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) testing/$*
+ensure_testing_%:
+	$(DOCKER_INSPECT) $(call $(IMAGE_NAME),$*,latest) >/dev/null 2>&1 || $(DOCKER_PULL) $(call $(IMAGE_NAME),$*,latest)
 
 $(addsuffix _python_%,$(IMAGE_TARGETS)): IMAGE_NAME=PYTHON_IMAGE
 real_python_%: FORCE
