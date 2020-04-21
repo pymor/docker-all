@@ -2,7 +2,7 @@ ARG PYTHON_VERSION
 ARG VER
 FROM pymor/pypi-mirror_oldest_py${PYTHON_VERSION}:${VER} as dependencies
 
-FROM quay.io/pypa/manylinux2010_x86_64
+FROM quay.io/pypa/manylinux2010_x86_64:2020-04-06-694ff3c
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
