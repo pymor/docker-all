@@ -29,6 +29,6 @@ DOCKER_INSPECT=docker inspect
 PYTHON_TAG=$(VER)
 PETSC_TAG=$(VER)
 PYMOR_BRANCH=master
-MANYLINUXS=2010 2014
+MANYLINUXS=1 2010 2014
 DISTROS = centos_8 debian_stretch debian_buster debian_bullseye
 DEMO_TAGS = 0.5 master 2019.2

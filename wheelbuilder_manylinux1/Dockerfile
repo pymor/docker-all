@@ -2,14 +2,14 @@ ARG PYTHON_VERSION
 ARG VER
 FROM pymor/pypi-mirror_oldest_py${PYTHON_VERSION}:${VER} as dependencies
 
-FROM quay.io/pypa/manylinux1_x86_64:2020-04-06-2fd435d
+FROM quay.io/pypa/manylinux1_x86_64:2020-04-25-37c204c
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # needs repeat after being consumed in FROM
 ARG PYTHON_VERSION
 
-ENV MPICC=/usr/lib64/openmpi/bin/mpicc \
+ENV MPICC=/usr/lib64/openmpi/1.4-gcc/bin/mpicc \
     PYTHON_VERSION=${PYTHON_VERSION} \
     WHEEL_DIR=/io/wheelhouse
 
@@ -29,7 +29,7 @@ COPY --from=dependencies /pymor/downloads/* ${WHEEL_DIR}/
 COPY pybin.sh /etc/profile.d/
 # some packages get installed manually because others haev broken dependency settings
 RUN source /etc/profile.d/pybin.sh && \
-  rm ${WHEEL_DIR}/slycot* && \
+  rm ${WHEEL_DIR}/slycot* ${WHEEL_DIR}/*manylinux201* && \
   ${PYBIN}/pip install -U pip && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* ${WHEEL_DIR}/scipy* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/*
