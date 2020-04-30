@@ -1,7 +1,7 @@
 include common.mk
 
 SUBDIRS = $(patsubst %/,%,$(sort $(dir $(wildcard */))))
-PY_INDEPENDENT = demo deploy_checks docker-in-docker docs
+PY_INDEPENDENT = demo deploy_checks docker-in-docker docs ci_sanity
 PY_SUBDIRS = $(filter-out $(PY_INDEPENDENT),$(SUBDIRS))
 EXCLUDE_FROM_ALL = pypi-mirror_test docs
 PUSH_PYTHON_SUBDIRS = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
@@ -161,6 +161,12 @@ push_demo_%:
 	$(DOCKER_PUSH) pymor/demo:$*
 clean_demo_%:
 	$(DOCKER_RMI) pymor/demo:$*
+
+ci_sanity: FORCE
+	$(DOCKER_BUILD) -t pymor/ci_sanity:$(VER) ci_sanity
+
+push_ci_sanity:
+	$(DOCKER_PUSH) pymor/ci_sanity:$(VER)
 
 clean_deploy_checks: $(addprefix clean_,$(DEPLOY_CHECKS))
 deploy_checks: $(DEPLOY_CHECKS)
