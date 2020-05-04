@@ -3,7 +3,7 @@ include common.mk
 SUBDIRS = $(patsubst %/,%,$(sort $(dir $(wildcard */))))
 PY_INDEPENDENT = demo deploy_checks docker-in-docker docs
 PY_SUBDIRS = $(filter-out $(PY_INDEPENDENT),$(SUBDIRS))
-EXCLUDE_FROM_ALL = pypi-mirror_test wheelbuilder_manylinux1 docs
+EXCLUDE_FROM_ALL = pypi-mirror_test docs
 PUSH_PYTHON_SUBDIRS = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 CLEAN_PYTHON_SUBDIRS = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 PUSH_PYTHON_VERSIONS = $(addprefix push_,$(PYTHONS))
