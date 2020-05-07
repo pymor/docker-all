@@ -21,6 +21,7 @@ ARG PYVER
 COPY --from=constraints /requirements/*.txt ${SERVER_ROOT}/requirements/
 # non-installable package cannot be downloaded and would error out the whoe process
 RUN cd ${SERVER_ROOT}/requirements \
+  && pip download -d ../downloads pip \
   && (for fn in req*.txt ; do \
     set +e ; \
     grep -v fenics ${fn} | grep -v pymor-dealii > filtered_req ; \

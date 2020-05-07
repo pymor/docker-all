@@ -22,6 +22,7 @@ COPY --from=constraints /requirements/*.txt ${SERVER_ROOT}/requirements/
 
 RUN virtualenv /tmp/venv \
   && cd ${SERVER_ROOT}/requirements \
+  && /tmp/venv/bin/pip download -d ../downloads pip \
   && (for fn in req*.txt ; do \
     set +e ; \
     grep -v fenics ${fn} | grep -v pymor-dealii > filtered_req ; \
