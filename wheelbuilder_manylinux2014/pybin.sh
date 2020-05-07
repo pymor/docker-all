@@ -5,4 +5,3 @@ PYVER=$(python -c 'pyversions={"3.8":"cp38-cp38","3.7":"cp37-cp37m", "3.5":"cp35
 export PYVER
 PYBIN=/opt/python/${PYVER}/bin
 export PYBIN
-echo "HUHU"
