@@ -1,7 +1,7 @@
 ARG BASE
 FROM $BASE
 
-MAINTAINER rene.milk@wwu.de
+MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 ARG DEALII_VERSION
 
