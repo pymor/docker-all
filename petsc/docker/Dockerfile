@@ -111,7 +111,8 @@ RUN wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-li
                 --prefix=/usr/local/petsc-32 && \
      make && \
      make install && \
-     rm -rf /tmp/*
+     rm -rf /tmp/* && \
+     printenv > /usr/local/share/petsc.env
 
 # Install SLEPc from source
 RUN wget -nc --quiet https://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION}.tar.gz -O slepc-${SLEPC_VERSION}.tar.gz && \

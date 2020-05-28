@@ -53,4 +53,5 @@ RUN echo "DISTRIB_CODENAME=buster" > /etc/lsb-release && \
     make && \
     cd ${NGSOLVE_BUILD_DIR} && \
     make install && \
-    rm -rf ${NGSOLVE_BUILD_DIR} ${NGSOLVE_SRC_DIR}
+    rm -rf ${NGSOLVE_BUILD_DIR} ${NGSOLVE_SRC_DIR} && \
+    printenv >> /usr/local/share/ngsolve.env

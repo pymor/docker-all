@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import termtables as tt
+import dolfin as df
+from dotenv import dotenv_values
+
+
+def env(key, file):
+    env = dotenv_values(os.path.join('/usr/local/share/', f'{file}.env'))
+    try:
+        return env[key]
+    except Exception:
+        return 'not available'
+
+env_keys_text = {
+    'python':   '.'.join((str(f) for f in sys.version_info[0:4])),
+    'deal.II':  env('DEALII_VERSION', 'dealii'),
+    'FEniCS':   env('FENICS_VERSION', 'fenics'),
+    'NGSolve':  env('NGSOLVE_VERSION', 'ngsolve'),
+    'PETSc':    env('PETSC_VERSION', 'petsc'),
+    'pybind11': env('PYBIND11_VERSION', 'fenics'),
+    'Trilinos': env('TRILINOS_VERSION', 'petsc'),
+}
+
+tt.print(
+    data=[[k,r] for k,r in env_keys_text.items()],
+    style=tt.styles.markdown,
+    header=['Project', 'Installed Version'],
+)

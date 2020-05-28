@@ -54,7 +54,10 @@ RUN apt update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     python -c "import ngsolve" && \
-    pip uninstall -y pymor
+    pip uninstall -y pymor && \
+    pip install termtables python-dotenv
+
+COPY pymor-info /usr/local/bin/
 
 COPY entrypoint.sh /usr/local/bin/
 COPY *.pip.conf /usr/local/share/

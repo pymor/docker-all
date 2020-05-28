@@ -51,7 +51,9 @@ RUN cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VE
 RUN cd /tmp && git clone --recurse-submodules --branch=master https://github.com/pymor/pymor-deal.II deal && \
     cd deal && python setup.py bdist_wheel && \
     mkdir /usr/local/tmp/ && \
-    mv dist/*.whl /usr/local/tmp/
+    mv dist/*.whl /usr/local/tmp/ && \
+    printenv > /usr/local/share/dealii.env
+
 ONBUILD RUN pip install pyqt5==5.13.1 && \
         pip install /usr/local/tmp/pymor_dealii*.whl && \
         apt update && \

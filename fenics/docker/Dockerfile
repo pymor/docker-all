@@ -90,7 +90,8 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
 RUN /bin/bash -c "cp -r /usr/local/share/dolfin/demo $FENICS_HOME/demo && \
                   rm -rf /home/fenics/local && \
                   rm -rf $FENICS_HOME/bin && \
-                  echo '' >> $FENICS_HOME/.profile"
+                  echo '' >> $FENICS_HOME/.profile && \
+                  printenv >> /usr/local/share/fenics.env"
 
 # Make sure we get something that basically works on this stable build.  It
 # would be better to run unit tests, but at the moment even the quick tests
