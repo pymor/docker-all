@@ -45,159 +45,159 @@ $(foreach subd,$(PY_SUBDIRS),$(addprefix clean_$(subd)_,$(PYTHONS))): clean_% : 
 
 # the actual IMAGE_NAME is set via target variable from tag_subdir% rules
 tag_% : FORCE
-	$(DOCKER_TAG) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER)) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
+	$(CNTR_TAG) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER)) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
 
 cl_% : FORCE
-	for img in $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),)) ; \
-		do $(DOCKER_RMI) $${img} ; done
+	for img in $$($(CNTR_CMD) images --format '{{.Repository}}:{{.Tag}}' | grep $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),)) ; \
+		do $(CNTR_RMI) $${img} ; done
 
 rp_% : FORCE
-	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
-	$(DOCKER_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
+	$(CNTR_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
+	$(CNTR_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
 
 run_%: %
-	$(DOCKER_RUN) --entrypoint=/bin/bash $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
+	$(CNTR_RUN) --entrypoint=/bin/bash $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
 
 pymor_source:
 	test -d pymor_source || git clone --branch=$(PYMOR_BRANCH) https://github.com/pymor/pymor pymor_source
 
 docker-in-docker push_docker-in-docker clean_docker-in-docker: IMAGE_NAME:=DIND_IMAGE
 docker-in-docker: FORCE
-	$(DOCKER_BUILD) -t $(call $(IMAGE_NAME),dummy,$(VER)) docker-in-docker
-	$(DOCKER_TAG) $(call $(IMAGE_NAME),dummy,$(VER)) $(call $(IMAGE_NAME),dummy,latest)
+	$(CNTR_BUILD) -t $(call $(IMAGE_NAME),dummy,$(VER)) docker-in-docker
+	$(CNTR_TAG) $(call $(IMAGE_NAME),dummy,$(VER)) $(call $(IMAGE_NAME),dummy,latest)
 push_docker-in-docker: FORCE
-	$(DOCKER_PUSH) $(call $(IMAGE_NAME),dummy,$(VER))
-	$(DOCKER_PUSH) $(call $(IMAGE_NAME),dummy,latest)
+	$(CNTR_PUSH) $(call $(IMAGE_NAME),dummy,$(VER))
+	$(CNTR_PUSH) $(call $(IMAGE_NAME),dummy,latest)
 clean_docker-in-docker: FORCE
 	for img in $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep $(call $(IMAGE_NAME),dummy,)) ; \
-		do $(DOCKER_RMI) $${img} ; done
+		do $(CNTR_RMI) $${img} ; done
 
 
 $(addsuffix _wheelbuilder_manylinux1_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB1_IMAGE
 real_wheelbuilder_manylinux1_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
-	$(DOCKER_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VER=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux1
 
 $(addsuffix _wheelbuilder_manylinux2010_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2010_IMAGE
 real_wheelbuilder_manylinux2010_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
-	$(DOCKER_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VER=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux2010
 
 $(addsuffix _wheelbuilder_manylinux2014_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2014_IMAGE
 real_wheelbuilder_manylinux2014_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
-	$(DOCKER_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VER=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux2014
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
 real_constraints_%: FORCE ensure_testing_%
-	$(DOCKER_BUILD) --build-arg BASE=pymor/testing_py$*:latest \
+	$(CNTR_BUILD) --build-arg BASE=pymor/testing_py$*:latest \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) constraints
 
 $(addsuffix _pypi-mirror_stable_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE
 real_pypi-mirror_stable_%: FORCE constraints_%
-	$(DOCKER_BUILD) --build-arg PYVER=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VER=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) pypi-mirror_stable
 
 $(addsuffix _pypi-mirror_oldest_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_OLDEST_IMAGE
 real_pypi-mirror_oldest_%: FORCE constraints_%
-	$(DOCKER_BUILD) --build-arg PYVER=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VER=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) pypi-mirror_oldest
 
 $(addsuffix _pypi-mirror_test_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MIRROR_TEST_IMAGE
 real_pypi-mirror_test_%: pypi-mirror_stable_% pypi-mirror_oldest_% pymor_source
-	VARIANT=stable PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) DOCKER_BASE_PYTHON=$* docker-compose -f mirror-test.docker-compose.yml up --build test
-	VARIANT=oldest PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) DOCKER_BASE_PYTHON=$* docker-compose -f mirror-test.docker-compose.yml up --build test
+	VARIANT=stable PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) CNTR_BASE_PYTHON=$* docker-compose -f mirror-test.docker-compose.yml up --build test
+	VARIANT=oldest PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) CNTR_BASE_PYTHON=$* docker-compose -f mirror-test.docker-compose.yml up --build test
 
 $(addsuffix _cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CIBASE_IMAGE
 real_cibase_%: FORCE ngsolve_% fenics_% dealii_%
-	$(DOCKER_BUILD) --build-arg PYVER=$* \
+	$(CNTR_BUILD) --build-arg PYVER=$* \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) cibase/buster
 
 $(addsuffix _testing_%,$(IMAGE_TARGETS)) ensure_testing_%: IMAGE_NAME=TESTING_IMAGE
 real_testing_%: FORCE cibase_%
-	$(DOCKER_BUILD) --build-arg BASETAG=$(VER) \
+	$(CNTR_BUILD) --build-arg BASETAG=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) testing/$*
 ensure_testing_%:
-	$(DOCKER_INSPECT) $(call $(IMAGE_NAME),$*,latest) >/dev/null 2>&1 || $(DOCKER_PULL) $(call $(IMAGE_NAME),$*,latest)
+	$(CNTR_INSPECT) $(call $(IMAGE_NAME),$*,latest) >/dev/null 2>&1 || $(CNTR_PULL) $(call $(IMAGE_NAME),$*,latest)
 
 $(addsuffix _python_%,$(IMAGE_TARGETS)): IMAGE_NAME=PYTHON_IMAGE
 real_python_%: FORCE
-	$(DOCKER_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) python/$*/buster/slim
+	$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) python/$*/buster/slim
 
 $(addsuffix _dealii_%,$(IMAGE_TARGETS)): IMAGE_NAME:=DEALII_IMAGE
 real_dealii_%: FORCE python_%
-	$(DOCKER_BUILD) --build-arg BASE=$(call PYTHON_IMAGE,$*,$(VER)) \
+	$(CNTR_BUILD) --build-arg BASE=$(call PYTHON_IMAGE,$*,$(VER)) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) dealii/docker
 
 $(addsuffix _petsc_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PETSC_IMAGE
 real_petsc_%: FORCE python_%
-	$(DOCKER_BUILD) --build-arg BASE=$(call PYTHON_IMAGE,$*,$(VER)) \
+	$(CNTR_BUILD) --build-arg BASE=$(call PYTHON_IMAGE,$*,$(VER)) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) petsc/docker
 
 $(addsuffix _fenics_%,$(IMAGE_TARGETS)): IMAGE_NAME:=FENICS_IMAGE
 real_fenics_%: FORCE petsc_%
-	$(DOCKER_BUILD) --build-arg PETSC=$(call PETSC_IMAGE,$*,$(PETSC_TAG)) \
+	$(CNTR_BUILD) --build-arg PETSC=$(call PETSC_IMAGE,$*,$(PETSC_TAG)) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) fenics/docker
 
 $(addsuffix _ngsolve_%,$(IMAGE_TARGETS)): IMAGE_NAME:=NGSOLVE_IMAGE
 real_ngsolve_%: FORCE petsc_%
-	$(DOCKER_BUILD) --build-arg PETSC_BASE=pymor/petsc_py$*:$(VER) \
+	$(CNTR_BUILD) --build-arg PETSC_BASE=pymor/petsc_py$*:$(VER) \
 		--build-arg PYTHON_BASE=pymor/python_$*:$(VER) \
 		--build-arg NGSOLVE_VERSION=$(NGSOLVE_VERSION) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) ngsolve/docker
 
 $(addsuffix _jupyter_%,$(IMAGE_TARGETS)): IMAGE_NAME:=JUPYTER_IMAGE
 real_jupyter_%: FORCE testing_% pypi-mirror_stable_%
-	$(DOCKER_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) jupyter
 
 $(DEMOS): demo_% : IS_DIRTY
-	$(DOCKER_BUILD) -t pymor/demo:$* demo/$*
+	$(CNTR_BUILD) -t pymor/demo:$* demo/$*
 demo: FORCE testing_3.7 $(DEMOS)
 
 clean_demo: $(addprefix clean_,$(DEMOS))
 push_demo: $(addprefix push_,$(DEMOS))
 push_demo_%:
-	$(DOCKER_PUSH) pymor/demo:$*
+	$(CNTR_PUSH) pymor/demo:$*
 clean_demo_%:
-	$(DOCKER_RMI) pymor/demo:$*
+	$(CNTR_RMI) pymor/demo:$*
 
 ci_sanity: FORCE
-	$(DOCKER_BUILD) -t pymor/ci_sanity:$(VER) ci_sanity
+	$(CNTR_BUILD) -t pymor/ci_sanity:$(VER) ci_sanity
 
 push_ci_sanity:
-	$(DOCKER_PUSH) pymor/ci_sanity:$(VER)
+	$(CNTR_PUSH) pymor/ci_sanity:$(VER)
 
 clean_deploy_checks: $(addprefix clean_,$(DEPLOY_CHECKS))
 deploy_checks: $(DEPLOY_CHECKS)
 $(DEPLOY_CHECKS): deploy_checks_% : FORCE
-	$(DOCKER_BUILD) -t pymor/deploy_checks:$@ deploy_checks/$*
+	$(CNTR_BUILD) -t pymor/deploy_checks:$@ deploy_checks/$*
 $(addprefix clean_,$(DEPLOY_CHECKS)): clean_deploy_checks_% : FORCE
-	$(DOCKER_RMI) pymor/deploy_checks:$@
+	$(CNTR_RMI) pymor/deploy_checks:$@
 
 push_deploy_checks:
-	$(DOCKER_PUSH) pymor/deploy_checks
+	$(CNTR_PUSH) pymor/deploy_checks
 
 pull_testing_%: FORCE
-	$(DOCKER_PULL) $(call TESTING_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call TESTING_IMAGE,$*,latest)
 
 pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
 
 pull_all_latest_%: FORCE
-	$(DOCKER_PULL) $(call TESTING_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call CIBASE_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call DEALII_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call FENICS_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call PYTHON_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call PETSC_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call NGSOLVE_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call PYPI_MIRROR_OLDEST_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call CONSTRAINTS_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call JUPYTER_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call DIND_IMAGE,dummy,latest)
-	$(DOCKER_PULL) $(call WB2010_IMAGE,$*,latest)
-	$(DOCKER_PULL) $(call WB2014_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call TESTING_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call CIBASE_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call DEALII_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call FENICS_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call PYTHON_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call PETSC_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call NGSOLVE_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call PYPI_MIRROR_OLDEST_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call JUPYTER_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call CONSTRAINTS_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call JUPYTER_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call JUPYTER_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call DIND_IMAGE,dummy,latest)
+	$(CNTR_PULL) $(call WB2010_IMAGE,$*,latest)
+	$(CNTR_PULL) $(call WB2014_IMAGE,$*,latest)
