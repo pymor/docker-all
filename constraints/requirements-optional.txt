@@ -40,4 +40,5 @@ sphinx-autoapi
 sphinx_material
 sphinx>=3.0
 sympy
+torch
 wheel
