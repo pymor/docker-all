@@ -37,6 +37,7 @@ setuptools>=40.8.0
 slycot==0.3.3
 sphinx-qt-documentation
 sphinx-autoapi
+sphinx_material
 sphinx>=3.0
 sympy
 wheel
