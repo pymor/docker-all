@@ -149,7 +149,7 @@ for version in "${versions[@]}"; do
 			-e 's/^(ENV PYTHON_RELEASE) .*/\1 '"${fullVersion%%[a-z]*}"'/' \
 			-e 's/^(ENV PYTHON_PIP_VERSION) .*/\1 '"$pipVersion"'/' \
 			-e 's/^(FROM python):.*/\1:'"$version-$tag"'/' \
-			-e 's!^(FROM (debian|buildpack-deps|alpine|mcr[.]microsoft[.]com/[^:]+)):.*!\1:'"$tag"'!' \
+			-e 's!^(FROM (debian|buildpack-deps|alpine|mcr[.]microsoft[.]com/[^:]+)):.*?( as.*|$)!\1:'"$tag"'\3!' \
 			"$dir/Dockerfile"
 
 		case "$version/$v" in

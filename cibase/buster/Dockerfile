@@ -1,5 +1,5 @@
 ARG PYVER
-ARG VERTAG=latest
+ARG VERTAG
 
 FROM pymor/fenics_py${PYVER}:${VERTAG} as fenicslayer
 FROM pymor/ngsolve_py${PYVER}:${VERTAG} as ngsolve
@@ -11,12 +11,7 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 # needs repeating to be usable outside FROM
 ARG PYVER
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    APTINSTALL="apt-get install -q -y --no-install-recommends" \
-    LC_ALL=C.UTF-8 \
-    LANG=C.UTF-8 \
-    LANGUAGE=C.UTF-8 \
-    PETSC_DIR=/usr/local/petsc-32 \
+ENV PETSC_DIR=/usr/local/petsc-32 \
     DOCKER_NGSOLVE=1 \
     DOCKER_PYMOR=1 \
     OPENBLAS_NUM_THREADS=1 \
@@ -24,7 +19,6 @@ ENV DEBIAN_FRONTEND=noninteractive \
     OMP_NUM_THREADS=1
 
 RUN apt-get update && \
-    echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
     ${APTINSTALL} wget curl less software-properties-common \
         libboost-all-dev texlive-base xvfb gnupg libatlas-base-dev \
         gcc g++ gfortran make libc6-dev dirmngr eatmydata pandoc \

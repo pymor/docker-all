@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:buster-slim
+FROM debian:buster-slim as pythonbuilder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \
@@ -81,7 +81,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV GPG_KEY 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
-ENV PYTHON_VERSION 3.6.10
+ENV PYTHON_VERSION 3.6.11
 
 RUN set -ex \
 	&& buildDeps=' \
@@ -137,7 +137,7 @@ RUN cd /usr/local/bin \
 	&& ln -s python3-config python-config
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION 20.0.2
+ENV PYTHON_PIP_VERSION 20.1.1
 ENV PIP_INSTALL="pip install --no-cache-dir -qq"
 
 RUN set -ex; \
@@ -159,4 +159,37 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
+FROM debian:buster-slim
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    APTINSTALL="apt-get install -q -y --no-install-recommends" \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8 \
+    LANGUAGE=C.UTF-8
+COPY --from=pythonbuilder /usr/local/ /usr/local/
+# python's configured to use system's expat and ffi libs
+RUN echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
+	apt update \
+	&& ${APTINSTALL} libexpat1 libffi6 \
+	libbz2-1.0 \
+	libc6 \
+	libcurl4 \
+	libdb5.3 \
+	libevent-2.1-6 \
+	libgdbm6 \
+	libglib2.0 \
+	libjpeg62-turbo \
+	liblzma5 \
+	libncurses5 \
+	libncursesw5 \
+	libpng16-16 \
+	libreadline7  \
+	libsqlite3-0  \
+	libssl1.1 \
+	libfreetype6 \
+	tcl \
+	tk \
+	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV MAKE_PROCS=8
 CMD ["python3"]

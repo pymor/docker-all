@@ -10,9 +10,11 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 # needs repeating to be usable outside FROM
 ARG VERTAG
 
+# libopenblas-dev: needed for slycot install (wheel building)
+# mpi-default-dev: for mpi4py install/wheel  
 # the pythreejs needs npm/nodejs installed for the jupter lab extension
 RUN /bin/bash -c "curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-    &&  apt update && apt install nodejs &&\
+    &&  apt update && ${APTINSTALL} nodejs libopenblas-dev mpi-default-dev &&\
     pip install jupyterlab && \
     jupyter nbextension install --py --symlink --sys-prefix pythreejs && \
     jupyter nbextension enable --py --sys-prefix pythreejs && \
