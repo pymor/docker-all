@@ -62,24 +62,16 @@ RUN apt-get -qq update && \
         bash-completion && \
     git lfs install && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Install Python2 based environment
-RUN apt-get -qq update && \
-    apt-get -y --with-new-pkgs \
-        -o Dpkg::Options::="--force-confold" upgrade && \
-    apt-get -y install \
-        python-dev python3-dev \
-        python-flufl.lock python3-flufl.lock \
-        python-numpy python3-numpy \
-        python-ply python3-ply \
-        python-pytest python3-pytest \
-        python-scipy python3-scipy \
-        python-six python3-six \
-        python-subprocess32 \
-        python-urllib3  python3-urllib3 && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    pip install \
+        flufl.lock \
+        numpy \
+        ply \
+        pytest \
+        scipy \
+        six \
+        subprocess32 \
+        urllib3
 
 # Environment variables
 ENV PETSC_VERSION=3.12.3 \
@@ -95,7 +87,7 @@ ENV PETSC_VERSION=3.12.3 \
 RUN wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz && \
     tar -xf petsc-lite-${PETSC_VERSION}.tar.gz && \
     cd petsc-${PETSC_VERSION} && \
-    python2 ./configure --COPTFLAGS="-O2" \
+    python ./configure --COPTFLAGS="-O2" \
                 --CXXOPTFLAGS="-O2" \
                 --FOPTFLAGS="-O2" \
                 --with-debugging=0 \
@@ -111,19 +103,21 @@ RUN wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-li
                 --prefix=/usr/local/petsc-32 && \
      make && \
      make install && \
-     rm -rf /tmp/* && \
-     printenv > /usr/local/share/petsc.env
+     rm -rf /tmp/*
 
 # Install SLEPc from source
 RUN wget -nc --quiet https://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION}.tar.gz -O slepc-${SLEPC_VERSION}.tar.gz && \
     mkdir -p slepc-src && tar -xf slepc-${SLEPC_VERSION}.tar.gz -C slepc-src --strip-components 1 && \
     export PETSC_DIR=/usr/local/petsc-32 && \
     cd slepc-src && \
-    python2 ./configure --prefix=/usr/local/slepc-32 && \
+    python ./configure --prefix=/usr/local/slepc-32 && \
     make && \
     make install && \
     rm -rf /tmp/*
 
 # By default use the 32-bit build of SLEPc and PETSc.
+# these can not be moved, configure behaves differently when these are already in the env
 ENV SLEPC_DIR=/usr/local/slepc-32 \
     PETSC_DIR=/usr/local/petsc-32
+
+RUN printenv > /usr/local/share/petsc.env
