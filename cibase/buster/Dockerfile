@@ -24,10 +24,8 @@ RUN apt-get update && \
         gcc g++ gfortran make libc6-dev dirmngr eatmydata pandoc \
         gmsh sudo paraview-python swig cmake libeigen3-dev python-subprocess32 \
         aptitude bison flex libopenblas-dev liblapack-dev libpcre3-dev ninja-build \
-        xauth python3 python3-opengl mpi-default-dev python3-virtualenv gsl-bin \
+        xauth python3 python3-opengl mpi-default-dev python3-virtualenv gsl-bin git-lfs \
         libgmp-dev libmpfr-dev libcln-dev vim libhdf5-mpi-dev openmpi-bin libopenmpi-dev gosu && \
-    curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
-    ${APTINSTALL} --allow-unauthenticated git-lfs && \
     git lfs install && \
     echo "alias ls='ls -h --color=auto'" >> /etc/bash.bashrc && \
     echo "alias ll='ls -lh'" >> /etc/bash.bashrc && \

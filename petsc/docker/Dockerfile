@@ -27,7 +27,6 @@ RUN apt-get -qq update && \
     apt-get -y --with-new-pkgs \
         -o Dpkg::Options::="--force-confold" upgrade && \
     apt-get -y install curl && \
-    curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
     apt-get -y install \
         bison \
         cmake \
@@ -59,6 +58,7 @@ RUN apt-get -qq update && \
         man \
         wget \
         ccache \
+        git-lfs \
         bash-completion && \
     git lfs install && \
     apt-get clean && \
