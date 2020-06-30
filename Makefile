@@ -126,23 +126,22 @@ real_python_%: FORCE
 
 $(addsuffix _dealii_%,$(IMAGE_TARGETS)): IMAGE_NAME:=DEALII_IMAGE
 real_dealii_%: FORCE python_%
-	$(CNTR_BUILD) --build-arg BASE=$(call PYTHON_IMAGE,$*,$(VER)) \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) dealii/docker
 
 $(addsuffix _petsc_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PETSC_IMAGE
 real_petsc_%: FORCE python_%
-	$(CNTR_BUILD) --build-arg BASE=$(call PYTHON_IMAGE,$*,$(VER)) \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) petsc/docker
 
 $(addsuffix _fenics_%,$(IMAGE_TARGETS)): IMAGE_NAME:=FENICS_IMAGE
 real_fenics_%: FORCE petsc_%
-	$(CNTR_BUILD) --build-arg PETSC=$(call PETSC_IMAGE,$*,$(PETSC_TAG)) \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) fenics/docker
 
 $(addsuffix _ngsolve_%,$(IMAGE_TARGETS)): IMAGE_NAME:=NGSOLVE_IMAGE
 real_ngsolve_%: FORCE petsc_%
-	$(CNTR_BUILD) --build-arg PETSC_BASE=pymor/petsc_py$*:$(VER) \
-		--build-arg PYTHON_BASE=pymor/python_$*:$(VER) \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		--build-arg NGSOLVE_VERSION=$(NGSOLVE_VERSION) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) ngsolve/docker
 

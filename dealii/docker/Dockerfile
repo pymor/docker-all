@@ -1,5 +1,6 @@
-ARG BASE
-FROM $BASE
+ARG PYVER
+ARG VERTAG
+FROM pymor/python_${PYVER}:${VERTAG} 
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 

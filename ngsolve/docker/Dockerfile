@@ -1,11 +1,10 @@
-ARG PETSC_BASE
-ARG PYTHON_BASE
-
-FROM $PETSC_BASE as petsclayer
+ARG PYVER
+ARG VERTAG
+FROM pymor/petsc_py${PYVER}:${VERTAG} as petsclayer
 
 ENV PETSC_DIR=/usr/local/petsc-32
 
-FROM $PYTHON_BASE
+FROM pymor/python_${PYVER}:${VERTAG}
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
