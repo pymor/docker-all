@@ -33,7 +33,7 @@ RUN pip install --no-cache-dir numpy && \
     mkdir build && \
     cd build && \
     cmake -DPYBIND11_TEST=False ../ && \
-    make && \
+    make -j ${MAKE_PROCS} && \
     make install && \
     rm -rf /tmp/*
 
@@ -57,7 +57,7 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
                     -DDOLFIN_ENABLE_PETSC=on \
                     -DDOLFIN_ENABLE_SCOTCH=on \
                     -DDOLFIN_ENABLE_HDF5=on && \
-                  make && \
+                  make -j ${MAKE_PROCS} && \
                   make install && \
                   mv /usr/local/share/dolfin/demo /tmp/demo && \
                   mkdir -p /usr/local/share/dolfin/demo && \
@@ -76,7 +76,7 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
                   mkdir build && \
                   cd build && \
                   cmake ../ && \
-                  make && \
+                  make -j ${MAKE_PROCS} && \
                   make install && \
                   ls -l /tmp/ && \
                   cd /tmp/dolfin/python && \

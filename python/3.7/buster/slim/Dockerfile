@@ -191,4 +191,5 @@ RUN echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
 	tk \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+ENV MAKE_PROCS=8
 CMD ["python3"]

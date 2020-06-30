@@ -46,7 +46,7 @@ RUN cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VE
           -DDEAL_II_ALLOW_BUNDLED=OFF \
           -GNinja \
           ../ && \
-    ninja -j 1 && \
+    ninja -j ${MAKE_PROCS} && \
     ninja -j 1 install && \
     cd / && rm -rf /tmp/deal*
 RUN cd /tmp && git clone --recurse-submodules --branch=master https://github.com/pymor/pymor-deal.II deal && \
