@@ -13,7 +13,7 @@ ENV MPICC=/usr/lib64/openmpi/bin/mpicc \
     PYTHON_VERSION=${PYTHON_VERSION} \
     WHEEL_DIR=/io/wheelhouse
 
-RUN yum install -y atlas-devel openmpi-devel sudo \
+RUN yum install -y atlas-devel openmpi-devel  \
         fltk freeglut libpng libjpeg \
         tk tcl xorg-x11-server-Xvfb xauth
 
