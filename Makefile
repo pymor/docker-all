@@ -1,5 +1,6 @@
 include common.mk
 
+THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 SUBDIRS = $(patsubst %/,%,$(sort $(dir $(wildcard */))))
 PY_INDEPENDENT = demo deploy_checks docker-in-docker docs ci_sanity
 PY_SUBDIRS = $(filter-out $(PY_INDEPENDENT),$(SUBDIRS))
@@ -95,11 +96,13 @@ real_constraints_%: FORCE ensure_testing_%
 
 $(addsuffix _pypi-mirror_stable_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE
 real_pypi-mirror_stable_%: FORCE constraints_%
+	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_stable/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
 	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) pypi-mirror_stable
 
 $(addsuffix _pypi-mirror_oldest_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_OLDEST_IMAGE
 real_pypi-mirror_oldest_%: FORCE constraints_%
+	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_oldest/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
 	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) pypi-mirror_oldest
 
