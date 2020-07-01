@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 #for add-apt-repo
 RUN apt-get install -y software-properties-common \
-    gfortran cmake \
+    gfortran cmake g++\
     git \
     gsl-bin \
     libblas-dev \
