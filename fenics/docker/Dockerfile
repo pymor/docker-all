@@ -81,7 +81,7 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
                   ls -l /tmp/ && \
                   cd /tmp/dolfin/python && \
                   PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install . && \
-                  find /usr/local -type f | xargs strip -p -d 2> /dev/null ; \
+                  find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
                   ldconfig && \
                   rm -rf /tmp/*"
 
