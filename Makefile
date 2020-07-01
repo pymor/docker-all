@@ -75,17 +75,17 @@ clean_docker-in-docker: FORCE
 
 $(addsuffix _wheelbuilder_manylinux1_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB1_IMAGE
 real_wheelbuilder_manylinux1_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
-	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VERTAG=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux1
 
 $(addsuffix _wheelbuilder_manylinux2010_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2010_IMAGE
 real_wheelbuilder_manylinux2010_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
-	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VERTAG=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux2010
 
 $(addsuffix _wheelbuilder_manylinux2014_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2014_IMAGE
 real_wheelbuilder_manylinux2014_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
-	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VERTAG=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux2014
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
@@ -95,12 +95,12 @@ real_constraints_%: FORCE ensure_testing_%
 
 $(addsuffix _pypi-mirror_stable_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE
 real_pypi-mirror_stable_%: FORCE constraints_%
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) pypi-mirror_stable
 
 $(addsuffix _pypi-mirror_oldest_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_OLDEST_IMAGE
 real_pypi-mirror_oldest_%: FORCE constraints_%
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VER=$(VER) \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) pypi-mirror_oldest
 
 $(addsuffix _pypi-mirror_test_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MIRROR_TEST_IMAGE
@@ -110,12 +110,12 @@ real_pypi-mirror_test_%: pypi-mirror_stable_% pypi-mirror_oldest_% pymor_source
 
 $(addsuffix _cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CIBASE_IMAGE
 real_cibase_%: FORCE ngsolve_% fenics_% dealii_%
-	$(CNTR_BUILD) --build-arg PYVER=$* \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) cibase/buster
 
 $(addsuffix _testing_%,$(IMAGE_TARGETS)) ensure_testing_%: IMAGE_NAME=TESTING_IMAGE
 real_testing_%: FORCE cibase_%
-	$(CNTR_BUILD) --build-arg BASETAG=$(VER) \
+	$(CNTR_BUILD) --build-arg VERTAG=$(VER) \
 			-t $(call $(IMAGE_NAME),$*,$(VER)) testing/$*
 ensure_testing_%:
 	$(CNTR_INSPECT) $(call $(IMAGE_NAME),$*,latest) >/dev/null 2>&1 || $(CNTR_PULL) $(call $(IMAGE_NAME),$*,latest)

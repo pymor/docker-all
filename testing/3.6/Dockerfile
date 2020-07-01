@@ -1,5 +1,5 @@
-ARG BASETAG
-FROM pymor/cibase_py3.6:$BASETAG
+ARG VERTAG
+FROM pymor/cibase_py3.6:${VERTAG}
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 VOLUME /src

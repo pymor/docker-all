@@ -1,6 +1,6 @@
 ARG PYVER=3.7
-ARG VER
-FROM pymor/constraints_py${PYVER}:${VER} as constraints
+ARG VERTAG
+FROM pymor/constraints_py${PYVER}:${VERTAG} as constraints
 
 FROM python:${PYVER}
 
