@@ -13,14 +13,13 @@ ENV MPICC=/usr/lib64/openmpi/bin/mpicc \
     PYTHON_VERSION=${PYTHON_VERSION} \
     WHEEL_DIR=/io/wheelhouse
 
-COPY gosu-amd64 /usr/local/bin/gosu
 RUN yum install -y atlas-devel openmpi-devel sudo \
         fltk freeglut libpng libjpeg \
         tk tcl xorg-x11-server-Xvfb xauth
 
 COPY --from=dependencies /pymor/downloads/* ${WHEEL_DIR}/
 COPY pybin.sh /etc/profile.d/
-# some packages get installed manually because others haev broken dependency settings
+# some packages get installed manually because others have broken dependency settings
 RUN source /etc/profile.d/pybin.sh && \
   rm ${WHEEL_DIR}/slycot* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* ${WHEEL_DIR}/scipy* && \
@@ -28,6 +27,7 @@ RUN source /etc/profile.d/pybin.sh && \
 
 COPY entrypoint.sh /usr/local/bin/
 COPY build-wheels.sh /usr/local/bin/
+COPY gosu-amd64 /usr/local/bin/gosu
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/local/bin/build-wheels.sh"]
