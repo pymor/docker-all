@@ -1,5 +1,6 @@
 ARG BASE
-FROM ${BASE}
+ARG VERTAG
+FROM pymor/python_${PYVER}:${VERTAG} as builder
 
 COPY requirements* /requirements/
 

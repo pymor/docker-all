@@ -90,7 +90,7 @@ real_wheelbuilder_manylinux2014_%: FORCE pull_testing_% pypi-mirror_stable_% pyp
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
 real_constraints_%: FORCE ensure_testing_%
-	$(CNTR_BUILD) --build-arg BASE=pymor/testing_py$*:latest \
+	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) constraints
 
 $(addsuffix _pypi-mirror_stable_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE

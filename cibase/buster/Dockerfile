@@ -18,15 +18,16 @@ ENV PETSC_DIR=/usr/local/petsc-32 \
     GOTO_NUM_THREADS=1 \
     OMP_NUM_THREADS=1
 
+# -dev packages should be kept as few as possible, and listed here with reasoning
+# mpi-default-dev: mpi4py install depends on it
 RUN apt-get update && \
-    ${APTINSTALL} wget curl less software-properties-common \
-        libboost-all-dev texlive-base xvfb gnupg libatlas-base-dev \
-        gcc g++ gfortran make libc6-dev dirmngr eatmydata pandoc \
-        gmsh sudo paraview-python swig cmake libeigen3-dev python-subprocess32 \
-        aptitude bison flex libopenblas-dev liblapack-dev libpcre3-dev ninja-build \
-        xauth python3 python3-opengl mpi-default-dev python3-virtualenv gsl-bin git-lfs \
-        libgmp-dev libmpfr-dev libcln-dev vim libhdf5-mpi-dev openmpi-bin libopenmpi-dev gosu && \
-    git lfs install && \
+    ${APTINSTALL} wget curl less \
+        texlive-base xvfb gnupg ca-certificates \
+        gcc g++ gfortran make dirmngr pandoc \
+        gmsh swig cmake \
+        aptitude bison flex ninja-build \
+        xauth gsl-bin git-lfs \
+        vim openmpi-bin mpi-default-dev gosu && \
     echo "alias ls='ls -h --color=auto'" >> /etc/bash.bashrc && \
     echo "alias ll='ls -lh'" >> /etc/bash.bashrc && \
     update-ca-certificates && \
