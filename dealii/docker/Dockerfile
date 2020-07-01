@@ -1,6 +1,6 @@
 ARG PYVER
 ARG VERTAG
-FROM pymor/python_${PYVER}:${VERTAG} 
+FROM pymor/python_${PYVER}:${VERTAG}
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
@@ -48,6 +48,7 @@ RUN cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VE
           ../ && \
     ninja -j ${MAKE_PROCS} && \
     ninja -j 1 install && \
+    find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
     cd / && rm -rf /tmp/deal*
 RUN cd /tmp && git clone --recurse-submodules --branch=master https://github.com/pymor/pymor-deal.II deal && \
     cd deal && python setup.py bdist_wheel && \

@@ -114,6 +114,7 @@ RUN wget -nc --quiet https://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION
     python ./configure --prefix=/usr/local/slepc-32 && \
     make -j ${MAKE_PROCS} && \
     make install && \
+    find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
     rm -rf /tmp/*
 
 # By default use the 32-bit build of SLEPc and PETSc.
