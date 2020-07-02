@@ -8,6 +8,7 @@ stages:
   - "4"
   - "5"
   - "6"
+  - "7"
 
 #************ definition of base jobs *********************************************************************************#
 
@@ -70,29 +71,29 @@ python 3.8:
         PYVER: "3.8"
         TARGET: python
 
+
+#******* stage 2
 constraints 3.6:
     extends: .per_py
-    stage: "1"
+    stage: "2"
     variables:
         PYVER: "3.6"
         TARGET: constraints
 
 constraints 3.7:
     extends: .per_py
-    stage: "1"
+    stage: "2"
     variables:
         PYVER: "3.7"
         TARGET: constraints
 
 constraints 3.8:
     extends: .per_py
-    stage: "1"
+    stage: "2"
     variables:
         PYVER: "3.8"
         TARGET: constraints
 
-
-#******* stage 2
 dealii 3.6:
     extends: .per_py
     stage: "2"
@@ -113,48 +114,6 @@ dealii 3.8:
     variables:
         PYVER: "3.8"
         TARGET: dealii
-
-pypi-mirror_stable 3.6:
-    extends: .per_py
-    stage: "2"
-    variables:
-        PYVER: "3.6"
-        TARGET: pypi-mirror_stable
-
-pypi-mirror_stable 3.7:
-    extends: .per_py
-    stage: "2"
-    variables:
-        PYVER: "3.7"
-        TARGET: pypi-mirror_stable
-
-pypi-mirror_stable 3.8:
-    extends: .per_py
-    stage: "2"
-    variables:
-        PYVER: "3.8"
-        TARGET: pypi-mirror_stable
-
-pypi-mirror_oldest 3.6:
-    extends: .per_py
-    stage: "2"
-    variables:
-        PYVER: "3.6"
-        TARGET: pypi-mirror_oldest
-
-pypi-mirror_oldest 3.7:
-    extends: .per_py
-    stage: "2"
-    variables:
-        PYVER: "3.7"
-        TARGET: pypi-mirror_oldest
-
-pypi-mirror_oldest 3.8:
-    extends: .per_py
-    stage: "2"
-    variables:
-        PYVER: "3.8"
-        TARGET: pypi-mirror_oldest
 
 petsc 3.6:
     extends: .per_py
@@ -179,6 +138,48 @@ petsc 3.8:
 
 
 #******* stage 3
+pypi-mirror_stable 3.6:
+    extends: .per_py
+    stage: "3"
+    variables:
+        PYVER: "3.6"
+        TARGET: pypi-mirror_stable
+
+pypi-mirror_stable 3.7:
+    extends: .per_py
+    stage: "3"
+    variables:
+        PYVER: "3.7"
+        TARGET: pypi-mirror_stable
+
+pypi-mirror_stable 3.8:
+    extends: .per_py
+    stage: "3"
+    variables:
+        PYVER: "3.8"
+        TARGET: pypi-mirror_stable
+
+pypi-mirror_oldest 3.6:
+    extends: .per_py
+    stage: "3"
+    variables:
+        PYVER: "3.6"
+        TARGET: pypi-mirror_oldest
+
+pypi-mirror_oldest 3.7:
+    extends: .per_py
+    stage: "3"
+    variables:
+        PYVER: "3.7"
+        TARGET: pypi-mirror_oldest
+
+pypi-mirror_oldest 3.8:
+    extends: .per_py
+    stage: "3"
+    variables:
+        PYVER: "3.8"
+        TARGET: pypi-mirror_oldest
+
 ngsolve 3.6:
     extends: .per_py
     stage: "3"
@@ -221,23 +222,25 @@ fenics 3.8:
         PYVER: "3.8"
         TARGET: fenics
 
+
+#******* stage 4
 wheelbuilder_manylinux1 3.6:
     extends: .per_py
-    stage: "3"
+    stage: "4"
     variables:
         PYVER: "3.6"
         TARGET: wheelbuilder_manylinux1
 
 wheelbuilder_manylinux2010 3.6:
     extends: .per_py
-    stage: "3"
+    stage: "4"
     variables:
         PYVER: "3.6"
         TARGET: wheelbuilder_manylinux2010
 
 wheelbuilder_manylinux2014 3.6:
     extends: .per_py
-    stage: "3"
+    stage: "4"
     variables:
         PYVER: "3.6"
         TARGET: wheelbuilder_manylinux2014
@@ -245,21 +248,21 @@ wheelbuilder_manylinux2014 3.6:
 
 wheelbuilder_manylinux1 3.7:
     extends: .per_py
-    stage: "3"
+    stage: "4"
     variables:
         PYVER: "3.7"
         TARGET: wheelbuilder_manylinux1
 
 wheelbuilder_manylinux2010 3.7:
     extends: .per_py
-    stage: "3"
+    stage: "4"
     variables:
         PYVER: "3.7"
         TARGET: wheelbuilder_manylinux2010
 
 wheelbuilder_manylinux2014 3.7:
     extends: .per_py
-    stage: "3"
+    stage: "4"
     variables:
         PYVER: "3.7"
         TARGET: wheelbuilder_manylinux2014
@@ -267,28 +270,26 @@ wheelbuilder_manylinux2014 3.7:
 
 wheelbuilder_manylinux1 3.8:
     extends: .per_py
-    stage: "3"
+    stage: "4"
     variables:
         PYVER: "3.8"
         TARGET: wheelbuilder_manylinux1
 
 wheelbuilder_manylinux2010 3.8:
     extends: .per_py
-    stage: "3"
+    stage: "4"
     variables:
         PYVER: "3.8"
         TARGET: wheelbuilder_manylinux2010
 
 wheelbuilder_manylinux2014 3.8:
     extends: .per_py
-    stage: "3"
+    stage: "4"
     variables:
         PYVER: "3.8"
         TARGET: wheelbuilder_manylinux2014
 
 
-
-#******* stage 4
 cibase 3.6:
     extends: .per_py
     stage: "4"
@@ -311,12 +312,6 @@ cibase 3.8:
         TARGET: cibase
 
 
-demo_master:
-  extends: .py_indep
-  stage: "4"
-  variables:
-      PYVER: ""
-      TARGET: demo_master
 
 #******* stage 5
 testing 3.6:
@@ -339,6 +334,14 @@ testing 3.8:
     variables:
         PYVER: "3.8"
         TARGET: testing
+
+
+demo_master:
+  extends: .py_indep
+  stage: "5"
+  variables:
+      PYVER: ""
+      TARGET: demo_master
 
 
 #******* stage 6
