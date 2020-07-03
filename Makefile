@@ -11,7 +11,7 @@ PUSH_PYTHON_VERSIONS = $(addprefix push_,$(PYTHONS))
 PUSH = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
 CLEAN = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
 DEPLOY_CHECKS = $(addprefix deploy_checks_,$(DISTROS))
-IMAGE_TARGETS=tag real rp run cl
+IMAGE_TARGETS=tag real rp run cl ensure pull pl
 DEMOS = $(addprefix demo_,$(DEMO_TAGS))
 
 all: FORCE $(foreach subd,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)),$(addprefix $(subd)_,$(filter-out 3.9,$(PYTHONS)))) $(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT))
@@ -39,14 +39,16 @@ IS_DIRTY:
 FORCE:
 
 # build+tag meta pattern for all SUBDIR_PY
-$(foreach subd,$(PY_SUBDIRS),$(addprefix $(subd)_,$(PYTHONS))): % : real_% tag_%
+$(foreach subd,$(PY_SUBDIRS),$(addprefix $(subd)_,$(PYTHONS))): % : pull_% tag_%
+$(foreach subd,$(PY_SUBDIRS),$(addprefix pull_$(subd)_,$(PYTHONS))): pull_% : pl_%
 $(foreach subd,$(PY_SUBDIRS),$(addprefix tag_$(subd)_,$(PYTHONS))): tag_% : real_%
 $(foreach subd,$(PY_SUBDIRS),$(addprefix push_$(subd)_,$(PYTHONS))): push_% : rp_%
 $(foreach subd,$(PY_SUBDIRS),$(addprefix clean_$(subd)_,$(PYTHONS))): clean_% : cl_%
 
 # the actual IMAGE_NAME is set via target variable from tag_subdir% rules
 tag_% : FORCE
-	$(CNTR_TAG) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER)) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
+	$(CNTR_TAG) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER)) \
+		$(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
 
 cl_% : FORCE
 	for img in $$($(CNTR_CMD) images --format '{{.Repository}}:{{.Tag}}' | grep $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),)) ; \
@@ -55,6 +57,10 @@ cl_% : FORCE
 rp_% : FORCE
 	$(CNTR_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
 	$(CNTR_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
+
+pl_% : FORCE
+	@$(CNTR_PULL) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER)) >/dev/null 2>&1 || \
+		echo "Not yet build $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))"
 
 run_%: %
 	$(CNTR_RUN) --entrypoint=/bin/bash $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
@@ -90,7 +96,7 @@ real_wheelbuilder_manylinux2014_%: FORCE pull_testing_% pypi-mirror_stable_% pyp
 			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux2014
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
-real_constraints_%: FORCE ensure_testing_%
+real_constraints_%: FORCE python_%
 	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
 		-t $(call $(IMAGE_NAME),$*,$(VER)) constraints
 
