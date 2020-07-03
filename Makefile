@@ -83,15 +83,15 @@ clean_docker-in-docker: FORCE
 
 
 $(addsuffix _wheelbuilder_manylinux1_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB1_IMAGE
-real_wheelbuilder_manylinux1_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
+real_wheelbuilder_manylinux1_%: FORCE pypi-mirror_oldest_%
 	$(COMMON_BUILD) wheelbuilder_manylinux1
 
 $(addsuffix _wheelbuilder_manylinux2010_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2010_IMAGE
-real_wheelbuilder_manylinux2010_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
+real_wheelbuilder_manylinux2010_%: FORCE pypi-mirror_oldest_%
 	$(COMMON_BUILD) wheelbuilder_manylinux2010
 
 $(addsuffix _wheelbuilder_manylinux2014_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2014_IMAGE
-real_wheelbuilder_manylinux2014_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
+real_wheelbuilder_manylinux2014_%: FORCE pypi-mirror_oldest_%
 	$(COMMON_BUILD) wheelbuilder_manylinux2014
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
