@@ -2,6 +2,7 @@
 #   Edit and Re-run .ci/gitlab/template.ci.py instead       #
 
 stages:
+  - "0"
   - "1"
   - "2"
   - "3"
@@ -41,6 +42,27 @@ stages:
     script:
       - make ${TARGET}
       - make push_${TARGET}
+python_builder 3.6:
+    extends: .per_py
+    stage: "0"
+    variables:
+        PYVER: "3.6"
+        TARGET: python_builder
+
+python_builder 3.7:
+    extends: .per_py
+    stage: "0"
+    variables:
+        PYVER: "3.7"
+        TARGET: python_builder
+
+python_builder 3.8:
+    extends: .per_py
+    stage: "0"
+    variables:
+        PYVER: "3.8"
+        TARGET: python_builder
+
 
 #******* stage 1
 
