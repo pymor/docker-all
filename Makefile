@@ -63,7 +63,7 @@ pl_% : FORCE
 		echo "Not yet build $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))"
 
 run_%: %
-	$(CNTR_RUN) --entrypoint=/bin/bash $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
+	$(CNTR_RUN) -it --entrypoint=/bin/bash $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
 
 pymor_source:
 	test -d pymor_source || git clone --branch=$(PYMOR_BRANCH) https://github.com/pymor/pymor pymor_source

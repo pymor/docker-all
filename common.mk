@@ -25,7 +25,7 @@ COMMON_BUILD=$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) --build-arg PYVER=
 CNTR_TAG=$(CNTR_CMD) tag
 CNTR_PUSH=$(CNTR_CMD) push
 CNTR_PULL=$(CNTR_CMD) pull -q
-CNTR_RUN=$(CNTR_CMD) run  -it
+CNTR_RUN=$(CNTR_CMD) run
 CNTR_RMI=$(CNTR_CMD) rmi -f
 CNTR_INSPECT=$(CNTR_CMD) inspect
 PYTHON_TAG=$(VER)
