@@ -28,15 +28,15 @@ $(PUSH_PYTHON_SUBDIRS): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
 $(PYTHONS): % : $(addsuffix _%,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 
 $(PUSH_PYTHON_VERSIONS): push_% : $(addsuffix _%,$(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS))))
+
 IS_DIRTY:
-	git diff-index --quiet HEAD || \
+	@git diff-index --quiet HEAD || \
 	(git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code) || \
 	(git diff --no-ext-diff ; exit 1)
 
 .PHONY: FORCE IS_DIRTY
 
-# FORCE: IS_DIRTY
-FORCE:
+FORCE: IS_DIRTY
 
 # build+tag meta pattern for all SUBDIR_PY
 $(foreach subd,$(PY_SUBDIRS),$(addprefix $(subd)_,$(PYTHONS))): % : pull_% tag_%
