@@ -82,35 +82,29 @@ clean_docker-in-docker: FORCE
 
 $(addsuffix _wheelbuilder_manylinux1_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB1_IMAGE
 real_wheelbuilder_manylinux1_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
-	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VERTAG=$(VER) \
-			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux1
+	$(COMMON_BUILD) wheelbuilder_manylinux1
 
 $(addsuffix _wheelbuilder_manylinux2010_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2010_IMAGE
 real_wheelbuilder_manylinux2010_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
-	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VERTAG=$(VER) \
-			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux2010
+	$(COMMON_BUILD) wheelbuilder_manylinux2010
 
 $(addsuffix _wheelbuilder_manylinux2014_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2014_IMAGE
 real_wheelbuilder_manylinux2014_%: FORCE pull_testing_% pypi-mirror_stable_% pypi-mirror_oldest_%
-	$(CNTR_BUILD) --build-arg PYTHON_VERSION=$* --build-arg VERTAG=$(VER) \
-			-t $(call $(IMAGE_NAME),$*,$(VER)) wheelbuilder_manylinux2014
+	$(COMMON_BUILD) wheelbuilder_manylinux2014
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
 real_constraints_%: FORCE python_%
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
-		-t $(call $(IMAGE_NAME),$*,$(VER)) constraints
+	$(COMMON_BUILD) constraints
 
 $(addsuffix _pypi-mirror_stable_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE
 real_pypi-mirror_stable_%: FORCE constraints_%
 	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_stable/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
-		-t $(call $(IMAGE_NAME),$*,$(VER)) pypi-mirror_stable
+	$(COMMON_BUILD) pypi-mirror_stable
 
 $(addsuffix _pypi-mirror_oldest_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_OLDEST_IMAGE
 real_pypi-mirror_oldest_%: FORCE constraints_%
 	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_oldest/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
-		-t $(call $(IMAGE_NAME),$*,$(VER)) pypi-mirror_oldest
+	$(COMMON_BUILD) pypi-mirror_oldest
 
 $(addsuffix _pypi-mirror_test_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MIRROR_TEST_IMAGE
 real_pypi-mirror_test_%: pypi-mirror_stable_% pypi-mirror_oldest_% pymor_source
@@ -119,45 +113,37 @@ real_pypi-mirror_test_%: pypi-mirror_stable_% pypi-mirror_oldest_% pymor_source
 
 $(addsuffix _cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CIBASE_IMAGE
 real_cibase_%: FORCE ngsolve_% fenics_% dealii_%
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
-		-t $(call $(IMAGE_NAME),$*,$(VER)) cibase/buster
+	$(COMMON_BUILD) cibase/buster
 
 $(addsuffix _testing_%,$(IMAGE_TARGETS)) ensure_testing_%: IMAGE_NAME=TESTING_IMAGE
 real_testing_%: FORCE cibase_%
-	$(CNTR_BUILD) --build-arg VERTAG=$(VER) \
-			-t $(call $(IMAGE_NAME),$*,$(VER)) testing/$*
+	$(COMMON_BUILD) testing/$*
 ensure_testing_%:
 	$(CNTR_INSPECT) $(call $(IMAGE_NAME),$*,latest) >/dev/null 2>&1 || $(CNTR_PULL) $(call $(IMAGE_NAME),$*,latest)
 
 $(addsuffix _python_%,$(IMAGE_TARGETS)): IMAGE_NAME=PYTHON_IMAGE
 real_python_%: FORCE
-	$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) python/$*/buster/slim
+	$(COMMON_BUILD) python/$*/buster/slim
 
 $(addsuffix _dealii_%,$(IMAGE_TARGETS)): IMAGE_NAME:=DEALII_IMAGE
 real_dealii_%: FORCE python_%
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
-			-t $(call $(IMAGE_NAME),$*,$(VER)) dealii/docker
+	$(COMMON_BUILD) dealii/docker
 
 $(addsuffix _petsc_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PETSC_IMAGE
 real_petsc_%: FORCE python_%
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
-		-t $(call $(IMAGE_NAME),$*,$(VER)) petsc/docker
+	$(COMMON_BUILD) petsc/docker
 
 $(addsuffix _fenics_%,$(IMAGE_TARGETS)): IMAGE_NAME:=FENICS_IMAGE
 real_fenics_%: FORCE petsc_%
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
-		-t $(call $(IMAGE_NAME),$*,$(VER)) fenics/docker
+	$(COMMON_BUILD) fenics/docker
 
 $(addsuffix _ngsolve_%,$(IMAGE_TARGETS)): IMAGE_NAME:=NGSOLVE_IMAGE
 real_ngsolve_%: FORCE petsc_%
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
-		--build-arg NGSOLVE_VERSION=$(NGSOLVE_VERSION) \
-		-t $(call $(IMAGE_NAME),$*,$(VER)) ngsolve/docker
+	$(COMMON_BUILD) --build-arg NGSOLVE_VERSION=$(NGSOLVE_VERSION) ngsolve/docker
 
 $(addsuffix _jupyter_%,$(IMAGE_TARGETS)): IMAGE_NAME:=JUPYTER_IMAGE
 real_jupyter_%: FORCE testing_% pypi-mirror_stable_%
-	$(CNTR_BUILD) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
-		-t $(call $(IMAGE_NAME),$*,$(VER)) jupyter
+	$(COMMON_BUILD) jupyter
 
 $(DEMOS): demo_% : IS_DIRTY
 	$(CNTR_BUILD) -t pymor/demo:$* demo/$*
