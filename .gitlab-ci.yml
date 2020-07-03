@@ -337,11 +337,18 @@ testing 3.8:
 
 
 demo_master:
-  extends: .py_indep
-  stage: "5"
-  variables:
-      PYVER: ""
-      TARGET: demo_master
+    extends: .py_indep
+    stage: "5"
+    variables:
+        PYVER: ""
+        TARGET: demo_master
+
+deploy_checks:
+    extends: .py_indep
+    stage: "5"
+    variables:
+        PYVER: ""
+        TARGET: deploy_checks
 
 
 #******* stage 6

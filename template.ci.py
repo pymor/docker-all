@@ -165,11 +165,18 @@ testing {{PY}}:
 {% endfor %}
 
 demo_master:
-  extends: .py_indep
-  stage: "5"
-  variables:
-      PYVER: "{{PY}}"
-      TARGET: demo_master
+    extends: .py_indep
+    stage: "5"
+    variables:
+        PYVER: "{{PY}}"
+        TARGET: demo_master
+
+deploy_checks:
+    extends: .py_indep
+    stage: "5"
+    variables:
+        PYVER: "{{PY}}"
+        TARGET: deploy_checks
 
 
 #******* stage 6
