@@ -6,7 +6,10 @@
 
 FROM debian:buster-slim as pythonbuilder
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+ENV QUIET="-q" \
+ VERYQUIET="-qq"
+
+RUN apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y --no-install-recommends \
 		ca-certificates \
 		curl \
 		netbase \
@@ -58,8 +61,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	; \
         set -ex; \
 	if ! command -v gpg > /dev/null; then \
-		apt-get update; \
-		apt-get install -y --no-install-recommends \
+		apt-get update ${VERYQUIET} ; \
+		apt-get install ${VERYQUIET} -y --no-install-recommends \
 			gnupg \
 			dirmngr \
 		; \
@@ -69,13 +72,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
-
 # http://bugs.python.org/issue19846
 # > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
 ENV LANG C.UTF-8
 
 # runtime dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y --no-install-recommends \
 		tcl \
 		tk \
 	&& rm -rf /var/lib/apt/lists/*
@@ -91,10 +93,10 @@ RUN set -ex \
 	' \
 	&& echo "deb http://cloudfront.debian.net/debian/ buster main contrib\n\
 deb http://cloudfront.debian.net/debian-security/ buster/updates main contrib" >> /etc/apt/sources.list \
-	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
+	&& apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	\
-	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
-	&& wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
+	&& wget ${QUIET} -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
+	&& wget ${QUIET} -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
         && ( gpg --no-tty --keyserver ipv4.pool.sks-keyservers.net  --recv-keys "$GPG_KEY" \
             || gpg --keyserver Zpool.sks-keyservers.net --recv-keys "$GPG_KEY" \
@@ -142,7 +144,7 @@ ENV PIP_INSTALL="pip install --no-cache-dir -qq"
 
 RUN set -ex; \
 	\
-	wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
+	wget ${QUIET} -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
 	\
 	python get-pip.py \
 		--disable-pip-version-check \
@@ -162,14 +164,14 @@ RUN set -ex; \
 FROM debian:buster-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    APTINSTALL="apt-get install -q -y --no-install-recommends" \
+    APTINSTALL="apt-get install -qq -y --no-install-recommends" \
     LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
     LANGUAGE=C.UTF-8
 COPY --from=pythonbuilder /usr/local/ /usr/local/
 # python's configured to use system's expat and ffi libs
 RUN echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
-	apt update \
+	apt update -qq \
 	&& ${APTINSTALL} libexpat1 libffi6 \
 	libbz2-1.0 \
 	libc6 \

@@ -186,9 +186,6 @@ $(addprefix clean_,$(DEPLOY_CHECKS)): clean_deploy_checks_% : FORCE
 push_deploy_checks:
 	$(CNTR_PUSH) pymor/deploy_checks
 
-pull_testing_%: FORCE
-	$(CNTR_PULL) $(call TESTING_IMAGE,$*,latest)
-
 pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
 
@@ -209,3 +206,6 @@ pull_all_latest_%: FORCE
 	$(CNTR_PULL) $(call DIND_IMAGE,dummy,latest)
 	$(CNTR_PULL) $(call WB2010_IMAGE,$*,latest)
 	$(CNTR_PULL) $(call WB2014_IMAGE,$*,latest)
+
+update_python_templates:
+	cd python && ./update.sh 3.6 3.7 3.8 3.9-rc
