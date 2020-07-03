@@ -60,7 +60,9 @@ rp_% : FORCE
 
 pl_% : FORCE
 	@$(CNTR_PULL) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER)) >/dev/null 2>&1 || \
-		echo "Not yet build $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))"
+		(echo "Not yet build $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))" ; \
+		$(CNTR_PULL) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest) >/dev/null 2>&1 || \
+			echo "No latest version found for $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)")
 
 run_%: %
 	$(CNTR_RUN) -it --entrypoint=/bin/bash $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
