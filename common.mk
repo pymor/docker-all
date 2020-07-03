@@ -21,7 +21,8 @@ WB2014_IMAGE = pymor/wheelbuilder_manylinux2014_py$1:$2
 # CNTR_BUILD=$(CNTR_CMD) build --squash
 CNTR_CMD?=docker
 CNTR_BUILD=$(CNTR_CMD) build
-COMMON_BUILD=$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) --build-arg PYVER=$* --build-arg VERTAG=$(VER)
+COMMON_BUILD=$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) --build-arg PYVER=$* --build-arg VERTAG=$(VER) \
+	--cache-from=$(call $(IMAGE_NAME),$*,$(VER)) --cache-from=$(call $(IMAGE_NAME),$*,latest)
 CNTR_TAG=$(CNTR_CMD) tag
 CNTR_PUSH=$(CNTR_CMD) push
 CNTR_PULL=$(CNTR_CMD) pull -q
