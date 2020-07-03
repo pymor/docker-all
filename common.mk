@@ -3,6 +3,7 @@ VER?=$(shell git log -1 --pretty=format:"%H")
 NGSOLVE_IMAGE = pymor/ngsolve_py$1:$2
 PETSC_IMAGE = pymor/petsc_py$1:$2
 PYTHON_IMAGE = pymor/python_$1:$2
+PYTHON_BUILDER_IMAGE = pymor/python_builder_$1:$2
 FENICS_IMAGE = pymor/fenics_py$1:$2
 DEALII_IMAGE = pymor/dealii_py$1:$2
 CIBASE_IMAGE = pymor/cibase_py$1:$2

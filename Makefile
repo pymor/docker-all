@@ -123,9 +123,13 @@ real_testing_%: FORCE cibase_%
 ensure_testing_%:
 	$(CNTR_INSPECT) $(call $(IMAGE_NAME),$*,latest) >/dev/null 2>&1 || $(CNTR_PULL) $(call $(IMAGE_NAME),$*,latest)
 
+$(addsuffix _python_builder_%,$(IMAGE_TARGETS)): IMAGE_NAME=PYTHON_BUILDER_IMAGE
+real_python_builder_%: FORCE
+	$(COMMON_BUILD) python_builder/$*/buster/slim
+
 $(addsuffix _python_%,$(IMAGE_TARGETS)): IMAGE_NAME=PYTHON_IMAGE
-real_python_%: FORCE
-	$(COMMON_BUILD) python/$*/buster/slim
+real_python_%: FORCE python_builder_%
+	$(COMMON_BUILD) python
 
 $(addsuffix _dealii_%,$(IMAGE_TARGETS)): IMAGE_NAME:=DEALII_IMAGE
 real_dealii_%: FORCE python_%
@@ -196,4 +200,4 @@ pull_all_latest_%: FORCE
 	$(CNTR_PULL) $(call WB2014_IMAGE,$*,latest)
 
 update_python_templates:
-	cd python && ./update.sh 3.6 3.7 3.8 3.9-rc
+	cd python_builder && ./update.sh 3.6 3.7 3.8 3.9-rc
