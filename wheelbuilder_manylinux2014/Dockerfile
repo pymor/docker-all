@@ -1,16 +1,16 @@
-ARG PYTHON_VERSION
+ARG PYVER
 ARG VERTAG
-FROM pymor/pypi-mirror_oldest_py${PYTHON_VERSION}:${VERTAG} as dependencies
+FROM pymor/pypi-mirror_oldest_py${PYVER}:${VERTAG} as dependencies
 
 FROM quay.io/pypa/manylinux2014_x86_64:2020-04-06-2fd435d
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # needs repeat after being consumed in FROM
-ARG PYTHON_VERSION
+ARG PYVER
 
 ENV MPICC=/usr/lib64/openmpi/bin/mpicc \
-    PYTHON_VERSION=${PYTHON_VERSION} \
+    PYTHON_VERSION=${PYVER} \
     WHEEL_DIR=/io/wheelhouse
 
 RUN yum install -y atlas-devel openmpi-devel  \
