@@ -169,15 +169,16 @@ push_ci_sanity:
 	$(CNTR_PUSH) pymor/ci_sanity:$(VER)
 
 clean_deploy_checks: $(addprefix clean_,$(DEPLOY_CHECKS))
+push_deploy_checks: $(addprefix push_,$(DEPLOY_CHECKS))
 deploy_checks: $(DEPLOY_CHECKS)
 $(DEPLOY_CHECKS): deploy_checks_% : FORCE
 	$(CNTR_BUILD) --build-arg DEBIAN_DATE=20200607 --build-arg CENTOS_VERSION=centos8.2.2004 \
 		-t pymor/deploy_checks_$*:$(VER) -t pymor/deploy_checks_$*:latest deploy_checks/$*
 $(addprefix clean_,$(DEPLOY_CHECKS)): clean_deploy_checks_% : FORCE
 	$(CNTR_RMI) pymor/deploy_checks_$*
+$(addprefix push_,$(DEPLOY_CHECKS)): push_deploy_checks_% : FORCE
+	$(CNTR_PUSH) pymor/deploy_checks_$*
 
-push_deploy_checks:
-	$(CNTR_PUSH) pymor/deploy_checks
 
 pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
