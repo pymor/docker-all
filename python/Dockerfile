@@ -6,6 +6,7 @@ FROM debian:buster-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
     APTINSTALL="apt-get install -qq -y --no-install-recommends" \
+    PIP_INSTALL="pip install --no-cache-dir -qq" \
     LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
     LANGUAGE=C.UTF-8
