@@ -2,7 +2,7 @@ ARG PYVER
 ARG VERTAG
 FROM pymor/pypi-mirror_oldest_py${PYVER}:${VERTAG} as dependencies
 
-FROM quay.io/pypa/manylinux1_x86_64:2020-04-25-37c204c
+FROM quay.io/pypa/manylinux1_x86_64:2020-07-04-283458f
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
@@ -13,7 +13,7 @@ ENV MPICC=/usr/lib64/openmpi/1.4-gcc/bin/mpicc \
     PYTHON_VERSION=${PYVER} \
     WHEEL_DIR=/io/wheelhouse
 
-RUN yum install -y atlas-devel openmpi-devel \
+RUN yum install -vy atlas-devel openmpi-devel \
         fltk freeglut libpng libjpeg \
         tk tcl xorg-x11-server-Xvfb xauth
 
