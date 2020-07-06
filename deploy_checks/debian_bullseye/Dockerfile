@@ -3,4 +3,5 @@ FROM debian:bullseye-${DEBIAN_DATE}-slim
 
 RUN apt update -y && apt install -y python3-pip && \
     apt remove -y gcc && apt autoremove -y
-ADD pip /usr/local/bin/pip
+COPY pip /usr/local/bin/pip
+COPY pip.conf /etc/
