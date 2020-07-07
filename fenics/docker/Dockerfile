@@ -100,7 +100,3 @@ COPY demo_auto-adaptive_poisson.py /tmp/poisson_test/
 RUN /bin/bash -l -c "cd /tmp/poisson_test && \
     time xvfb-run python demo_auto-adaptive_poisson.py && \
     rm -r /tmp/poisson_test"
-ONBUILD RUN echo "export MPLBACKEND=Agg \
-    SLEPC_DIR=/usr/local/slepc-32 \
-    PETSC_DIR=/usr/local/petsc-32" >> /etc/profile && \
-    echo "source /usr/local/share/dolfin/dolfin.conf" >> /etc/profile

@@ -5,12 +5,14 @@ FROM pymor/python_PYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
-ENV PETSC_DIR=/usr/local/petsc-32 \
-    DOCKER_NGSOLVE=1 \
+ENV DOCKER_NGSOLVE=1 \
     DOCKER_PYMOR=1 \
     OPENBLAS_NUM_THREADS=1 \
     GOTO_NUM_THREADS=1 \
-    OMP_NUM_THREADS=1
+    OMP_NUM_THREADS=1 \
+    DEBIAN_FRONTEND=teletype \
+    SLEPC_DIR=/usr/local/slepc-32 \
+    PETSC_DIR=/usr/local/petsc-32
 
 # -dev packages should be kept as few as possible, and listed here with reasoning
 # mpi-default-dev: mpi4py install depends on it
@@ -25,12 +27,11 @@ RUN apt-get update && \
         vim openmpi-bin mpi-default-dev gosu sudo && \
     echo "alias ls='ls -h --color=auto'" >> /etc/bash.bashrc && \
     echo "alias ll='ls -lh'" >> /etc/bash.bashrc && \
+    echo "source /usr/local/share/dolfin/dolfin.conf" >> /etc/bash.bashrc && \
     update-ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-ENV DEBIAN_FRONTEND=teletype \
-    SLEPC_DIR=/usr/local/slepc-32 \
-    PETSC_DIR=/usr/local/petsc-32
+
 
 COPY --from=fenicslayer /usr/local/ /usr/local/
 COPY --from=dealii /usr/local/ /usr/local/
