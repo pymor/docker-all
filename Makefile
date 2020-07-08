@@ -13,6 +13,8 @@ CLEAN = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
 DEPLOY_CHECKS = $(addprefix deploy_checks_,$(DISTROS))
 IMAGE_TARGETS=real rp run cl ensure pull pl
 DEMOS = $(addprefix demo_,$(DEMO_TAGS))
+# no builtin rules or variables
+MAKEFLAGS += -rR
 
 all: FORCE $(foreach subd,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)),$(addprefix $(subd)_,$(filter-out 3.9,$(PYTHONS)))) $(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT))
 
