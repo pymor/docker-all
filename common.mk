@@ -46,9 +46,11 @@ CNTR_PULL=$(CNTR_CMD) pull -q
 CNTR_RUN=$(CNTR_CMD) run
 CNTR_RMI=$(CNTR_CMD) rmi -f
 CNTR_INSPECT=$(CNTR_CMD) inspect
-COMMON_BUILD=$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) -t $(call $(IMAGE_NAME),$*,latest) \
-	 -f ./Dockerfile__$*__$(VER) --cache-from=$(call $(IMAGE_NAME),$*,latest) $(call $(IMAGE_NAME)_DIR,$*) \
-
+COMMON_BUILD=sed -e "s;VERTAG;$(VER);g" -e "s;PYVER;$*;g" $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile \
+	> $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$* && \
+	$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) -t $(call $(IMAGE_NAME),$*,latest) \
+	 -f $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$* --cache-from=$(call $(IMAGE_NAME),$*,latest) \
+	 $(call $(IMAGE_NAME)_DIR,$*)
 COMMON_PULL=$(CNTR_PULL) $(call $(IMAGE_NAME),$*,$(VER))
 COMMON_PULL_LATEST=$(CNTR_PULL) $(call $(IMAGE_NAME),$*,latest)
 PYTHON_TAG=$(VER)

@@ -43,9 +43,7 @@ FORCE: IS_DIRTY dockerfiles
 
 dockerfiles: $(DOCKERFILES)
 $(DOCKERFILES):
-	@for py in $(PYTHONS); do \
-		m4 -D PYVER=$${py} -D VERTAG=$(VER) $@ > $@__$${py}__$(VER) ; \
-	done
+	
 
 # build+tag meta pattern for all SUBDIR_PY
 $(foreach subd,$(PY_SUBDIRS),$(addprefix $(subd)_,$(PYTHONS))): % : real_%
