@@ -1,5 +1,4 @@
-ARG VERTAG
-FROM pymor/cibase_py3.8:${VERTAG}
+FROM pymor/cibase_py3.8:VERTAG
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 VOLUME /src

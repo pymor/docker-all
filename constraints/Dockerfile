@@ -1,6 +1,4 @@
-ARG PYVER
-ARG VERTAG
-FROM pymor/python_${PYVER}:${VERTAG} as builder
+FROM pymor/python_PYVER:VERTAG as builder
 # libopenblas-dev: needed for slycot install (wheel building)
 # mpi-default-dev: for mpi4py install/wheel
 RUN pip install pypi-oldest-requirements>=2020.4.1 && \

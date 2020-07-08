@@ -1,6 +1,4 @@
-ARG PYVER
-ARG VERTAG
-FROM pymor/python_${PYVER}:${VERTAG}
+FROM pymor/python_PYVER:VERTAG
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # Get Ubuntu updates

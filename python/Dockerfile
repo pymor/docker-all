@@ -1,6 +1,4 @@
-ARG PYVER
-ARG VERTAG
-FROM pymor/python_builder_${PYVER}:${VERTAG} as python_builder
+FROM pymor/python_builder_PYVER:VERTAG as python_builder
 
 FROM debian:buster-slim
 

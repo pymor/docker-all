@@ -1,8 +1,6 @@
-ARG PYVER=3.7
-ARG VERTAG
-FROM pymor/constraints_py${PYVER}:${VERTAG} as constraints
+FROM pymor/constraints_pyPYVER:VERTAG as constraints
 
-FROM python:${PYVER}
+FROM python:PYVER
 
 ENV MIRROR_VERSION=4.0.2 \
   PIP_VERSION=20.0.2 \
@@ -12,10 +10,6 @@ RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
   && useradd --shell /bin/bash -u 1000 -o -m -d /data -c "" -m pymor \
   && mkdir ${SERVER_ROOT} \
   && chown pymor ${SERVER_ROOT}
-
-
-# needs repeat after FROM
-ARG PYVER
 
 COPY --from=constraints /requirements/*.txt ${SERVER_ROOT}/requirements/
 # non-installable packages need to be filtered from download

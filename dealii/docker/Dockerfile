@@ -1,10 +1,6 @@
-ARG PYVER
-ARG VERTAG
-FROM pymor/python_${PYVER}:${VERTAG}
+FROM pymor/python_PYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
-
-ARG DEALII_VERSION
 
 USER root
 ENV DEBIAN_FRONTEND noninteractive

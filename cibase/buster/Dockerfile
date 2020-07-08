@@ -1,15 +1,9 @@
-ARG PYVER
-ARG VERTAG
-
-FROM pymor/fenics_py${PYVER}:${VERTAG} as fenicslayer
-FROM pymor/ngsolve_py${PYVER}:${VERTAG} as ngsolve
-FROM pymor/dealii_py${PYVER}:${VERTAG} as dealii
-FROM pymor/python_${PYVER}:${VERTAG}
+FROM pymor/fenics_pyPYVER:VERTAG as fenicslayer
+FROM pymor/ngsolve_pyPYVER:VERTAG as ngsolve
+FROM pymor/dealii_pyPYVER:VERTAG as dealii
+FROM pymor/python_PYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
-
-# needs repeating to be usable outside FROM
-ARG PYVER
 
 ENV PETSC_DIR=/usr/local/petsc-32 \
     DOCKER_NGSOLVE=1 \
