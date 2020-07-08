@@ -15,6 +15,7 @@ IMAGE_TARGETS=real rp run cl ensure pull pl
 DEMOS = $(addprefix demo_,$(DEMO_TAGS))
 # no builtin rules or variables
 MAKEFLAGS += -rR
+DOCKERFILES=$(shell find . -name Dockerfile -type f)
 
 all: FORCE $(foreach subd,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)),$(addprefix $(subd)_,$(filter-out 3.9,$(PYTHONS)))) $(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT))
 
@@ -36,9 +37,15 @@ IS_DIRTY:
 	(git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code) || \
 	(git diff --no-ext-diff ; exit 1)
 
-.PHONY: FORCE IS_DIRTY
+.PHONY: FORCE IS_DIRTY $(DOCKERFILES)
 
-FORCE: IS_DIRTY
+FORCE: IS_DIRTY dockerfiles
+
+dockerfiles: $(DOCKERFILES)
+$(DOCKERFILES):
+	for py in $(PYTHONS); do \
+		m4 -D PYVER=$${py} -D VERTAG=$(VER) $@ > $@__$${py}__$(VER) ; \
+	done
 
 # build+tag meta pattern for all SUBDIR_PY
 $(foreach subd,$(PY_SUBDIRS),$(addprefix $(subd)_,$(PYTHONS))): % : real_%

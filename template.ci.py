@@ -29,7 +29,7 @@ stages:
       - make ${TARGET}_${PYVER}
       - make push_${TARGET}_${PYVER}
     before_script:
-      - apk --update add openssh-client rsync git file make bash
+      - apk --update add openssh-client rsync git file make bash m4
       - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
     variables:
         DOCKER_HOST: tcp://docker:2375/
@@ -46,9 +46,15 @@ stages:
 
 {% macro pyjob(name, stage) -%}
 {%- for PY in pythons %}
-{{name}} {{PY}}:
+{{name}} {{PY[0]}} {{PY[2]}}:
     extends: .per_py
     stage: "{{stage}}"
+    {% if name == "wheelbuilder_manylinux1" -%}
+    tags:
+      - long execution time
+      - docker-in-docker
+      - amm-old-ci
+    {% endif -%}
     variables:
         PYVER: "{{PY}}"
         TARGET: {{name}}

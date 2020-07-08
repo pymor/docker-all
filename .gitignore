@@ -1,2 +1,5 @@
 pymor_source
 /pypi-mirror_*/requirements/
+
+# generated Dockerfiles
+Dockerfile__*__*
