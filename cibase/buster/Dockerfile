@@ -18,7 +18,11 @@ ENV DOCKER_NGSOLVE=1 \
 # -dev packages should be kept as few as possible, and listed here with reasoning
 # mpi-default-dev: mpi4py install depends on it
 # libopenblas-dev: slycot install needs it
-# boost-* for fenics/petsc
+# fenics/petsc:
+#         boost*
+#         libsz2
+#         libhdf5-mpi-dev
+#         libeigen3-dev
 # ngsolve: liboce-modeling11 liboce-ocaf11 libopengl0 \
 #          libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23
 RUN apt-get update && \
@@ -31,14 +35,16 @@ RUN apt-get update && \
         vim openmpi-bin mpi-default-dev gosu sudo \
         liboce-modeling11 liboce-ocaf11 libopengl0 \
         libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23 \
-        libboost-filesystem${BOOST_VERSION} \
-        libboost-iostreams${BOOST_VERSION} \
-        libboost-math${BOOST_VERSION} \
-        libboost-regex${BOOST_VERSION} \
-        libboost-program-options${BOOST_VERSION} \
-        libboost-system${BOOST_VERSION} \
-        libboost-thread${BOOST_VERSION} \
-        libboost-timer${BOOST_VERSION}  && \
+        libhdf5-mpi-dev \
+        libboost-filesystem-dev \
+        libboost-iostreams-dev \
+        libboost-math-dev \
+        libboost-program-options-dev \
+        libboost-system-dev \
+        libboost-thread-dev \
+        libboost-timer-dev \
+        libeigen3-dev \
+        libsz2  && \
     echo "alias ls='ls -h --color=auto'" >> /etc/bash.bashrc && \
     echo "alias ll='ls -lh'" >> /etc/bash.bashrc && \
     echo "source /usr/local/share/dolfin/dolfin.conf" >> /etc/bash.bashrc && \
