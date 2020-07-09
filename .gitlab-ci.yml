@@ -264,7 +264,7 @@ wheelbuilder_manylinux1 3 6:
     tags:
       - long execution time
       - docker-in-docker
-      - amm-old-ci
+      - amm-only
     variables:
         PYVER: "3.6"
         TARGET: wheelbuilder_manylinux1
@@ -275,7 +275,7 @@ wheelbuilder_manylinux1 3 7:
     tags:
       - long execution time
       - docker-in-docker
-      - amm-old-ci
+      - amm-only
     variables:
         PYVER: "3.7"
         TARGET: wheelbuilder_manylinux1
@@ -286,7 +286,7 @@ wheelbuilder_manylinux1 3 8:
     tags:
       - long execution time
       - docker-in-docker
-      - amm-old-ci
+      - amm-only
     variables:
         PYVER: "3.8"
         TARGET: wheelbuilder_manylinux1

@@ -53,7 +53,7 @@ stages:
     tags:
       - long execution time
       - docker-in-docker
-      - amm-old-ci
+      - amm-only
     {% endif -%}
     variables:
         PYVER: "{{PY}}"
