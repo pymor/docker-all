@@ -34,6 +34,7 @@ RUN apt-get update && \
         libboost-filesystem${BOOST_VERSION} \
         libboost-iostreams${BOOST_VERSION} \
         libboost-math${BOOST_VERSION} \
+        libboost-regex${BOOST_VERSION} \
         libboost-program-options${BOOST_VERSION} \
         libboost-system${BOOST_VERSION} \
         libboost-thread${BOOST_VERSION} \
