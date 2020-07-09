@@ -12,11 +12,13 @@ ENV DOCKER_NGSOLVE=1 \
     OMP_NUM_THREADS=1 \
     DEBIAN_FRONTEND=teletype \
     SLEPC_DIR=/usr/local/slepc-32 \
-    PETSC_DIR=/usr/local/petsc-32
+    PETSC_DIR=/usr/local/petsc-32 \
+    BOOST_VERSION=1.67.0
 
 # -dev packages should be kept as few as possible, and listed here with reasoning
 # mpi-default-dev: mpi4py install depends on it
 # libopenblas-dev: slycot install needs it
+# boost-* for fenics/petsc
 RUN apt-get update && \
     ${APTINSTALL} wget curl less \
         texlive-base xvfb gnupg ca-certificates \
@@ -24,7 +26,14 @@ RUN apt-get update && \
         gmsh swig cmake libopenblas-dev \
         aptitude bison flex ninja-build \
         xauth gsl-bin git-lfs \
-        vim openmpi-bin mpi-default-dev gosu sudo && \
+        vim openmpi-bin mpi-default-dev gosu sudo  \
+        libboost-filesystem${BOOST_VERSION} \
+        libboost-iostreams${BOOST_VERSION} \
+        libboost-math${BOOST_VERSION} \
+        libboost-program-options${BOOST_VERSION} \
+        libboost-system${BOOST_VERSION} \
+        libboost-thread${BOOST_VERSION} \
+        libboost-timer${BOOST_VERSION}  && \
     echo "alias ls='ls -h --color=auto'" >> /etc/bash.bashrc && \
     echo "alias ll='ls -lh'" >> /etc/bash.bashrc && \
     echo "source /usr/local/share/dolfin/dolfin.conf" >> /etc/bash.bashrc && \
