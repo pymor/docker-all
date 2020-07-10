@@ -18,6 +18,8 @@ ENV DOCKER_NGSOLVE=1 \
 # -dev packages should be kept as few as possible, and listed here with reasoning
 # mpi-default-dev: mpi4py install depends on it
 # libopenblas-dev: slycot install needs it
+# matplotlib/Qt backend: libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
+#     libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0
 # fenics/petsc:
 #         boost*
 #         libsz2
@@ -44,6 +46,8 @@ RUN apt-get update && \
         libboost-thread-dev \
         libboost-timer-dev \
         libeigen3-dev \
+        libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
+          libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 \
         libsz2  && \
     echo "alias ls='ls -h --color=auto'" >> /etc/bash.bashrc && \
     echo "alias ll='ls -lh'" >> /etc/bash.bashrc && \
