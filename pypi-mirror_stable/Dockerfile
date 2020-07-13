@@ -19,7 +19,7 @@ COPY requirements/*.txt ${SERVER_ROOT}/requirements/
 # pytorch needs special casing due to --follow url
 RUN cd ${SERVER_ROOT}/requirements \
   && pip download -d ../downloads pip \
-  && (for fn in PYVER_req*.txt ; do \
+  && (for fn in req*.txt ; do \
     set +e ; \
     grep -v fenics ${fn} | grep -v pymor-dealii > filtered_req ; \
     set -e ; \
