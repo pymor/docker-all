@@ -3,7 +3,7 @@ FROM pymor/constraints_pyPYVER:VERTAG as constraints
 FROM python:PYVER
 
 ENV MIRROR_VERSION=4.0.2 \
-  PIP_VERSION=20.0.2 \
+  PIP_VERSION=20.1.1 \
   SERVER_ROOT=/pymor \
   PYTORCH_VERSION=1.5.1
 RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \

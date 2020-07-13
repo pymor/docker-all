@@ -32,6 +32,8 @@ stages:
     variables:
         DOCKER_HOST: tcp://docker:2375/
         DOCKER_DRIVER: overlay2
+    only:
+      - tags
     image: docker:stable
     services:
         - docker:dind
