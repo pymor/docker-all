@@ -19,14 +19,16 @@ COPY requirements/*.txt ${SERVER_ROOT}/requirements/
 # pytorch needs special casing due to --follow url
 RUN cd ${SERVER_ROOT}/requirements \
   && pip download -d ../downloads pip \
-  && (for fn in req*.txt ; do \
+  && (for fn in PYVER_req*.txt ; do \
     set +e ; \
     grep -v fenics ${fn} | grep -v pymor-dealii > filtered_req ; \
     set -e ; \
-    pip download -d ../downloads -r filtered_req -c ${SERVER_ROOT}/requirements/constraints.txt ; \
+    pip download -d ../downloads -r filtered_req -c ${SERVER_ROOT}/requirements/PYVER_constraints.txt ; \
   done) \
   && cd ${SERVER_ROOT}/ \
-  && pip download -d ../downloads torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html \
+  && pip download -d ../downloads torch==${PYTORCH_VERSION}+cpu \
+    -f https://download.pytorch.org/whl/torch_stable.html \
+    -c ${SERVER_ROOT}/requirements/PYVER_constraints.txt \
   && pypi-mirror create -d downloads -m simple \
   && rm -rf /tmp/*
 

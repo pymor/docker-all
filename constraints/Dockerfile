@@ -13,18 +13,20 @@ RUN cd /requirements/ \
   && (for fn in *.txt ; do \
     pip install -r ${fn} ; \
   done || exit 1)\
-  && pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii  > /requirements/constraints.txt
+  && pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii  \
+    > /requirements/PYVER_constraints.txt
 
 RUN cd /requirements/ \
   && (for fn in *.txt ; do \
-    pypi_minimal_requirements_pinned ${fn} oldest_${fn} ; \
+    pypi_minimal_requirements_pinned ${fn} PYVER_oldest_${fn} ; \
   done || exit 1)
 RUN cd /requirements/ \
   && virtualenv /tmp/venv_old \
-  && (for fn in oldest_require*.txt ; do \
+  && (for fn in PYVER_oldest_require*.txt ; do \
     /tmp/venv_old/bin/pip install -r ${fn} ; \
   done || exit 1) \
-  && /tmp/venv_old/bin/pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii  > /requirements/oldest_constraints.txt
+  && /tmp/venv_old/bin/pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii  \
+    > /requirements/PYVER_oldest_constraints.txt
 
 FROM alpine:3.12
 
