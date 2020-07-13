@@ -26,7 +26,7 @@ RUN cd ${SERVER_ROOT}/requirements \
     pip download -d ../downloads -r filtered_req -c ${SERVER_ROOT}/requirements/constraints.txt ; \
   done) \
   && cd ${SERVER_ROOT}/ \
-  && pip install torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html \
+  && pip download -d ../downloads torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html \
   && pypi-mirror create -d downloads -m simple \
   && rm -rf /tmp/*
 

@@ -25,7 +25,7 @@ RUN virtualenv /tmp/venv \
     /tmp/venv/bin/pip download -d ../downloads -r filtered_req -c ${SERVER_ROOT}/requirements/oldest_constraints.txt && \
     echo 'done part 1 ************************************* ' ${fn} ; \
   done) \
-  && /tmp/venv/bin/pip install torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html
+  && /tmp/venv/bin/pip download -d ../downloads torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html
 RUN cd ${SERVER_ROOT}/ \
   && pypi-mirror create -d downloads -m simple \
   && rm -rf /tmp/*
