@@ -30,6 +30,7 @@ RUN cd /requirements/ \
 FROM alpine:3.12
 
 COPY --from=builder /requirements/ /requirements/
+RUN apk add bash
 VOLUME "/output"
 ENTRYPOINT []
 CMD ["cp", "-ra", "/requirements", "/output"]
