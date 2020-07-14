@@ -22,11 +22,11 @@ RUN cd ${SERVER_ROOT}/requirements \
     set +e ; \
     grep -v fenics ${fn} | grep -v pymor-dealii > filtered_req ; \
     set -e ; \
-    ${DOWNLOAD} -r filtered_req -c ${SERVER_ROOT}/requirements/PYVER_constraints.txt ; \
+    ${DOWNLOAD} -r filtered_req -c ${SERVER_ROOT}/requirements/constraints.txt ; \
   done) \
   && cd ${SERVER_ROOT}/ \
   && ${DOWNLOAD} torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html \
-    -c ${SERVER_ROOT}/requirements/PYVER_constraints.txt \
+    -c ${SERVER_ROOT}/requirements/constraints.txt \
   && pypi-mirror create -d downloads -m simple \
   && rm -rf /tmp/*
 

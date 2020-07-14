@@ -20,15 +20,15 @@ COPY --from=constraints /requirements/*.txt ${SERVER_ROOT}/requirements/
 RUN virtualenv /tmp/venv \
   && cd ${SERVER_ROOT}/requirements \
   && ${DOWNLOAD} pip \
-  && (for fn in PYVER_oldest_req*.txt ; do \
+  && (for fn in oldest_req*.txt ; do \
     set +e ; \
     grep -v fenics ${fn} | grep -v pymor-dealii | grep -v torch > filtered_req ; \
     set -e ; \
-    ${DOWNLOAD} -r filtered_req -c ${SERVER_ROOT}/requirements/PYVER_oldest_constraints.txt && \
+    ${DOWNLOAD} -r filtered_req -c ${SERVER_ROOT}/requirements/oldest_constraints.txt && \
     echo 'done part 1 ************************************* ' ${fn} ; \
   done) \
   && ${DOWNLOAD} torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html \
-      -c ${SERVER_ROOT}/requirements/PYVER_oldest_constraints.txt \
+      -c ${SERVER_ROOT}/requirements/oldest_constraints.txt \
   && cd ${SERVER_ROOT}/ \
   && pypi-mirror create -d downloads -m simple \
   && rm -rf /tmp/*
