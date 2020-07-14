@@ -5,8 +5,10 @@ FROM python:PYVER
 ENV MIRROR_VERSION=4.0.2 \
   PIP_VERSION=20.1.1 \
   SERVER_ROOT=/pymor \
-  PYTORCH_VERSION=1.5.1
-RUN pip install "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
+  PYTORCH_VERSION=1.5.1 \
+  DOWNLOAD="/tmp/venv/bin/pip download --no-cache-dir -d /pymor/downloads"
+
+RUN pip install --no-cache-dir "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
       requests-toolbelt virtualenv\
   && useradd --shell /bin/bash -u 1000 -o -m -d /data -c "" -m pymor \
   && mkdir ${SERVER_ROOT} \
@@ -17,19 +19,17 @@ COPY --from=constraints /requirements/*.txt ${SERVER_ROOT}/requirements/
 # pytorch needs special casing due to --follow url
 RUN virtualenv /tmp/venv \
   && cd ${SERVER_ROOT}/requirements \
-  && /tmp/venv/bin/pip download -d ../downloads pip \
+  && ${DOWNLOAD} pip \
   && (for fn in PYVER_oldest_req*.txt ; do \
     set +e ; \
     grep -v fenics ${fn} | grep -v pymor-dealii | grep -v torch > filtered_req ; \
     set -e ; \
-    /tmp/venv/bin/pip download -d ../downloads -r filtered_req \
-      -c ${SERVER_ROOT}/requirements/PYVER_oldest_constraints.txt && \
+    ${DOWNLOAD} -r filtered_req -c ${SERVER_ROOT}/requirements/PYVER_oldest_constraints.txt && \
     echo 'done part 1 ************************************* ' ${fn} ; \
   done) \
-  && /tmp/venv/bin/pip download -d ../downloads torch==${PYTORCH_VERSION}+cpu \
-      -f https://download.pytorch.org/whl/torch_stable.html \
-      -c ${SERVER_ROOT}/requirements/PYVER_oldest_constraints.txt
-RUN cd ${SERVER_ROOT}/ \
+  && ${DOWNLOAD} torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html \
+      -c ${SERVER_ROOT}/requirements/PYVER_oldest_constraints.txt \
+  && cd ${SERVER_ROOT}/ \
   && pypi-mirror create -d downloads -m simple \
   && rm -rf /tmp/*
 USER pymor
