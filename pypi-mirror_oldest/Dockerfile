@@ -12,8 +12,8 @@ RUN pip install --no-cache-dir "python-pypi-mirror==${MIRROR_VERSION}"  pip==${P
   && mkdir ${SERVER_ROOT} \
   && chown pymor ${SERVER_ROOT}
 
-COPY requirements/*.txt ${SERVER_ROOT}/requirements/
 # non-installable packages need to be filtered from download
+COPY PYVER/requirements/*.txt ${SERVER_ROOT}/requirements/
 # pytorch needs special casing due to --follow url
 RUN virtualenv /tmp/venv \
   && cd ${SERVER_ROOT}/requirements \

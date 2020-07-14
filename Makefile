@@ -100,12 +100,14 @@ real_constraints_%: FORCE python_%
 
 $(addsuffix _pypi-mirror_stable_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE
 real_pypi-mirror_stable_%: FORCE constraints_%
-	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_stable/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
+	[ -d $(THIS_DIR)/pypi-mirror_stable/$* ] || mkdir $(THIS_DIR)/pypi-mirror_stable/$*
+	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_stable/$*/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
 	$(DO_IT)
 
 $(addsuffix _pypi-mirror_oldest_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_OLDEST_IMAGE
 real_pypi-mirror_oldest_%: FORCE constraints_%
-	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_oldest/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
+	[ -d $(THIS_DIR)/pypi-mirror_oldest/$* ] || mkdir $(THIS_DIR)/pypi-mirror_oldest/$*
+	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_oldest/$*/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
 	$(DO_IT)
 
 $(addsuffix _pypi-mirror_test_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MIRROR_TEST_IMAGE

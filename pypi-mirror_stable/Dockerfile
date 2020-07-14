@@ -13,8 +13,8 @@ RUN pip install --no-cache -qq "python-pypi-mirror==${MIRROR_VERSION}"  pip==${P
   && chown pymor ${SERVER_ROOT}
 
 
-COPY requirements/*.txt ${SERVER_ROOT}/requirements/
 # non-installable package cannot be downloaded and would error out the whoe process
+COPY PYVER/requirements/*.txt ${SERVER_ROOT}/requirements/
 # pytorch needs special casing due to --follow url
 RUN cd ${SERVER_ROOT}/requirements \
   && ${DOWNLOAD} pip \
