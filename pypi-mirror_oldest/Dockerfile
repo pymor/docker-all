@@ -1,5 +1,3 @@
-FROM pymor/constraints_pyPYVER:VERTAG as constraints
-
 FROM python:PYVER
 
 ENV MIRROR_VERSION=4.0.2 \
@@ -14,7 +12,7 @@ RUN pip install --no-cache-dir "python-pypi-mirror==${MIRROR_VERSION}"  pip==${P
   && mkdir ${SERVER_ROOT} \
   && chown pymor ${SERVER_ROOT}
 
-COPY --from=constraints /requirements/*.txt ${SERVER_ROOT}/requirements/
+COPY requirements/*.txt ${SERVER_ROOT}/requirements/
 # non-installable packages need to be filtered from download
 # pytorch needs special casing due to --follow url
 RUN virtualenv /tmp/venv \
