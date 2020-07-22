@@ -51,9 +51,7 @@ stages:
     stage: "{{stage}}"
     {% if name == "wheelbuilder_manylinux1" -%}
     tags:
-      - long execution time
-      - docker-in-docker
-      - amm-only
+      - amm-old-ci
     {% endif -%}
     variables:
         PYVER: "{{PY}}"

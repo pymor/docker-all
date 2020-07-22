@@ -32,8 +32,6 @@ stages:
     variables:
         DOCKER_HOST: tcp://docker:2375/
         DOCKER_DRIVER: overlay2
-    only:
-      - tags
     image: docker:stable
     services:
         - docker:dind
@@ -264,9 +262,7 @@ wheelbuilder_manylinux1 3 6:
     extends: .per_py
     stage: "4"
     tags:
-      - long execution time
-      - docker-in-docker
-      - amm-only
+      - amm-old-ci
     variables:
         PYVER: "3.6"
         TARGET: wheelbuilder_manylinux1
@@ -275,9 +271,7 @@ wheelbuilder_manylinux1 3 7:
     extends: .per_py
     stage: "4"
     tags:
-      - long execution time
-      - docker-in-docker
-      - amm-only
+      - amm-old-ci
     variables:
         PYVER: "3.7"
         TARGET: wheelbuilder_manylinux1
@@ -286,9 +280,7 @@ wheelbuilder_manylinux1 3 8:
     extends: .per_py
     stage: "4"
     tags:
-      - long execution time
-      - docker-in-docker
-      - amm-only
+      - amm-old-ci
     variables:
         PYVER: "3.8"
         TARGET: wheelbuilder_manylinux1
