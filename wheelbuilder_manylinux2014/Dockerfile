@@ -16,7 +16,7 @@ COPY --from=dependencies /pymor/downloads/* ${WHEEL_DIR}/
 COPY pybin.sh /etc/profile.d/
 # some packages get installed manually because others have broken dependency settings
 RUN source /etc/profile.d/pybin.sh && \
-  rm ${WHEEL_DIR}/slycot* && \
+  rm -f ${WHEEL_DIR}/slycot* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* ${WHEEL_DIR}/scipy* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/*
 
