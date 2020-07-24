@@ -12,7 +12,9 @@ RUN /bin/bash -c "curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     pip install jupyterlab && \
     jupyter nbextension install --py --symlink --sys-prefix pythreejs && \
     jupyter nbextension enable --py --sys-prefix pythreejs && \
+    jupyter nbextension enable --py --sys-prefix ngsolve && \
     jupyter labextension install jupyter-threejs && \
+    jupyter labextension install /usr/local/lib/pythonPYVER/site-packages/ngsolve/labextension && \
     pip install nbresuse jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --sys-prefix && \
     jupyter nbextension enable collapsible_headings/main && \
