@@ -6,7 +6,8 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 ENV MPICC=/usr/lib64/openmpi/1.4-gcc/bin/mpicc \
     PYTHON_VERSION=PYVER \
-    WHEEL_DIR=/io/wheelhouse
+    WHEEL_DIR=/io/wheelhouse \
+    PLATFORM=manylinux1_x86_64
 
 RUN yum install -vy atlas-devel openmpi-devel \
         fltk freeglut libpng libjpeg \
