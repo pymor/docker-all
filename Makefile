@@ -165,6 +165,10 @@ push_demo_%:
 clean_demo_%:
 	$(CNTR_RMI) pymor/demo:$*
 
+# TODO forward to submake correctly
+push_docs:
+docs:
+
 ci_sanity: FORCE
 	$(CNTR_BUILD) -t pymor/ci_sanity:$(VER) ci_sanity
 
