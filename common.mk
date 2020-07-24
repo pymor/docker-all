@@ -52,7 +52,8 @@ COMMON_BUILD=sed -e "s;VERTAG;$(VER);g" -e "s;PYVER;$*;g" $(call $(IMAGE_NAME)_D
 	$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) -t $(call $(IMAGE_NAME),$*,latest) \
 	 -f $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$* --cache-from=$(call $(IMAGE_NAME),$*,latest) \
 	 $(call $(IMAGE_NAME)_DIR,$*)
-DO_IT= ($(COMMON_INSPECT) || $(COMMON_PULL)) || ($(COMMON_PULL_LATEST) ; $(COMMON_BUILD))
+COMMON_TAG=$(CNTR_TAG) $(call $(IMAGE_NAME),$*,$(VER)) $(call $(IMAGE_NAME),$*,latest)
+DO_IT= ($(COMMON_INSPECT) || ($(COMMON_PULL) && $(COMMON_TAG))) || ($(COMMON_PULL_LATEST) ; $(COMMON_BUILD))
 COMMON_PULL=$(CNTR_PULL) $(call $(IMAGE_NAME),$*,$(VER))
 COMMON_PULL_LATEST=$(CNTR_PULL) $(call $(IMAGE_NAME),$*,latest)
 PYTHON_TAG=$(VER)

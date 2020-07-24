@@ -156,7 +156,7 @@ real_jupyter_%: FORCE testing_% pypi-mirror_stable_%
 
 $(DEMOS): demo_% : IS_DIRTY
 	$(CNTR_BUILD) -t pymor/demo:$* demo/$*
-demo: FORCE testing_3.7 $(DEMOS)
+demo: FORCE $(DEMOS)
 
 clean_demo: $(addprefix clean_,$(DEMOS))
 push_demo: $(addprefix push_,$(DEMOS))
