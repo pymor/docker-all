@@ -13,6 +13,5 @@ ${PYBIN}/pip wheel /io/pymor/ -w ${WHEEL_DIR}/
 
 # Bundle external shared libraries into the wheels
 for whl in ${WHEEL_DIR}/pymor*.whl; do
-    auditwheel repair $whl -w ${WHEEL_DIR}/
+    auditwheel repair --plat ${PLATFORM} $whl -w ${WHEEL_DIR}/
 done
-
