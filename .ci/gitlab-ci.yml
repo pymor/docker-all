@@ -73,6 +73,16 @@ parameterized_targets 3 6:
       - wait
       - make push_pypi-mirror_oldest_3.6 &
 
+      - make dolfinx_3.6
+      # wait for potentially running push
+      - wait
+      - make push_dolfinx_3.6 &
+
+      - make dunegdt_3.6
+      # wait for potentially running push
+      - wait
+      - make push_dunegdt_3.6 &
+
       - make ngsolve_3.6
       # wait for potentially running push
       - wait
@@ -161,6 +171,16 @@ parameterized_targets 3 7:
       # wait for potentially running push
       - wait
       - make push_pypi-mirror_oldest_3.7 &
+
+      - make dolfinx_3.7
+      # wait for potentially running push
+      - wait
+      - make push_dolfinx_3.7 &
+
+      - make dunegdt_3.7
+      # wait for potentially running push
+      - wait
+      - make push_dunegdt_3.7 &
 
       - make ngsolve_3.7
       # wait for potentially running push
@@ -251,6 +271,16 @@ parameterized_targets 3 8:
       - wait
       - make push_pypi-mirror_oldest_3.8 &
 
+      - make dolfinx_3.8
+      # wait for potentially running push
+      - wait
+      - make push_dolfinx_3.8 &
+
+      - make dunegdt_3.8
+      # wait for potentially running push
+      - wait
+      - make push_dunegdt_3.8 &
+
       - make ngsolve_3.8
       # wait for potentially running push
       - wait
@@ -339,6 +369,16 @@ parameterized_targets 3 9:
       # wait for potentially running push
       - wait
       - make push_pypi-mirror_oldest_3.9 &
+
+      - make dolfinx_3.9
+      # wait for potentially running push
+      - wait
+      - make push_dolfinx_3.9 &
+
+      - make dunegdt_3.9
+      # wait for potentially running push
+      - wait
+      - make push_dunegdt_3.9 &
 
       - make ngsolve_3.9
       # wait for potentially running push
