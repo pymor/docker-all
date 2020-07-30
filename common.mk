@@ -47,10 +47,14 @@ CNTR_RUN=$(CNTR_CMD) run
 CNTR_RMI=$(CNTR_CMD) rmi -f
 CNTR_INSPECT=$(CNTR_CMD) inspect
 COMMON_INSPECT=$(CNTR_INSPECT) $(call $(IMAGE_NAME),$*,$(VER)) >/dev/null 2>&1
-COMMON_BUILD=sed -e "s;VERTAG;$(VER);g" -e "s;PYVER;$*;g" $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile \
-	> $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$* && \
+CACHE_FROM=$$( ($(CNTR_INSPECT) $(call $(IMAGE_NAME),$*,latest) >/dev/null 2>&1 \
+	&& echo "--cache-from=$(call $(IMAGE_NAME),$*,latest)" ) || true )
+COPY_DOCKERFILE_IF_CHANGED=sed -e "s;VERTAG;$(VER);g" -e "s;PYVER;$*;g" $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile \
+	> $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile_TMP__$* && \
+	rsync -c $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile_TMP__$* $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$*
+COMMON_BUILD=$(COPY_DOCKERFILE_IF_CHANGED) && \
 	$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) -t $(call $(IMAGE_NAME),$*,latest) \
-	 -f $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$* --cache-from=$(call $(IMAGE_NAME),$*,latest) \
+	 -f $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$* $(CACHE_FROM) \
 	 $(call $(IMAGE_NAME)_DIR,$*)
 COMMON_TAG=$(CNTR_TAG) $(call $(IMAGE_NAME),$*,$(VER)) $(call $(IMAGE_NAME),$*,latest)
 DO_IT= ($(COMMON_INSPECT) || ($(COMMON_PULL) && $(COMMON_TAG))) || ($(COMMON_PULL_LATEST) ; $(COMMON_BUILD))
