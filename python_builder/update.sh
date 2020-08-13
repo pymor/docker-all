@@ -37,7 +37,7 @@ if [ ${#versions[@]} -eq 0 ]; then
 fi
 versions=( "${versions[@]%/}" )
 
-pipVersion="$(curl -fsSL 'https://pypi.org/pypi/pip/json' | jq -r .info.version)"
+pipVersion="20.2.2"
 
 generated_warning() {
 	cat <<-EOH

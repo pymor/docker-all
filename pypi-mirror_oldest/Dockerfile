@@ -1,7 +1,7 @@
 FROM python:PYVER
 
 ENV MIRROR_VERSION=4.0.2 \
-  PIP_VERSION=20.1.1 \
+  PIP_VERSION=20.2.2 \
   SERVER_ROOT=/pymor \
   PYTORCH_VERSION=1.5.1 \
   DOWNLOAD="/tmp/venv/bin/pip download --no-cache-dir -d /pymor/downloads"
