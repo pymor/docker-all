@@ -27,6 +27,7 @@ COPY ipython_kernel_config.py /etc/ipython/
 # automatic cache busting since docker will otherwise NOT rebuild if VERTAG (and thereby the mirror image) changes
 RUN echo VERTAG > /tmp/vertag
 COPY --from=dependencies /pymor/downloads/* /tmp/dependencies/
-RUN /bin/bash -c "pip install /tmp/dependencies/*"
+RUN /bin/bash -c "pip install /tmp/dependencies/*" && \ 
+  chmod +x /usr/local/bin/dev-entrypoint.bash
 
 ENTRYPOINT ["/usr/local/bin/dev-entrypoint.bash"]
