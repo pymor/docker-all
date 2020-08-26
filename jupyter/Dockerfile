@@ -11,6 +11,7 @@ RUN /bin/bash -c "curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     &&  apt update && ${APTINSTALL} nodejs libopenblas-dev mpi-default-dev &&\
     pip install jupyterlab && \
     jupyter nbextension install --py --symlink --sys-prefix pythreejs && \
+    jupyter nbextension install --py --symlink --sys-prefix ngsolve && \
     jupyter nbextension enable --py --sys-prefix pythreejs && \
     jupyter nbextension enable --py --sys-prefix ngsolve && \
     jupyter labextension install jupyter-threejs && \
@@ -25,9 +26,10 @@ COPY dev-entrypoint.bash /usr/local/bin/
 COPY ipython_kernel_config.py /etc/ipython/
 
 # automatic cache busting since docker will otherwise NOT rebuild if VERTAG (and thereby the mirror image) changes
-RUN echo VERTAG > /tmp/vertag
+RUN echo VERTAG > /tmp/vertag && \
+  chmod +x /usr/local/bin/*
 COPY --from=dependencies /pymor/downloads/* /tmp/dependencies/
-RUN /bin/bash -c "pip install /tmp/dependencies/*" && \ 
+RUN /bin/bash -c "pip install /tmp/dependencies/*" && \
   chmod +x /usr/local/bin/dev-entrypoint.bash
 
 ENTRYPOINT ["/usr/local/bin/dev-entrypoint.bash"]
