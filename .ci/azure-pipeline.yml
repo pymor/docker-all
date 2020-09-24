@@ -28,6 +28,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make python_builder_3.6
             make push_python_builder_3.6
 
@@ -44,6 +45,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make python_builder_3.7
             make push_python_builder_3.7
 
@@ -60,6 +62,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make python_builder_3.8
             make push_python_builder_3.8
 
@@ -98,6 +101,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make python_3.6
             make push_python_3.6
 
@@ -114,6 +118,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make python_3.7
             make push_python_3.7
 
@@ -130,6 +135,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make python_3.8
             make push_python_3.8
 
@@ -152,6 +158,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make constraints_3.6
             make push_constraints_3.6
 
@@ -168,6 +175,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make constraints_3.7
             make push_constraints_3.7
 
@@ -184,6 +192,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make constraints_3.8
             make push_constraints_3.8
 
@@ -201,6 +210,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make dealii_3.6
             make push_dealii_3.6
 
@@ -217,6 +227,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make dealii_3.7
             make push_dealii_3.7
 
@@ -233,6 +244,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make dealii_3.8
             make push_dealii_3.8
 
@@ -250,6 +262,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make petsc_3.6
             make push_petsc_3.6
 
@@ -266,6 +279,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make petsc_3.7
             make push_petsc_3.7
 
@@ -282,6 +296,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make petsc_3.8
             make push_petsc_3.8
 
@@ -304,6 +319,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make pypi-mirror_stable_3.6
             make push_pypi-mirror_stable_3.6
 
@@ -320,6 +336,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make pypi-mirror_stable_3.7
             make push_pypi-mirror_stable_3.7
 
@@ -336,6 +353,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make pypi-mirror_stable_3.8
             make push_pypi-mirror_stable_3.8
 
@@ -353,6 +371,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make pypi-mirror_oldest_3.6
             make push_pypi-mirror_oldest_3.6
 
@@ -369,6 +388,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make pypi-mirror_oldest_3.7
             make push_pypi-mirror_oldest_3.7
 
@@ -385,6 +405,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make pypi-mirror_oldest_3.8
             make push_pypi-mirror_oldest_3.8
 
@@ -402,6 +423,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make ngsolve_3.6
             make push_ngsolve_3.6
 
@@ -418,6 +440,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make ngsolve_3.7
             make push_ngsolve_3.7
 
@@ -434,6 +457,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make ngsolve_3.8
             make push_ngsolve_3.8
 
@@ -451,6 +475,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make fenics_3.6
             make push_fenics_3.6
 
@@ -467,6 +492,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make fenics_3.7
             make push_fenics_3.7
 
@@ -483,6 +509,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make fenics_3.8
             make push_fenics_3.8
 
@@ -504,6 +531,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make wheelbuilder_manylinux1_3.6
             make push_wheelbuilder_manylinux1_3.6
 
@@ -520,6 +548,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make wheelbuilder_manylinux1_3.7
             make push_wheelbuilder_manylinux1_3.7
 
@@ -536,6 +565,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make wheelbuilder_manylinux1_3.8
             make push_wheelbuilder_manylinux1_3.8
 
@@ -553,6 +583,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make wheelbuilder_manylinux2010_3.6
             make push_wheelbuilder_manylinux2010_3.6
 
@@ -569,6 +600,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make wheelbuilder_manylinux2010_3.7
             make push_wheelbuilder_manylinux2010_3.7
 
@@ -585,6 +617,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make wheelbuilder_manylinux2010_3.8
             make push_wheelbuilder_manylinux2010_3.8
 
@@ -602,6 +635,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make wheelbuilder_manylinux2014_3.6
             make push_wheelbuilder_manylinux2014_3.6
 
@@ -618,6 +652,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make wheelbuilder_manylinux2014_3.7
             make push_wheelbuilder_manylinux2014_3.7
 
@@ -634,6 +669,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make wheelbuilder_manylinux2014_3.8
             make push_wheelbuilder_manylinux2014_3.8
 
@@ -652,6 +688,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make cibase_3.6
             make push_cibase_3.6
 
@@ -668,6 +705,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make cibase_3.7
             make push_cibase_3.7
 
@@ -684,6 +722,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make cibase_3.8
             make push_cibase_3.8
 
@@ -706,6 +745,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make testing_3.6
             make push_testing_3.6
 
@@ -722,6 +762,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make testing_3.7
             make push_testing_3.7
 
@@ -738,6 +779,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make testing_3.8
             make push_testing_3.8
 
@@ -792,6 +834,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make jupyter_3.6
             make push_jupyter_3.6
 
@@ -808,6 +851,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make jupyter_3.7
             make push_jupyter_3.7
 
@@ -824,6 +868,7 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
+            docker system prune -af
             make jupyter_3.8
             make push_jupyter_3.8
 
