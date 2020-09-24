@@ -14,7 +14,7 @@ ipywidgets
 jupyter_contrib_nbextensions
 jupyter_sphinx
 matplotlib
-meshio==3.3.1
+meshio==4.2.0
 mpi4py
 myst-parser
 nbresuse
@@ -26,7 +26,6 @@ packaging
 pillow
 pyamg
 pyevtk>=1.1
-pygmsh==6.0.2
 pymor-nb2plots>=0.7
 pyopengl
 pytest-runner>=2.9
