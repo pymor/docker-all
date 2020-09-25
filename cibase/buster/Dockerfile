@@ -31,7 +31,7 @@ RUN apt-get update && \
     ${APTINSTALL} wget curl less \
         texlive-base xvfb gnupg ca-certificates \
         gcc g++ gfortran make dirmngr pandoc \
-        gmsh swig cmake libopenblas-dev \
+        swig cmake libopenblas-dev \
         aptitude bison flex ninja-build \
         xauth gsl-bin git-lfs \
         vim openmpi-bin mpi-default-dev gosu sudo \
