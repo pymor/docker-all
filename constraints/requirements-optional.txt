@@ -8,6 +8,7 @@ cython>=0.28
 diskcache
 docopt-ng
 ipyparallel>=6.2.5
+gmsh
 ipython>=5.0
 ipyscales
 ipywidgets
