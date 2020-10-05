@@ -1,5 +1,3 @@
-FROM pymor/python_builder_PYVER:VERTAG as python_builder
-
 FROM debian:buster-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -7,8 +5,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PIP_INSTALL="pip install --no-cache-dir -qq" \
     LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
-    LANGUAGE=C.UTF-8
-COPY --from=python_builder /usr/local/ /usr/local/
+    LANGUAGE=C.UTF-8 \
+    MAKE_PROCS=2
+
 # python's configured to use system's expat and ffi libs
 RUN echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
 	apt update -qq \
@@ -33,5 +32,6 @@ RUN echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
 	tk \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV MAKE_PROCS=2
+COPY --from=pymor/python_builder_PYVER:VERTAG /usr/local/ /usr/local/
+
 CMD ["python3"]
