@@ -1,5 +1,4 @@
-FROM pymor/pypi-mirror_stable_pyPYVER:VERTAG as dependencies
-
+# syntax = docker/dockerfile:experimental
 FROM pymor/testing_pyPYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
@@ -7,7 +6,10 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 # libopenblas-dev: needed for slycot install (wheel building)
 # mpi-default-dev: for mpi4py install/wheel
 # the pythreejs needs npm/nodejs installed for the jupter lab extension
-RUN /bin/bash -c "curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
+    --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+    /bin/bash -c "curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     &&  apt update && ${APTINSTALL} nodejs libopenblas-dev mpi-default-dev &&\
     pip install jupyterlab && \
     jupyter nbextension install --py --symlink --sys-prefix pythreejs && \
@@ -28,8 +30,9 @@ COPY ipython_kernel_config.py /etc/ipython/
 # automatic cache busting since docker will otherwise NOT rebuild if VERTAG (and thereby the mirror image) changes
 RUN echo VERTAG > /tmp/vertag && \
   chmod +x /usr/local/bin/*
-COPY --from=dependencies /pymor/downloads/* /tmp/dependencies/
-RUN /bin/bash -c "pip install /tmp/dependencies/*" && \
+COPY --from=pymor/pypi-mirror_stable_pyPYVER:VERTAG /pymor/downloads/* /tmp/dependencies/
+RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+  /bin/bash -c "pip install /tmp/dependencies/*" && \
   chmod +x /usr/local/bin/dev-entrypoint.bash
 
 ENTRYPOINT ["/usr/local/bin/dev-entrypoint.bash"]

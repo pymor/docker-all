@@ -1,28 +1,20 @@
+# syntax = docker/dockerfile:experimental
+
 FROM pymor/python_PYVER:VERTAG
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # Get Ubuntu updates
 USER root
-RUN apt-get update && \
-    apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
-    apt-get -y install locales sudo && \
-    echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
-    locale-gen && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Set locale environment
-ENV LC_ALL=C.UTF-8 \
-    LANG=C.UTF-8 \
-    LANGUAGE=C.UTF-8
-
-
 ENV FENICS_HOME /root/fenics
 RUN mkdir ${FENICS_HOME} && touch $FENICS_HOME/.sudo_as_admin_successful
 
 WORKDIR /tmp
 
 # Non-Python utilities and libraries
-RUN apt-get -qq update && \
+RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
+    --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+    apt-get -qq update && \
     apt-get -y --with-new-pkgs \
         -o Dpkg::Options::="--force-confold" upgrade && \
     apt-get -y install curl && \
@@ -70,7 +62,9 @@ RUN apt-get -qq update && \
         scipy \
         six \
         subprocess32 \
-        urllib3
+        urllib3 && \
+    ls -l /cache && du -sch /cache
+
 
 # Environment variables
 ENV PETSC_VERSION=3.12.3 \
@@ -83,7 +77,7 @@ ENV PETSC_VERSION=3.12.3 \
     OPENBLAS_VERBOSE=0
 
 # Install PETSc from source
-RUN wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz && \
+RUN --mount=type=cache,target=/cache/ wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz && \
     tar -xf petsc-lite-${PETSC_VERSION}.tar.gz && \
     cd petsc-${PETSC_VERSION} && \
     python ./configure --COPTFLAGS="-O2" \
@@ -105,7 +99,7 @@ RUN wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-li
      rm -rf /tmp/*
 
 # Install SLEPc from source
-RUN wget -nc --quiet https://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION}.tar.gz -O slepc-${SLEPC_VERSION}.tar.gz && \
+RUN --mount=type=cache,target=/cache/ wget -nc --quiet https://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION}.tar.gz -O slepc-${SLEPC_VERSION}.tar.gz && \
     mkdir -p slepc-src && tar -xf slepc-${SLEPC_VERSION}.tar.gz -C slepc-src --strip-components 1 && \
     export PETSC_DIR=/usr/local/petsc-32 && \
     cd slepc-src && \

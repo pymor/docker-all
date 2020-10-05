@@ -1,12 +1,17 @@
+# syntax = docker/dockerfile:experimental
 FROM python:PYVER
 
 ENV MIRROR_VERSION=4.0.2 \
   PIP_VERSION=20.2.3 \
   SERVER_ROOT=/pymor \
   PYTORCH_VERSION=1.5.1 \
-  DOWNLOAD="/tmp/venv/bin/pip download --no-cache-dir -d /pymor/downloads"
+  XDG_CACHE_HOME=/cache \
+  DOWNLOAD="/tmp/venv/bin/pip download -d /pymor/downloads"
 
-RUN pip install --no-cache-dir -qq "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
+RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
+    --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+  pip install -qq "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
       requests-toolbelt virtualenv\
   && useradd --shell /bin/bash -u 1000 -o -m -d /data -c "" -m pymor \
   && mkdir ${SERVER_ROOT} \
@@ -15,7 +20,8 @@ RUN pip install --no-cache-dir -qq "python-pypi-mirror==${MIRROR_VERSION}"  pip=
 COPY PYVER/requirements/*.txt ${SERVER_ROOT}/requirements/
 # non-installable package cannot be downloaded and would error out the whole process
 # pytorch needs special casing due to --follow url
-RUN virtualenv /tmp/venv \
+RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+  virtualenv /tmp/venv \
   && cd ${SERVER_ROOT}/requirements \
   && ${DOWNLOAD} pip \
   && (for fn in oldest_req*.txt ; do \
