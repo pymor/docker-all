@@ -1,6 +1,4 @@
-FROM pymor/fenics_pyPYVER:VERTAG as fenicslayer
-FROM pymor/ngsolve_pyPYVER:VERTAG as ngsolve
-FROM pymor/dealii_pyPYVER:VERTAG as dealii
+# syntax = docker/dockerfile:experimental
 FROM pymor/python_PYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
@@ -28,7 +26,10 @@ ENV DOCKER_NGSOLVE=1 \
 # ngsolve: liboce-modeling11 liboce-ocaf11 libopengl0 \
 #          libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23
 # gmsh: libxcursor1 libxinerama1
-RUN apt-get update && \
+RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
+    --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+    apt-get update && \
     ${APTINSTALL} wget curl less \
         texlive-base xvfb gnupg ca-certificates \
         gcc g++ gfortran make dirmngr pandoc \
@@ -59,9 +60,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 
-COPY --from=fenicslayer /usr/local/ /usr/local/
-COPY --from=dealii /usr/local/ /usr/local/
-COPY --from=ngsolve /usr/local/ /usr/local/
+COPY --from=pymor/fenics_pyPYVER:VERTAG /usr/local/ /usr/local/
+COPY --from=pymor/dealii_pyPYVER:VERTAG /usr/local/ /usr/local/
+COPY --from=pymor/ngsolve_pyPYVER:VERTAG /usr/local/ /usr/local/
 
 RUN python -c "import ngsolve" && \
     python -c "import dolfin" && \

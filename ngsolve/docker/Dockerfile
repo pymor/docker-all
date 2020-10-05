@@ -1,12 +1,11 @@
-FROM pymor/petsc_pyPYVER:VERTAG as petsclayer
-
-ENV PETSC_DIR=/usr/local/petsc-32
-
+# syntax = docker/dockerfile:experimental
 FROM pymor/python_PYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
-RUN apt-get update && \
+RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
+    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+    apt-get update && \
     apt-get -y install libxmu-dev tk-dev tcl-dev cmake git g++ \
     libglu1-mesa-dev ccache openssh-client openmpi-bin libopenmpi-dev \
     python3 libpython3-dev python3-pytest python3-numpy python3-sphinx python3-pip \
@@ -19,11 +18,12 @@ ENV PATH="/opt/netgen/bin:${PATH}" \
     PETSC_DIR=/usr/local/petsc-32
 ENV MUMPS_DIR=${PETSC_DIR}
 
-COPY --from=petsclayer ${PETSC_DIR} ${PETSC_DIR}
+COPY --from=pymor/petsc_pyPYVER:VERTAG ${PETSC_DIR} ${PETSC_DIR}
 
 COPY catch.hpp /usr/local/include/
 # fake lsb-release to get ngsolve cmake to configure for deb package building
-RUN echo "DISTRIB_CODENAME=buster" > /etc/lsb-release && \
+RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+    echo "DISTRIB_CODENAME=buster" > /etc/lsb-release && \
     git clone https://github.com/NGSolve/ngsolve.git ${NGSOLVE_SRC_DIR} && \
     cd ${NGSOLVE_SRC_DIR} && \
     git checkout ${NGSOLVE_VERSION} && \

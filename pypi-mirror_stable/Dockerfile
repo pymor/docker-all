@@ -1,12 +1,15 @@
+# syntax = docker/dockerfile:experimental
 FROM python:PYVER
 
 ENV MIRROR_VERSION=4.0.2 \
   PIP_VERSION=20.2.3 \
   SERVER_ROOT=/pymor \
   PYTORCH_VERSION=1.5.1 \
-  DOWNLOAD="pip download --no-cache-dir -d /pymor/downloads"
+  XDG_CACHE_HOME=/cache \
+  DOWNLOAD="pip download -d /pymor/downloads"
 
-RUN pip install --no-cache -qq "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
+RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+  pip install -qq "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
     pypi-oldest-requirements>=2020.4.1 requests-toolbelt \
   && useradd --shell /bin/bash -u 1000 -o -m -d /data -c "" -m pymor \
   && mkdir ${SERVER_ROOT} \
@@ -15,7 +18,8 @@ RUN pip install --no-cache -qq "python-pypi-mirror==${MIRROR_VERSION}"  pip==${P
 COPY PYVER/requirements/*.txt ${SERVER_ROOT}/requirements/
 # non-installable package cannot be downloaded and would error out the whole process
 # pytorch needs special casing due to --follow url
-RUN cd ${SERVER_ROOT}/requirements \
+RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+ cd ${SERVER_ROOT}/requirements \
   && ${DOWNLOAD} pip \
   && (for fn in req*.txt ; do \
     set +e ; \

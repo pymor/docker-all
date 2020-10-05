@@ -4,7 +4,7 @@ set -ex
 
 cd /requirements/
 for fn in requirements*.txt ; do
-    pip install --no-cache-dir -r ${fn}
+    pip install -r ${fn}
 done
 
 pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii \
@@ -18,7 +18,7 @@ done
 cd /requirements/
 virtualenv /tmp/venv_old
 for fn in oldest_require*.txt ; do
-    /tmp/venv_old/bin/pip install --no-cache-dir -r ${fn}
+    /tmp/venv_old/bin/pip install -r ${fn}
 done
 
 /tmp/venv_old/bin/pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii \

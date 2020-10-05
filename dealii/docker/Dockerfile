@@ -1,12 +1,17 @@
+# syntax = docker/dockerfile:experimental
+
 FROM pymor/python_PYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 USER root
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update
+ENV DEBIAN_FRONTEND=noninteractive
 #for add-apt-repo
-RUN apt-get install -y software-properties-common \
+RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
+    --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+    apt-get update && \
+    apt-get install -y software-properties-common \
     gfortran cmake g++\
     git \
     gsl-bin \
@@ -31,7 +36,8 @@ RUN apt-get install -y software-properties-common \
     pip install numpy
 
 ENV DEALII_VERSION=9.0.1
-RUN cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VERSION}-src && \
+RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+    cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VERSION}-src && \
     cd dealii-${DEALII_VERSION}-src && \
     git checkout v${DEALII_VERSION} && \
     mkdir build && cd build && \
@@ -45,8 +51,8 @@ RUN cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VE
     ninja -j ${MAKE_PROCS} && \
     ninja -j 1 install && \
     find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
-    cd / && rm -rf /tmp/deal*
-RUN cd /tmp && git clone --recurse-submodules --branch=master https://github.com/pymor/pymor-deal.II deal && \
+    cd / && rm -rf /tmp/deal* && \
+    cd /tmp && git clone --recurse-submodules --branch=master https://github.com/pymor/pymor-deal.II deal && \
     cd deal && python setup.py bdist_wheel && \
     mkdir /usr/local/tmp/ && \
     mv dist/*.whl /usr/local/tmp/ && \

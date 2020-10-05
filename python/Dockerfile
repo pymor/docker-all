@@ -1,3 +1,4 @@
+# syntax = docker/dockerfile:experimental
 FROM debian:buster-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -6,10 +7,15 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
     LANGUAGE=C.UTF-8 \
-    MAKE_PROCS=2
+    MAKE_PROCS=2 \
+    CCACHE_DIR=/cache/ccache \
+    XDG_CACHE_HOME=/cache \
+    PATH=/usr/lib/ccache:${PATH}
 
 # python's configured to use system's expat and ffi libs
-RUN echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
+RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
+    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+  echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
 	apt update -qq \
 	&& ${APTINSTALL} libexpat1 libffi6 \
 	libbz2-1.0 \
@@ -30,8 +36,10 @@ RUN echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
 	libfreetype6 \
 	tcl \
 	tk \
-	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  ccache \
+	&& rm -rf /tmp/* /var/tmp/*
 
 COPY --from=pymor/python_builder_PYVER:VERTAG /usr/local/ /usr/local/
+RUN ldconfig
 
 CMD ["python3"]
