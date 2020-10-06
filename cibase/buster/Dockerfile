@@ -27,6 +27,7 @@ ENV DOCKER_NGSOLVE=1 \
 #         libeigen3-dev
 # ngsolve: liboce-modeling11 liboce-ocaf11 libopengl0 \
 #          libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23
+# gmsh: libxcursor1 libxinerama1
 RUN apt-get update && \
     ${APTINSTALL} wget curl less \
         texlive-base xvfb gnupg ca-certificates \
@@ -48,6 +49,7 @@ RUN apt-get update && \
         libeigen3-dev \
         libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
           libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 \
+        libxcursor1 libxinerama1 \
         libsz2  && \
     echo "alias ls='ls -h --color=auto'" >> /etc/bash.bashrc && \
     echo "alias ll='ls -lh'" >> /etc/bash.bashrc && \
