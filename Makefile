@@ -217,7 +217,7 @@ pull_all_latest_%: FORCE
 	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call WB2014_IMAGE,$*,latest)
 
 update_python_templates:
-	cd python_builder && ./update.sh 3.6 3.7 3.8 3.9-rc
+	cd python_builder && ./update.sh 3.6 3.7 3.8 3.9
 
 ci_update:
 	./.ci/template.azure.py
