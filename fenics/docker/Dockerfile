@@ -24,8 +24,6 @@ RUN pip install --no-cache-dir numpy && \
     pip install --no-cache-dir matplotlib && \
     pip install --no-cache-dir https://bitbucket.org/mpi4py/mpi4py/downloads/mpi4py-${MPI4PY_VERSION}.tar.gz && \
     pip install petsc4py==${PETSC4PY_VERSION} && \
-    pip install slepc4py==${SLEPC4PY_VERSION} && \
-    pip install --no-cache-dir https://bitbucket.org/slepc/slepc4py/downloads/slepc4py-${SLEPC4PY_VERSION}.tar.gz && \
     wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
     tar -xf v${PYBIND11_VERSION}.tar.gz && \
     cd pybind11-${PYBIND11_VERSION} && \
