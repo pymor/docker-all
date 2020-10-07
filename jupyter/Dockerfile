@@ -11,7 +11,7 @@ RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
     --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
     /bin/bash -c "curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     &&  apt update && ${APTINSTALL} nodejs libopenblas-dev mpi-default-dev &&\
-    pip install jupyterlab && \
+    pip install jupyterlab pythreejs && \
     jupyter nbextension install --py --symlink --sys-prefix pythreejs && \
     jupyter nbextension install --py --symlink --sys-prefix ngsolve && \
     jupyter nbextension enable --py --sys-prefix pythreejs && \
