@@ -2,10 +2,12 @@
 FROM REGISTRY/pymor/python_PYVER:VERTAG as builder_PYVER_VERTAG
 # libopenblas-dev cmake: needed for slycot install (wheel building)
 # mpi-default-dev: for mpi4py install/wheel
+# until lxml wheel for 3.9 exists: libxslt1-dev libxml2-dev cython
 RUN MOUNT_CACHE \
-  pip install pypi-oldest-requirements>=2020.4.2 && \
+  pip install pypi-oldest-requirements>=2020.4.2 cython && \
   apt update && \
-  apt install -y libopenblas-dev mpi-default-dev make g++ gfortran cmake
+  apt install -y libopenblas-dev mpi-default-dev make g++ gfortran cmake \
+    libxslt1-dev libxml2-dev
 
 COPY requirements* /requirements/
 
