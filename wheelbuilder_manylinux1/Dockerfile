@@ -9,7 +9,8 @@ ENV MPICC=/usr/lib64/openmpi/1.4-gcc/bin/mpicc \
     XDG_CACHE_HOME=/cache \
     PLATFORM=manylinux1_x86_64
 
-RUN yum install -vy atlas-devel openmpi-devel \
+RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+  yum install -vy atlas-devel openmpi-devel \
         fltk freeglut libpng libjpeg \
         tk tcl xorg-x11-server-Xvfb xauth
 
