@@ -82,6 +82,10 @@ clean_docker-in-docker: FORCE
 	for img in $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep $(call FULL_IMAGE_NAME,dummy,)) ; \
 		do $(CNTR_RMI) $${img} ; done
 
+$(addsuffix _pytorch_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYTORCH_IMAGE
+real_pytorch_%: FORCE
+	$(DO_IT)
+
 $(addsuffix _wheelbuilder_manylinux1_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB1_IMAGE
 real_wheelbuilder_manylinux1_%: FORCE pypi-mirror_oldest_%
 	$(DO_IT)
@@ -95,7 +99,7 @@ real_wheelbuilder_manylinux2014_%: FORCE pypi-mirror_oldest_%
 	$(DO_IT)
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
-real_constraints_%: FORCE python_%
+real_constraints_%: FORCE python_% pytorch_%
 	$(DO_IT)
 	[ -d $(THIS_DIR)/pypi-mirror_stable/$* ] || mkdir $(THIS_DIR)/pypi-mirror_stable/$*
 	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_stable/$*/:/output $(MAIN_CNTR_REGISTRY)/$(call CONSTRAINTS_IMAGE,$*,$(VER))
