@@ -1,4 +1,4 @@
-# syntax = docker/dockerfile:experimental
+# EXPERIMENTAL_SYNTAX
 FROM debian:buster-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -13,8 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PATH=/usr/lib/ccache:${PATH}
 
 # python's configured to use system's expat and ffi libs
-RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
-    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+RUN MOUNT_CACHE \
   echo "C.UTF-8 UTF-8" > /etc/locale.gen && \
 	apt update -qq \
 	&& ${APTINSTALL} libexpat1 libffi6 \

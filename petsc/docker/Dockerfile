@@ -1,4 +1,4 @@
-# syntax = docker/dockerfile:experimental
+# EXPERIMENTAL_SYNTAX
 
 FROM pymor/python_PYVER:VERTAG
 MAINTAINER René Fritze <rene.fritze@wwu.de>
@@ -11,14 +11,9 @@ RUN mkdir ${FENICS_HOME} && touch $FENICS_HOME/.sudo_as_admin_successful
 WORKDIR /tmp
 
 # Non-Python utilities and libraries
-RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
-    --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
-    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+RUN MOUNT_CACHE \
     apt-get -qq update && \
-    apt-get -y --with-new-pkgs \
-        -o Dpkg::Options::="--force-confold" upgrade && \
-    apt-get -y install curl && \
-    apt-get -y install \
+    apt-get -y install curl \
         bison \
         cmake \
         doxygen \
@@ -62,8 +57,7 @@ RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
         scipy \
         six \
         subprocess32 \
-        urllib3 && \
-    ls -l /cache && du -sch /cache
+        urllib3
 
 
 # Environment variables
@@ -77,7 +71,8 @@ ENV PETSC_VERSION=3.12.3 \
     OPENBLAS_VERBOSE=0
 
 # Install PETSc from source
-RUN --mount=type=cache,target=/cache/ wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz && \
+RUN MOUNT_CACHE \
+    wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz && \
     tar -xf petsc-lite-${PETSC_VERSION}.tar.gz && \
     cd petsc-${PETSC_VERSION} && \
     python ./configure --COPTFLAGS="-O2" \
@@ -99,11 +94,14 @@ RUN --mount=type=cache,target=/cache/ wget --quiet -nc http://ftp.mcs.anl.gov/pu
      rm -rf /tmp/*
 
 # Install SLEPc from source
-RUN --mount=type=cache,target=/cache/ wget -nc --quiet https://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION}.tar.gz -O slepc-${SLEPC_VERSION}.tar.gz && \
+RUN MOUNT_CACHE \
+    wget -nc --quiet https://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION}.tar.gz -O slepc-${SLEPC_VERSION}.tar.gz && \
     mkdir -p slepc-src && tar -xf slepc-${SLEPC_VERSION}.tar.gz -C slepc-src --strip-components 1 && \
     export PETSC_DIR=/usr/local/petsc-32 && \
     cd slepc-src && \
     python ./configure --prefix=/usr/local/slepc-32 && \
+  PETSC_ARCH=linux-gnu-real-32 pip3 install petsc4py==${PETSC4PY_VERSION} slepc4py==${SLEPC4PY_VERSION}
+    wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
     make -j ${MAKE_PROCS} && \
     make install && \
     find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \

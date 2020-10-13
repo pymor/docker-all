@@ -1,3 +1,4 @@
+# EXPERIMENTAL_SYNTAX
 #
 # NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
 #
@@ -9,7 +10,7 @@ FROM debian:buster-slim
 ENV QUIET="-q" \
  VERYQUIET="-qq"
 
-RUN apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y --no-install-recommends \
+RUN MOUNT_CACHE apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y --no-install-recommends \
 		ca-certificates \
 		curl \
 		netbase \
@@ -83,9 +84,9 @@ RUN apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y --no-install-
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV GPG_KEY 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
-ENV PYTHON_VERSION 3.6.11
+ENV PYTHON_VERSION 3.6.12
 
-RUN set -ex \
+RUN MOUNT_CACHE set -ex \
 	&& buildDeps=' \
 		dpkg-dev \
 		tcl-dev \
@@ -139,7 +140,7 @@ RUN cd /usr/local/bin \
 	&& ln -s python3-config python-config
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION 20.2.3
+ENV PYTHON_PIP_VERSION 20.2.2
 ENV PIP_INSTALL="pip install --no-cache-dir -qq"
 
 RUN set -ex; \

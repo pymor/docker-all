@@ -1,5 +1,4 @@
-# syntax = docker/dockerfile:experimental
-
+# EXPERIMENTAL_SYNTAX
 FROM pymor/python_PYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
@@ -7,9 +6,7 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 USER root
 ENV DEBIAN_FRONTEND=noninteractive
 #for add-apt-repo
-RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
-    --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
-    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+RUN MOUNT_CACHE \
     apt-get update && \
     apt-get install -y software-properties-common \
     gfortran cmake g++\
@@ -36,7 +33,7 @@ RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
     pip install numpy
 
 ENV DEALII_VERSION=9.0.1
-RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+RUN MOUNT_CACHE \
     cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VERSION}-src && \
     cd dealii-${DEALII_VERSION}-src && \
     git checkout v${DEALII_VERSION} && \

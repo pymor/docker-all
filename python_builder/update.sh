@@ -41,6 +41,7 @@ pipVersion="20.2.2"
 
 generated_warning() {
 	cat <<-EOH
+		# EXPERIMENTAL_SYNTAX
 		#
 		# NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
 		#
