@@ -1,4 +1,4 @@
-# syntax = docker/dockerfile:experimental
+# EXPERIMENTAL_SYNTAX
 FROM quay.io/pypa/manylinux2014_x86_64:2020-04-06-2fd435d
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
@@ -9,7 +9,7 @@ ENV MPICC=/usr/lib64/openmpi/bin/mpicc \
     XDG_CACHE_HOME=/cache \
     PLATFORM=manylinux2014_x86_64
 
-RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+RUN MOUNT_CACHE \
   yum install -y atlas-devel openmpi-devel  \
         fltk freeglut libpng libjpeg \
         tk tcl xorg-x11-server-Xvfb xauth
@@ -17,7 +17,7 @@ RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
 COPY --from=pymor/pypi-mirror_oldest_pyPYVER:VERTAG /pymor/downloads/* ${WHEEL_DIR}/
 COPY pybin.sh /etc/profile.d/
 # some packages get installed manually because others have broken dependency settings
-RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+RUN MOUNT_CACHE \
   source /etc/profile.d/pybin.sh && \
   rm -f ${WHEEL_DIR}/slycot* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* ${WHEEL_DIR}/scipy* && \

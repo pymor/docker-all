@@ -1,4 +1,4 @@
-# syntax = docker/dockerfile:experimental
+# EXPERIMENTAL_SYNTAX
 FROM pymor/testing_pyPYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
@@ -6,9 +6,7 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 # libopenblas-dev: needed for slycot install (wheel building)
 # mpi-default-dev: for mpi4py install/wheel
 # the pythreejs needs npm/nodejs installed for the jupter lab extension
-RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
-    --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
-    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+RUN MOUNT_CACHE \
     /bin/bash -c "curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     &&  apt update && ${APTINSTALL} nodejs libopenblas-dev mpi-default-dev &&\
     pip install jupyterlab pythreejs && \

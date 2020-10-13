@@ -3,7 +3,7 @@ FROM debian:%%PLACEHOLDER%%-slim
 ENV QUIET="-q" \
  VERYQUIET="-qq"
 
-RUN apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y --no-install-recommends \
+RUN MOUNT_CACHE apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y --no-install-recommends \
 		ca-certificates \
 		curl \
 		netbase \
@@ -79,7 +79,7 @@ RUN apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y --no-install-
 ENV GPG_KEY %%PLACEHOLDER%%
 ENV PYTHON_VERSION %%PLACEHOLDER%%
 
-RUN set -ex \
+RUN MOUNT_CACHE set -ex \
 	&& buildDeps=' \
 		dpkg-dev \
 		tcl-dev \
