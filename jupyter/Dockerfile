@@ -31,8 +31,7 @@ COPY ipython_kernel_config.py /etc/ipython/
 RUN echo VERTAG > /tmp/vertag && \
   chmod +x /usr/local/bin/*
 COPY --from=pymor/pypi-mirror_stable_pyPYVER:VERTAG /pymor/downloads/* /tmp/dependencies/
-RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
-  /bin/bash -c "pip install /tmp/dependencies/*" && \
+RUN MOUNT_CACHE (for pkg in /tmp/dependencies/* ; do pip install --no-deps --no-cache-dir ${pkg} && rm ${pkg} ; done) && \
   chmod +x /usr/local/bin/dev-entrypoint.bash
 
 ENTRYPOINT ["/usr/local/bin/dev-entrypoint.bash"]
