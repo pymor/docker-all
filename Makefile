@@ -4,7 +4,7 @@ THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 SUBDIRS = $(patsubst %/,%,$(sort $(dir $(wildcard */))))
 PY_INDEPENDENT = demo deploy_checks docker-in-docker docs ci_sanity pymor_source
 PY_SUBDIRS = $(filter-out $(PY_INDEPENDENT),$(SUBDIRS))
-EXCLUDE_FROM_ALL = pypi-mirror_test docs
+EXCLUDE_FROM_ALL = pypi-mirror_test docs pytorch
 PUSH_PYTHON_SUBDIRS = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 CLEAN_PYTHON_SUBDIRS = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 PUSH_PYTHON_VERSIONS = $(addprefix push_,$(PYTHONS))
@@ -99,7 +99,7 @@ real_wheelbuilder_manylinux2014_%: FORCE pypi-mirror_oldest_%
 	$(DO_IT)
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
-real_constraints_%: FORCE python_% pytorch_%
+real_constraints_%: FORCE python_%
 	$(DO_IT)
 	[ -d $(THIS_DIR)/pypi-mirror_stable/$* ] || mkdir $(THIS_DIR)/pypi-mirror_stable/$*
 	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_stable/$*/:/output $(MAIN_CNTR_REGISTRY)/$(call CONSTRAINTS_IMAGE,$*,$(VER))
