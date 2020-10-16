@@ -5,10 +5,11 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # libopenblas-dev: needed for slycot install (wheel building)
 # mpi-default-dev: for mpi4py install/wheel
+# libxml (py 3.9) libxml2-dev, libxslt1-dev
 # the pythreejs needs npm/nodejs installed for the jupter lab extension
 RUN MOUNT_CACHE \
     /bin/bash -c "curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-    &&  apt update && ${APTINSTALL} nodejs libopenblas-dev mpi-default-dev &&\
+    &&  apt update && ${APTINSTALL} nodejs libopenblas-dev mpi-default-dev libxml2-dev libxslt1-dev &&\
     pip install jupyterlab pythreejs && \
     jupyter nbextension install --py --symlink --sys-prefix pythreejs && \
     jupyter nbextension install --py --symlink --sys-prefix ngsolve && \
