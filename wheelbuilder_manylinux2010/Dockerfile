@@ -1,5 +1,5 @@
 # EXPERIMENTAL_SYNTAX
-FROM quay.io/pypa/manylinux2010_x86_64:2020-04-06-694ff3c
+FROM quay.io/pypa/manylinux2010_x86_64:2020-10-15-d1e0bf8
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
