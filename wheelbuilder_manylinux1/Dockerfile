@@ -10,8 +10,7 @@ ENV MPICC=/usr/lib64/openmpi/1.4-gcc/bin/mpicc \
     PLATFORM=manylinux1_x86_64
 
 RUN MOUNT_CACHE \
-  yum install -vy atlas-devel openmpi-devel \
-        fltk freeglut libpng libjpeg \
+  yum install -vy atlas-devel openmpi-devel openblas-devel\
         tk tcl xorg-x11-server-Xvfb xauth
 
 COPY --from=REGISTRY/pymor/pypi-mirror_oldest_pyPYVER:VERTAG /pymor/downloads/* ${WHEEL_DIR}/
