@@ -12,7 +12,7 @@ ENV MPICC=/usr/lib64/openmpi/bin/mpicc \
 RUN MOUNT_CACHE \
   yum install -y atlas-devel openmpi-devel  \
         fltk freeglut libpng libjpeg \
-        tk tcl xorg-x11-server-Xvfb xauth
+        tk tcl xorg-x11-server-Xvfb xauth openblas-devel
 
 COPY --from=REGISTRY/pymor/pypi-mirror_oldest_pyPYVER:VERTAG /pymor/downloads/* ${WHEEL_DIR}/
 COPY pybin.sh /etc/profile.d/
