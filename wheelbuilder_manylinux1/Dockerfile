@@ -20,7 +20,8 @@ RUN MOUNT_CACHE \
   source /etc/profile.d/pybin.sh && \
   rm -f ${WHEEL_DIR}/slycot* ${WHEEL_DIR}/*manylinux201* && \
   ${PYBIN}/pip install -U pip && \
-  ${PYBIN}/pip install ${WHEEL_DIR}/numpy* ${WHEEL_DIR}/scipy* && \
+  ${PYBIN}/pip install ${WHEEL_DIR}/numpy* && \
+  ${PYBIN}/pip install ${WHEEL_DIR}/scipy* && \
   ${PYBIN}/pip install ${WHEEL_DIR}/*
 
 COPY entrypoint.sh /usr/local/bin/
