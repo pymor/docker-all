@@ -1,0 +1,7 @@
+cmake
+cmarkgfm
+pytest-pycharm
+myst-parser
+scikit-build
+sphinx-autoapi
+sphinx>=3.0

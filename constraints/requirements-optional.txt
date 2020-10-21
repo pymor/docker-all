@@ -3,14 +3,14 @@
 -r requirements-ci.txt
 PySide2
 Qt.py>=1.2.4
-cmake
+bash_kernel
 cython>=0.28
 diskcache
 docopt-ng
-ipyparallel>=6.2.5
 gmsh
+icontract
+ipyparallel>=6.2.5
 ipython>=5.0
-ipyscales
 ipywidgets
 jupyter_contrib_nbextensions
 jupyter_sphinx
@@ -18,7 +18,6 @@ matplotlib
 kiwisolver==1.2.0
 meshio==4.2.0
 mpi4py
-myst-parser
 nbresuse
 numpy>=1.15.4;python_version == "3.7"
 numpy>=1.16.0;python_version != "3.6" and python_version != "3.7" and python_version != "3.8"
@@ -28,20 +27,19 @@ packaging
 pillow
 pyamg
 pyevtk>=1.1
-pymor-nb2plots>=0.7
 pyopengl
 pytest-runner>=2.9
 pytest>=4.4
 pythreejs
-scikit-build
 scipy>=1.1;python_version < "3.8"
 scipy>=1.3.3;python_version >= "3.8"
 setuptools>=40.8.0,<49.2.0
 slycot>=0.4.0
+sphinx-autodoc-typehints
+sphinx-icontract
+sphinx-material
 sphinx-qt-documentation
-sphinx-autoapi
-sphinx_material
-sphinx>=3.0
+sphinx>=1.7
 sympy
 torch
 wheel
