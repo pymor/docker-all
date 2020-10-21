@@ -27,5 +27,5 @@ RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
 COPY dev-entrypoint.bash /usr/local/bin/
 COPY ipython_kernel_config.py /etc/ipython/
 
-RUN chmod +x /usr/local/bin/*
+RUN chmod +rx /usr/local/bin/*
 ENTRYPOINT ["/usr/local/bin/dev-entrypoint.bash"]
