@@ -2,6 +2,9 @@ cmake
 cmarkgfm
 pytest-pycharm
 myst-parser
+mypy
+pyannotate
+MonkeyType
 scikit-build
 sphinx-autoapi
 sphinx>=3.0
