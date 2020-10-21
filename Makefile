@@ -2,7 +2,7 @@ include common.mk
 
 THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 SUBDIRS = $(patsubst %/,%,$(sort $(dir $(wildcard */))))
-PY_INDEPENDENT = demo deploy_checks docker-in-docker docs ci_sanity
+PY_INDEPENDENT = demo deploy_checks docker-in-docker docs ci_sanity pymor_source
 PY_SUBDIRS = $(filter-out $(PY_INDEPENDENT),$(SUBDIRS))
 EXCLUDE_FROM_ALL = pypi-mirror_test docs
 PUSH_PYTHON_SUBDIRS = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
@@ -111,7 +111,7 @@ real_pypi-mirror_oldest_%: FORCE constraints_%
 	$(DO_IT)
 
 $(addsuffix _pypi-mirror_test_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MIRROR_TEST_IMAGE
-real_pypi-mirror_test_%: pypi-mirror_stable_% pypi-mirror_oldest_% pymor_source
+real_pypi-mirror_test_%: testing_% pypi-mirror_stable_% pypi-mirror_oldest_% pymor_source
 	VARIANT=stable PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) CNTR_BASE_PYTHON=$* docker-compose -f mirror-test.docker-compose.yml up --build test
 	VARIANT=oldest PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) CNTR_BASE_PYTHON=$* docker-compose -f mirror-test.docker-compose.yml up --build test
 
