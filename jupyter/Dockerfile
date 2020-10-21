@@ -27,11 +27,5 @@ RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
 COPY dev-entrypoint.bash /usr/local/bin/
 COPY ipython_kernel_config.py /etc/ipython/
 
-# automatic cache busting since docker will otherwise NOT rebuild if VERTAG (and thereby the mirror image) changes
-RUN echo VERTAG > /tmp/vertag && \
-  chmod +x /usr/local/bin/*
-COPY --from=pymor/pypi-mirror_stable_pyPYVER:VERTAG /pymor/downloads/* /tmp/dependencies/
-RUN MOUNT_CACHE (for pkg in /tmp/dependencies/* ; do pip install --no-deps --no-cache-dir ${pkg} && rm ${pkg} ; done) && \
-  chmod +x /usr/local/bin/dev-entrypoint.bash
-
+RUN chmod +x /usr/local/bin/*
 ENTRYPOINT ["/usr/local/bin/dev-entrypoint.bash"]

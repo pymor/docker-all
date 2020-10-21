@@ -72,7 +72,12 @@ COPY pymor-info /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/
 COPY *.pip.conf /usr/local/share/
 
-RUN chmod +r -R /usr/local/
+COPY --from=pymor/pypi-mirror_stable_pyPYVER:VERTAG /pymor/downloads/* /tmp/dependencies/
+RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
+    --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
+    --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
+    set -exu && for pkg in /tmp/dependencies/* ; do pip install --no-deps --no-cache-dir ${pkg} && rm ${pkg} ; done
+
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["./.ci/gitlab/script.bash"]
