@@ -78,6 +78,8 @@ RUN --mount=type=cache,sharing=locked,id=pymor_aptcache,target=/var/cache/apt \
     --mount=type=cache,sharing=locked,id=pymor_aptlib,target=/var/lib/apt \
     set -exu && for pkg in /tmp/dependencies/* ; do pip install --no-deps --no-cache-dir ${pkg} && rm ${pkg} ; done
 
-
+# from here on images are user facing, unset away from mounted cache
+ENV CCACHE_DIR=/tmp/ccache \
+    XDG_CACHE_HOME=
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["./.ci/gitlab/script.bash"]
