@@ -7,5 +7,6 @@ useradd --shell /bin/bash -u $USER_ID -o -c "" -m pymor && \
     adduser pymor sudo &&\
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 export HOME=/home/pymor
+export CCACHE_DIR=/home/pymor/.ccache/
 
 exec gosu pymor "$@"
