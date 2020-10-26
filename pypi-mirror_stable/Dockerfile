@@ -29,8 +29,9 @@ RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
   done) \
   && cd ${SERVER_ROOT}/ \
   && ${DOWNLOAD} torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html \
-    -c ${SERVER_ROOT}/requirements/constraints.txt \
-  && pypi-mirror create -d downloads -m simple \
+    -c ${SERVER_ROOT}/requirements/constraints.txt
+RUN \
+  pypi-mirror create -d downloads -m simple \
   && rm -rf /tmp/*
 
 USER pymor
