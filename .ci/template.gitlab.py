@@ -70,6 +70,7 @@ stages:
 
 #******* stage 0
 {{ pyjob('python_builder', 0)}}
+{{ job('deploy_checks', 0)}}
 
 #******* stage 1
 {{ job('ci_sanity', 1) }}
@@ -98,7 +99,6 @@ stages:
 #******* stage 5
 {{ pyjob('testing', 5)}}
 {{ job('demo_master', 5)}}
-{{ job('deploy_checks', 5)}}
 
 #******* stage 6
 {{ pyjob('jupyter', 6)}}

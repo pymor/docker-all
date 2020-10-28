@@ -91,6 +91,30 @@ stages:
             make push_python_builder_3.8
 
 
+    - job: deploy_checks
+      timeoutInMinutes: 0
+      pool:
+        vmImage: 'ubuntu-16.04'
+      variables:
+        DOCKER_CLI_EXPERIMENTAL: enabled
+        DOCKER_BUILDKIT: 1
+      steps:
+        - checkout: self
+          submodules: true
+        - script: |
+            echo '{"experimental": true}' | sudo tee /etc/docker/daemon.json
+            sudo systemctl restart docker
+            docker version
+          displayName: "enable experimental features in Docker server"
+        - task: Docker@2
+          displayName: Container registry login
+          inputs:
+            command: login
+            containerRegistry: dockerhub
+        - script: |
+            make deploy_checks
+            make push_deploy_checks
+
 
   - stage: s_1
     displayName: 1
@@ -1151,30 +1175,6 @@ stages:
         - script: |
             make demo_master
             make push_demo_master
-
-    - job: deploy_checks
-      timeoutInMinutes: 0
-      pool:
-        vmImage: 'ubuntu-16.04'
-      variables:
-        DOCKER_CLI_EXPERIMENTAL: enabled
-        DOCKER_BUILDKIT: 1
-      steps:
-        - checkout: self
-          submodules: true
-        - script: |
-            echo '{"experimental": true}' | sudo tee /etc/docker/daemon.json
-            sudo systemctl restart docker
-            docker version
-          displayName: "enable experimental features in Docker server"
-        - task: Docker@2
-          displayName: Container registry login
-          inputs:
-            command: login
-            containerRegistry: dockerhub
-        - script: |
-            make deploy_checks
-            make push_deploy_checks
 
 
   - stage: s_6
