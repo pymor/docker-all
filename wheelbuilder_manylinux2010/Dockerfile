@@ -19,8 +19,10 @@ COPY pybin.sh /etc/profile.d/
 # some packages get installed manually because others have broken dependency settings
 RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
   source /etc/profile.d/pybin.sh && \
-  rm -f ${WHEEL_DIR}/slycot* && \
+  rm -f ${WHEEL_DIR}/slycot* ${WHEEL_DIR}/*manylinux2014_x86_64.whl && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* ${WHEEL_DIR}/scipy* && \
+  ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/*manylinux2010_x86_64.whl && \
+  rm -f ${WHEEL_DIR}/*manylinux2010_x86_64.whl && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/*
 
 COPY entrypoint.sh /usr/local/bin/
