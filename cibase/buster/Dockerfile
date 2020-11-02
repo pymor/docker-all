@@ -1,5 +1,5 @@
 # EXPERIMENTAL_SYNTAX
-FROM pymor/python_PYVER:VERTAG
+FROM REGISTRY/pymor/python_PYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
@@ -58,9 +58,9 @@ RUN MOUNT_CACHE \
     rm -rf /var/lib/apt/lists/*
 
 
-COPY --from=pymor/fenics_pyPYVER:VERTAG /usr/local/ /usr/local/
-COPY --from=pymor/dealii_pyPYVER:VERTAG /usr/local/ /usr/local/
-COPY --from=pymor/ngsolve_pyPYVER:VERTAG /usr/local/ /usr/local/
+COPY --from=REGISTRY/pymor/fenics_pyPYVER:VERTAG /usr/local/ /usr/local/
+COPY --from=REGISTRY/pymor/dealii_pyPYVER:VERTAG /usr/local/ /usr/local/
+COPY --from=REGISTRY/pymor/ngsolve_pyPYVER:VERTAG /usr/local/ /usr/local/
 
 RUN MOUNT_CACHE \
     python -c "import ngsolve" && \

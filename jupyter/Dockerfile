@@ -1,5 +1,5 @@
 # EXPERIMENTAL_SYNTAX
-FROM pymor/testing_pyPYVER:VERTAG
+FROM REGISTRY/pymor/testing_pyPYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 

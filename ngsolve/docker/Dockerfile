@@ -1,5 +1,5 @@
 # EXPERIMENTAL_SYNTAX
-FROM pymor/python_PYVER:VERTAG
+FROM REGISTRY/pymor/python_PYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
@@ -17,7 +17,7 @@ ENV PATH="/opt/netgen/bin:${PATH}" \
     PETSC_DIR=/usr/local/petsc-32
 ENV MUMPS_DIR=${PETSC_DIR}
 
-COPY --from=pymor/petsc_pyPYVER:VERTAG ${PETSC_DIR} ${PETSC_DIR}
+COPY --from=REGISTRY/pymor/petsc_pyPYVER:VERTAG ${PETSC_DIR} ${PETSC_DIR}
 
 COPY catch.hpp /usr/local/include/
 # fake lsb-release to get ngsolve cmake to configure for deb package building

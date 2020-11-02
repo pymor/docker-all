@@ -1,4 +1,4 @@
-FROM pymor/testing_py3.7:0.5
+FROM docker.io/pymor/testing_py3.7:0.5
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
