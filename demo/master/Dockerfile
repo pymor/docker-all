@@ -1,4 +1,4 @@
-FROM pymor/testing_py3.7:latest
+FROM REGISTRY/pymor/testing_py3.7:latest
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 USER root

@@ -14,7 +14,7 @@ RUN MOUNT_CACHE \
         fltk freeglut libpng libjpeg \
         tk tcl xorg-x11-server-Xvfb xauth
 
-COPY --from=pymor/pypi-mirror_oldest_pyPYVER:VERTAG /pymor/downloads/* ${WHEEL_DIR}/
+COPY --from=REGISTRY/pymor/pypi-mirror_oldest_pyPYVER:VERTAG /pymor/downloads/* ${WHEEL_DIR}/
 COPY pybin.sh /etc/profile.d/
 # some packages get installed manually because others have broken dependency settings
 RUN MOUNT_CACHE \

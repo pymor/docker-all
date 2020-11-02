@@ -38,7 +38,7 @@ RUN MOUNT_CACHE \
   ccache \
 	&& rm -rf /tmp/* /var/tmp/*
 
-COPY --from=pymor/python_builder_PYVER:VERTAG /usr/local/ /usr/local/
+COPY --from=REGISTRY/pymor/python_builder_PYVER:VERTAG /usr/local/ /usr/local/
 RUN ldconfig
 
 CMD ["python3"]

@@ -1,5 +1,5 @@
 # EXPERIMENTAL_SYNTAX
-FROM pymor/python_PYVER:VERTAG as builder
+FROM REGISTRY/pymor/python_PYVER:VERTAG as builder
 # libopenblas-dev cmake: needed for slycot install (wheel building)
 # mpi-default-dev: for mpi4py install/wheel
 RUN MOUNT_CACHE \

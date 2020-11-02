@@ -1,6 +1,6 @@
 # EXPERIMENTAL_SYNTAX
 
-FROM pymor/python_PYVER:VERTAG
+FROM REGISTRY/pymor/python_PYVER:VERTAG
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # Get Ubuntu updates
