@@ -8,3 +8,4 @@ MonkeyType
 scikit-build
 sphinx-autoapi
 sphinx>=3.0
+vaa==0.1.4

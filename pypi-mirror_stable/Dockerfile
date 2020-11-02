@@ -1,8 +1,8 @@
 # syntax = docker/dockerfile:experimental
 FROM python:PYVER
 
-ENV MIRROR_VERSION=4.0.2 \
-  PIP_VERSION=20.2.3 \
+ENV MIRROR_VERSION=4.0.5 \
+  PIP_VERSION=20.2.4 \
   SERVER_ROOT=/pymor \
   PYTORCH_VERSION=1.5.1 \
   XDG_CACHE_HOME=/cache \
@@ -27,11 +27,11 @@ RUN --mount=type=cache,sharing=locked,id=pymor_cache,target=/cache/ \
     set -e ; \
     ${DOWNLOAD} -r filtered_req -c ${SERVER_ROOT}/requirements/constraints.txt ; \
   done) \
+  && set -uex \
   && cd ${SERVER_ROOT}/ \
   && ${DOWNLOAD} torch==${PYTORCH_VERSION}+cpu -f https://download.pytorch.org/whl/torch_stable.html \
-    -c ${SERVER_ROOT}/requirements/constraints.txt
-RUN \
-  pypi-mirror create -d downloads -m simple \
+    -c ${SERVER_ROOT}/requirements/constraints.txt \
+  && pypi-mirror --print-traceback create  -d downloads -m simple \
   && rm -rf /tmp/*
 
 USER pymor
