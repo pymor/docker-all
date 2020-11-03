@@ -9,7 +9,7 @@ for fn in ${REQUIREMENTS} ; do
     pip install -r ${fn}
 done
 
-pip freeze --all | grep -v pymess | grep -v fenics | grep -v deal \
+pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii | grep -v torch \
   > /requirements/constraints.txt
 
 cd /requirements/
@@ -23,5 +23,5 @@ for fn in oldest_require*.txt ; do
     /tmp/venv_old/bin/pip install -r ${fn}
 done
 
-/tmp/venv_old/bin/pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii \
+/tmp/venv_old/bin/pip freeze --all | grep -v pymess | grep -v fenics | grep -v pymor-dealii | grep -v torch \
   > /requirements/oldest_constraints.txt
