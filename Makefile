@@ -52,34 +52,33 @@ $(foreach subd,$(PY_SUBDIRS),$(addprefix push_$(subd)_,$(PYTHONS))): push_% : rp
 $(foreach subd,$(PY_SUBDIRS),$(addprefix clean_$(subd)_,$(PYTHONS))): clean_% : cl_%
 
 cl_% : FORCE
-	for img in $$($(CNTR_CMD) images --format '{{.Repository}}:{{.Tag}}' | grep $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),)) ; \
+	for img in $$($(CNTR_CMD) images --format '{{.Repository}}:{{.Tag}}' | grep $(call FULL_IMAGE_NAME,$(lastword $(subst _, ,$*)),)) ; \
 		do $(CNTR_RMI) $${img} ; done
 
 rp_% : FORCE
-	$(CNTR_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
-	$(CNTR_PUSH) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)
+	$(call COMMON_PUSH,$(lastword $(subst _, ,$*)))
 
 pl_% : FORCE
-	@$(CNTR_PULL) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER)) >/dev/null 2>&1 || \
-		(echo "Not yet build $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))" ; \
-		$(CNTR_PULL) $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest) >/dev/null 2>&1 || \
-			echo "No latest version found for $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),latest)")
+	@$(CNTR_PULL) $(call FULL_IMAGE_NAME,$(lastword $(subst _, ,$*)),$(VER)) >/dev/null 2>&1 || \
+		(echo "Not yet build $(call FULL_IMAGE_NAME,$(lastword $(subst _, ,$*)),$(VER))" ; \
+		$(CNTR_PULL) $(call FULL_IMAGE_NAME,$(lastword $(subst _, ,$*)),latest) >/dev/null 2>&1 || \
+			echo "No latest version found for $(call FULL_IMAGE_NAME,$(lastword $(subst _, ,$*)),latest)")
 
 run_%: %
-	$(CNTR_RUN) -it --entrypoint=/bin/bash $(call $(IMAGE_NAME),$(lastword $(subst _, ,$*)),$(VER))
+	$(CNTR_RUN) -it --entrypoint=/bin/bash $(call FULL_IMAGE_NAME,$(lastword $(subst _, ,$*)),$(VER))
 
 pymor_source:
 	test -d pymor_source || git clone --branch=$(PYMOR_BRANCH) https://github.com/pymor/pymor pymor_source
 
 docker-in-docker push_docker-in-docker clean_docker-in-docker: IMAGE_NAME:=DIND_IMAGE
 docker-in-docker: FORCE
-	$(CNTR_BUILD) -t $(call $(IMAGE_NAME),dummy,$(VER)) $(call $(IMAGE_NAME)_DIR,dummy)
-	$(CNTR_TAG) $(call $(IMAGE_NAME),dummy,$(VER)) $(call $(IMAGE_NAME),dummy,latest)
+	$(CNTR_BUILD) -t $(call FULL_IMAGE_NAME,dummy,$(VER)) $(call $(IMAGE_NAME)_DIR,dummy)
+	$(CNTR_TAG) $(call FULL_IMAGE_NAME,dummy,$(VER)) $(call FULL_IMAGE_NAME,dummy,latest)
 push_docker-in-docker: FORCE
-	$(CNTR_PUSH) $(call $(IMAGE_NAME),dummy,$(VER))
-	$(CNTR_PUSH) $(call $(IMAGE_NAME),dummy,latest)
+	$(CNTR_PUSH) $(call FULL_IMAGE_NAME,dummy,$(VER))
+	$(CNTR_PUSH) $(call FULL_IMAGE_NAME,dummy,latest)
 clean_docker-in-docker: FORCE
-	for img in $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep $(call $(IMAGE_NAME),dummy,)) ; \
+	for img in $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep $(call FULL_IMAGE_NAME,dummy,)) ; \
 		do $(CNTR_RMI) $${img} ; done
 
 $(addsuffix _wheelbuilder_manylinux1_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB1_IMAGE
@@ -124,7 +123,7 @@ real_testing_%: FORCE cibase_%
 	$(DO_IT)
 
 ensure_testing_%:
-	$(CNTR_INSPECT) $(call $(IMAGE_NAME),$*,latest) >/dev/null 2>&1 || $(CNTR_PULL) $(call $(IMAGE_NAME),$*,latest)
+	$(CNTR_INSPECT) $(call FULL_IMAGE_NAME,$*,latest) >/dev/null 2>&1 || $(CNTR_PULL) $(call FULL_IMAGE_NAME,$*,latest)
 
 $(addsuffix _python_builder_%,$(IMAGE_TARGETS)): IMAGE_NAME=PYTHON_BUILDER_IMAGE
 real_python_builder_%: FORCE

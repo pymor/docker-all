@@ -38,6 +38,8 @@ WB2010_IMAGE_DIR = wheelbuilder_manylinux2010
 WB2014_IMAGE = pymor/wheelbuilder_manylinux2014_py$1:$2
 WB2014_IMAGE_DIR = wheelbuilder_manylinux2014
 # CNTR_BUILD=$(CNTR_CMD) build --squash
+MAIN_CNTR_REGISTRY?=zivgitlab.wwu.io/pymor/docker-all
+ALT_CNTR_REGISTRY?=docker.io
 CNTR_CMD?=docker
 CNTR_BUILD=$(CNTR_CMD) buildx build
 CNTR_TAG=$(CNTR_CMD) tag
@@ -46,21 +48,28 @@ CNTR_PULL=$(CNTR_CMD) pull -q
 CNTR_RUN=$(CNTR_CMD) run
 CNTR_RMI=$(CNTR_CMD) rmi -f
 CNTR_INSPECT=$(CNTR_CMD) inspect
-COMMON_INSPECT=$(CNTR_INSPECT) $(call $(IMAGE_NAME),$*,$(VER)) >/dev/null 2>&1
-CACHE_FROM=$$( ($(CNTR_INSPECT) $(call $(IMAGE_NAME),$*,latest) >/dev/null 2>&1 \
-	&& echo "--cache-from=$(call $(IMAGE_NAME),$*,latest)" ) || true )
+FULL_IMAGE_NAME = $(MAIN_CNTR_REGISTRY)/$(call $(IMAGE_NAME),$1,$2)
+ALT_IMAGE_NAME = $(ALT_CNTR_REGISTRY)/$(call $(IMAGE_NAME),$1,$2)
+COMMON_INSPECT=$(CNTR_INSPECT) $(call FULL_IMAGE_NAME,$*,$(VER)) >/dev/null 2>&1
+CACHE_FROM=$$( ($(CNTR_INSPECT) $(call FULL_IMAGE_NAME,$*,latest) >/dev/null 2>&1 \
+	&& echo "--cache-from=$(call FULL_IMAGE_NAME,$*,latest)" ) || true )
 COPY_DOCKERFILE_IF_CHANGED=sed -f macros.sed $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile \
 	> $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile_TMP__$* && \
-	sed -i -e "s;VERTAG;$(VER);g" -e "s;PYVER;$*;g" $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile_TMP__$* && \
+	sed -i -e "s;VERTAG;$(VER);g" -e "s;PYVER;$*;g" -e "s;REGISTRY;$(MAIN_CNTR_REGISTRY);g" $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile_TMP__$* && \
 	rsync -c $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile_TMP__$* $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$*
 COMMON_BUILD=$(COPY_DOCKERFILE_IF_CHANGED) && \
-	$(CNTR_BUILD) -t $(call $(IMAGE_NAME),$*,$(VER)) -t $(call $(IMAGE_NAME),$*,latest) \
+	$(CNTR_BUILD) -t $(call FULL_IMAGE_NAME,$*,$(VER)) -t $(call FULL_IMAGE_NAME,$*,latest) \
+	-t $(call ALT_IMAGE_NAME,$*,$(VER)) -t $(call ALT_IMAGE_NAME,$*,latest) \
 	 -f $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$* $(CACHE_FROM) \
 	 $(call $(IMAGE_NAME)_DIR,$*)
-COMMON_TAG=$(CNTR_TAG) $(call $(IMAGE_NAME),$*,$(VER)) $(call $(IMAGE_NAME),$*,latest)
+COMMON_TAG=$(CNTR_TAG) $(call FULL_IMAGE_NAME,$*,$(VER)) $(call FULL_IMAGE_NAME,$*,latest)
 DO_IT= ($(COMMON_INSPECT) || ($(COMMON_PULL) && $(COMMON_TAG))) || ($(COMMON_PULL_LATEST) ; $(COMMON_BUILD) && $(COMMON_TAG))
-COMMON_PULL=$(CNTR_PULL) $(call $(IMAGE_NAME),$*,$(VER))
-COMMON_PULL_LATEST=$(CNTR_PULL) $(call $(IMAGE_NAME),$*,latest)
+COMMON_PULL=$(CNTR_PULL) $(call FULL_IMAGE_NAME,$*,$(VER))
+COMMON_PULL_LATEST=$(CNTR_PULL) $(call FULL_IMAGE_NAME,$*,latest)
+COMMON_PUSH=$(CNTR_PUSH) $(call FULL_IMAGE_NAME,$1,$(VER)) && \
+	$(CNTR_PUSH) $(call FULL_IMAGE_NAME,$1,latest) && \
+	$(CNTR_PUSH) $(call ALT_IMAGE_NAME,$1,$(VER)) && \
+	$(CNTR_PUSH) $(call ALT_IMAGE_NAME,$1,latest)
 PYTHON_TAG=$(VER)
 PETSC_TAG=$(VER)
 PYMOR_BRANCH=master
