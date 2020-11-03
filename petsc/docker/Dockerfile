@@ -100,7 +100,7 @@ RUN MOUNT_CACHE \
     export PETSC_DIR=/usr/local/petsc-32 && \
     cd slepc-src && \
     python ./configure --prefix=/usr/local/slepc-32 && \
-  PETSC_ARCH=linux-gnu-real-32 pip3 install petsc4py==${PETSC4PY_VERSION} slepc4py==${SLEPC4PY_VERSION}
+  PETSC_ARCH=linux-gnu-real-32 pip3 install petsc4py==${PETSC4PY_VERSION} slepc4py==${SLEPC4PY_VERSION} && \
     wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
     make -j ${MAKE_PROCS} && \
     make install && \
