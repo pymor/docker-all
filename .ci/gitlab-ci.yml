@@ -28,6 +28,7 @@ stages:
     before_script:
       - apk --update add openssh-client rsync git file make bash m4
       - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
       - docker version
       - docker buildx
     variables:
@@ -72,6 +73,11 @@ python_builder 3 8:
         PYVER: "3.8"
         TARGET: python_builder
 
+deploy_checks:
+    extends: .py_indep
+    stage: "0"
+    variables:
+        TARGET: deploy_checks
 
 #******* stage 1
 ci_sanity:
@@ -384,11 +390,6 @@ demo_master:
     stage: "5"
     variables:
         TARGET: demo_master
-deploy_checks:
-    extends: .py_indep
-    stage: "5"
-    variables:
-        TARGET: deploy_checks
 
 #******* stage 6
 
