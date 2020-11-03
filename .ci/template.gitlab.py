@@ -30,6 +30,7 @@ stages:
     before_script:
       - apk --update add openssh-client rsync git file make bash m4
       - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
       - docker version
       - docker buildx
     variables:
