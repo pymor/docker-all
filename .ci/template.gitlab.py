@@ -53,10 +53,12 @@ stages:
 {{name}} {{PY[0]}} {{PY[2]}}:
     extends: .per_py
     stage: "{{stage}}"
+    tags:
     {% if name == "wheelbuilder_manylinux1" -%}
     {# glibc vsyscall issue with old centos and new kernel workaround -#}
-    tags:
-      - amm-old-ci
+          - amm-old-ci
+    {% else %}
+          - mike
     {% endif -%}
     variables:
         PYVER: "{{PY}}"
