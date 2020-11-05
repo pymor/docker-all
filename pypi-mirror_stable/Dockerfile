@@ -20,7 +20,7 @@ COPY PYVER/*.txt ${SERVER_ROOT}/requirements/
 # pytorch needs special casing due to --follow url
 # openblas is needed for python 3.9 until numpy has a wheel
 # for slycot: scikit-build
-COPY --from=docker.io/pymor/pytorch_pyPYVER:1.6 /io/wheelhouse/torch*.whl /tmp/
+COPY --from=docker.io/pymor/pytorch_pyPYVER:a2ebb25a0992b20957bfeced2e9dcee30105350b /io/wheelhouse/torch*.whl /tmp/
 RUN MOUNT_CACHE \
   ${DOWNLOAD} /tmp/torch*whl && rm /tmp/torch*whl \
   && set -uex ; \
