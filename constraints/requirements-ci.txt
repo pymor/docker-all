@@ -9,6 +9,7 @@ pypi-oldest-requirements>=2020.2
 pytest-cov
 pytest-memprof
 pytest-mypy
+pytest-notebook
 pytest-parallel
 pytest-timeout
 pytest-xdist
