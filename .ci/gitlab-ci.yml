@@ -348,34 +348,6 @@ fenics 3 8:
 
 
 #******* stage 4
-wheelbuilder_manylinux1 3 6:
-    extends: .per_py
-    stage: "4"
-    tags:
-    - amm-old-ci
-    variables:
-        PYVER: "3.6"
-        TARGET: wheelbuilder_manylinux1
-
-wheelbuilder_manylinux1 3 7:
-    extends: .per_py
-    stage: "4"
-    tags:
-    - amm-old-ci
-    variables:
-        PYVER: "3.7"
-        TARGET: wheelbuilder_manylinux1
-
-wheelbuilder_manylinux1 3 8:
-    extends: .per_py
-    stage: "4"
-    tags:
-    - amm-old-ci
-    variables:
-        PYVER: "3.8"
-        TARGET: wheelbuilder_manylinux1
-
-
 wheelbuilder_manylinux2010 3 6:
     extends: .per_py
     stage: "4"
