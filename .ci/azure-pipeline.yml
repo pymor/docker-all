@@ -38,8 +38,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make python_builder_3.6
-            make push_python_builder_3.6
+            make python_builder_3.6 ||  sleep 5 ; make python_builder_3.6 
+            make push_python_builder_3.6 || sleep 5 ; make push_python_builder_3.6
 
     - job: python_builder_3_7
       timeoutInMinutes: 0
@@ -64,8 +64,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make python_builder_3.7
-            make push_python_builder_3.7
+            make python_builder_3.7 ||  sleep 5 ; make python_builder_3.7 
+            make push_python_builder_3.7 || sleep 5 ; make push_python_builder_3.7
 
     - job: python_builder_3_8
       timeoutInMinutes: 0
@@ -90,8 +90,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make python_builder_3.8
-            make push_python_builder_3.8
+            make python_builder_3.8 ||  sleep 5 ; make python_builder_3.8 
+            make push_python_builder_3.8 || sleep 5 ; make push_python_builder_3.8
 
 
     - job: deploy_checks
@@ -117,8 +117,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make deploy_checks
-            make push_deploy_checks
+            make deploy_checks || sleep 5 ; make deploy_checks
+            make push_deploy_checks || sleep 5 ; make push_deploy_checks
 
 
   - stage: s_1
@@ -148,8 +148,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make ci_sanity
-            make push_ci_sanity
+            make ci_sanity || sleep 5 ; make ci_sanity
+            make push_ci_sanity || sleep 5 ; make push_ci_sanity
 
     - job: python_3_6
       timeoutInMinutes: 0
@@ -174,8 +174,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make python_3.6
-            make push_python_3.6
+            make python_3.6 ||  sleep 5 ; make python_3.6 
+            make push_python_3.6 || sleep 5 ; make push_python_3.6
 
     - job: python_3_7
       timeoutInMinutes: 0
@@ -200,8 +200,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make python_3.7
-            make push_python_3.7
+            make python_3.7 ||  sleep 5 ; make python_3.7 
+            make push_python_3.7 || sleep 5 ; make push_python_3.7
 
     - job: python_3_8
       timeoutInMinutes: 0
@@ -226,8 +226,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make python_3.8
-            make push_python_3.8
+            make python_3.8 ||  sleep 5 ; make python_3.8 
+            make push_python_3.8 || sleep 5 ; make push_python_3.8
 
 
 
@@ -258,8 +258,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make constraints_3.6
-            make push_constraints_3.6
+            make constraints_3.6 ||  sleep 5 ; make constraints_3.6 
+            make push_constraints_3.6 || sleep 5 ; make push_constraints_3.6
 
     - job: constraints_3_7
       timeoutInMinutes: 0
@@ -284,8 +284,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make constraints_3.7
-            make push_constraints_3.7
+            make constraints_3.7 ||  sleep 5 ; make constraints_3.7 
+            make push_constraints_3.7 || sleep 5 ; make push_constraints_3.7
 
     - job: constraints_3_8
       timeoutInMinutes: 0
@@ -310,8 +310,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make constraints_3.8
-            make push_constraints_3.8
+            make constraints_3.8 ||  sleep 5 ; make constraints_3.8 
+            make push_constraints_3.8 || sleep 5 ; make push_constraints_3.8
 
 
     - job: dealii_3_6
@@ -337,8 +337,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make dealii_3.6
-            make push_dealii_3.6
+            make dealii_3.6 ||  sleep 5 ; make dealii_3.6 
+            make push_dealii_3.6 || sleep 5 ; make push_dealii_3.6
 
     - job: dealii_3_7
       timeoutInMinutes: 0
@@ -363,8 +363,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make dealii_3.7
-            make push_dealii_3.7
+            make dealii_3.7 ||  sleep 5 ; make dealii_3.7 
+            make push_dealii_3.7 || sleep 5 ; make push_dealii_3.7
 
     - job: dealii_3_8
       timeoutInMinutes: 0
@@ -389,8 +389,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make dealii_3.8
-            make push_dealii_3.8
+            make dealii_3.8 ||  sleep 5 ; make dealii_3.8 
+            make push_dealii_3.8 || sleep 5 ; make push_dealii_3.8
 
 
     - job: petsc_3_6
@@ -416,8 +416,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make petsc_3.6
-            make push_petsc_3.6
+            make petsc_3.6 ||  sleep 5 ; make petsc_3.6 
+            make push_petsc_3.6 || sleep 5 ; make push_petsc_3.6
 
     - job: petsc_3_7
       timeoutInMinutes: 0
@@ -442,8 +442,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make petsc_3.7
-            make push_petsc_3.7
+            make petsc_3.7 ||  sleep 5 ; make petsc_3.7 
+            make push_petsc_3.7 || sleep 5 ; make push_petsc_3.7
 
     - job: petsc_3_8
       timeoutInMinutes: 0
@@ -468,8 +468,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make petsc_3.8
-            make push_petsc_3.8
+            make petsc_3.8 ||  sleep 5 ; make petsc_3.8 
+            make push_petsc_3.8 || sleep 5 ; make push_petsc_3.8
 
 
 
@@ -500,8 +500,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make pypi-mirror_stable_3.6
-            make push_pypi-mirror_stable_3.6
+            make pypi-mirror_stable_3.6 ||  sleep 5 ; make pypi-mirror_stable_3.6 
+            make push_pypi-mirror_stable_3.6 || sleep 5 ; make push_pypi-mirror_stable_3.6
 
     - job: pypi__mirror_stable_3_7
       timeoutInMinutes: 0
@@ -526,8 +526,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make pypi-mirror_stable_3.7
-            make push_pypi-mirror_stable_3.7
+            make pypi-mirror_stable_3.7 ||  sleep 5 ; make pypi-mirror_stable_3.7 
+            make push_pypi-mirror_stable_3.7 || sleep 5 ; make push_pypi-mirror_stable_3.7
 
     - job: pypi__mirror_stable_3_8
       timeoutInMinutes: 0
@@ -552,8 +552,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make pypi-mirror_stable_3.8
-            make push_pypi-mirror_stable_3.8
+            make pypi-mirror_stable_3.8 ||  sleep 5 ; make pypi-mirror_stable_3.8 
+            make push_pypi-mirror_stable_3.8 || sleep 5 ; make push_pypi-mirror_stable_3.8
 
 
     - job: pypi__mirror_oldest_3_6
@@ -579,8 +579,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make pypi-mirror_oldest_3.6
-            make push_pypi-mirror_oldest_3.6
+            make pypi-mirror_oldest_3.6 ||  sleep 5 ; make pypi-mirror_oldest_3.6 
+            make push_pypi-mirror_oldest_3.6 || sleep 5 ; make push_pypi-mirror_oldest_3.6
 
     - job: pypi__mirror_oldest_3_7
       timeoutInMinutes: 0
@@ -605,8 +605,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make pypi-mirror_oldest_3.7
-            make push_pypi-mirror_oldest_3.7
+            make pypi-mirror_oldest_3.7 ||  sleep 5 ; make pypi-mirror_oldest_3.7 
+            make push_pypi-mirror_oldest_3.7 || sleep 5 ; make push_pypi-mirror_oldest_3.7
 
     - job: pypi__mirror_oldest_3_8
       timeoutInMinutes: 0
@@ -631,8 +631,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make pypi-mirror_oldest_3.8
-            make push_pypi-mirror_oldest_3.8
+            make pypi-mirror_oldest_3.8 ||  sleep 5 ; make pypi-mirror_oldest_3.8 
+            make push_pypi-mirror_oldest_3.8 || sleep 5 ; make push_pypi-mirror_oldest_3.8
 
 
     - job: ngsolve_3_6
@@ -658,8 +658,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make ngsolve_3.6
-            make push_ngsolve_3.6
+            make ngsolve_3.6 ||  sleep 5 ; make ngsolve_3.6 
+            make push_ngsolve_3.6 || sleep 5 ; make push_ngsolve_3.6
 
     - job: ngsolve_3_7
       timeoutInMinutes: 0
@@ -684,8 +684,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make ngsolve_3.7
-            make push_ngsolve_3.7
+            make ngsolve_3.7 ||  sleep 5 ; make ngsolve_3.7 
+            make push_ngsolve_3.7 || sleep 5 ; make push_ngsolve_3.7
 
     - job: ngsolve_3_8
       timeoutInMinutes: 0
@@ -710,8 +710,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make ngsolve_3.8
-            make push_ngsolve_3.8
+            make ngsolve_3.8 ||  sleep 5 ; make ngsolve_3.8 
+            make push_ngsolve_3.8 || sleep 5 ; make push_ngsolve_3.8
 
 
     - job: fenics_3_6
@@ -737,8 +737,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make fenics_3.6
-            make push_fenics_3.6
+            make fenics_3.6 ||  sleep 5 ; make fenics_3.6 
+            make push_fenics_3.6 || sleep 5 ; make push_fenics_3.6
 
     - job: fenics_3_7
       timeoutInMinutes: 0
@@ -763,8 +763,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make fenics_3.7
-            make push_fenics_3.7
+            make fenics_3.7 ||  sleep 5 ; make fenics_3.7 
+            make push_fenics_3.7 || sleep 5 ; make push_fenics_3.7
 
     - job: fenics_3_8
       timeoutInMinutes: 0
@@ -789,8 +789,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make fenics_3.8
-            make push_fenics_3.8
+            make fenics_3.8 ||  sleep 5 ; make fenics_3.8 
+            make push_fenics_3.8 || sleep 5 ; make push_fenics_3.8
 
 
 
@@ -820,8 +820,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make wheelbuilder_manylinux1_3.6
-            make push_wheelbuilder_manylinux1_3.6
+            make wheelbuilder_manylinux1_3.6 ||  sleep 5 ; make wheelbuilder_manylinux1_3.6 
+            make push_wheelbuilder_manylinux1_3.6 || sleep 5 ; make push_wheelbuilder_manylinux1_3.6
 
     - job: wheelbuilder_manylinux1_3_7
       timeoutInMinutes: 0
@@ -846,8 +846,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make wheelbuilder_manylinux1_3.7
-            make push_wheelbuilder_manylinux1_3.7
+            make wheelbuilder_manylinux1_3.7 ||  sleep 5 ; make wheelbuilder_manylinux1_3.7 
+            make push_wheelbuilder_manylinux1_3.7 || sleep 5 ; make push_wheelbuilder_manylinux1_3.7
 
     - job: wheelbuilder_manylinux1_3_8
       timeoutInMinutes: 0
@@ -872,8 +872,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make wheelbuilder_manylinux1_3.8
-            make push_wheelbuilder_manylinux1_3.8
+            make wheelbuilder_manylinux1_3.8 ||  sleep 5 ; make wheelbuilder_manylinux1_3.8 
+            make push_wheelbuilder_manylinux1_3.8 || sleep 5 ; make push_wheelbuilder_manylinux1_3.8
 
 
     - job: wheelbuilder_manylinux2010_3_6
@@ -899,8 +899,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make wheelbuilder_manylinux2010_3.6
-            make push_wheelbuilder_manylinux2010_3.6
+            make wheelbuilder_manylinux2010_3.6 ||  sleep 5 ; make wheelbuilder_manylinux2010_3.6 
+            make push_wheelbuilder_manylinux2010_3.6 || sleep 5 ; make push_wheelbuilder_manylinux2010_3.6
 
     - job: wheelbuilder_manylinux2010_3_7
       timeoutInMinutes: 0
@@ -925,8 +925,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make wheelbuilder_manylinux2010_3.7
-            make push_wheelbuilder_manylinux2010_3.7
+            make wheelbuilder_manylinux2010_3.7 ||  sleep 5 ; make wheelbuilder_manylinux2010_3.7 
+            make push_wheelbuilder_manylinux2010_3.7 || sleep 5 ; make push_wheelbuilder_manylinux2010_3.7
 
     - job: wheelbuilder_manylinux2010_3_8
       timeoutInMinutes: 0
@@ -951,8 +951,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make wheelbuilder_manylinux2010_3.8
-            make push_wheelbuilder_manylinux2010_3.8
+            make wheelbuilder_manylinux2010_3.8 ||  sleep 5 ; make wheelbuilder_manylinux2010_3.8 
+            make push_wheelbuilder_manylinux2010_3.8 || sleep 5 ; make push_wheelbuilder_manylinux2010_3.8
 
 
     - job: wheelbuilder_manylinux2014_3_6
@@ -978,8 +978,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make wheelbuilder_manylinux2014_3.6
-            make push_wheelbuilder_manylinux2014_3.6
+            make wheelbuilder_manylinux2014_3.6 ||  sleep 5 ; make wheelbuilder_manylinux2014_3.6 
+            make push_wheelbuilder_manylinux2014_3.6 || sleep 5 ; make push_wheelbuilder_manylinux2014_3.6
 
     - job: wheelbuilder_manylinux2014_3_7
       timeoutInMinutes: 0
@@ -1004,8 +1004,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make wheelbuilder_manylinux2014_3.7
-            make push_wheelbuilder_manylinux2014_3.7
+            make wheelbuilder_manylinux2014_3.7 ||  sleep 5 ; make wheelbuilder_manylinux2014_3.7 
+            make push_wheelbuilder_manylinux2014_3.7 || sleep 5 ; make push_wheelbuilder_manylinux2014_3.7
 
     - job: wheelbuilder_manylinux2014_3_8
       timeoutInMinutes: 0
@@ -1030,8 +1030,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make wheelbuilder_manylinux2014_3.8
-            make push_wheelbuilder_manylinux2014_3.8
+            make wheelbuilder_manylinux2014_3.8 ||  sleep 5 ; make wheelbuilder_manylinux2014_3.8 
+            make push_wheelbuilder_manylinux2014_3.8 || sleep 5 ; make push_wheelbuilder_manylinux2014_3.8
 
 
 
@@ -1058,8 +1058,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make cibase_3.6
-            make push_cibase_3.6
+            make cibase_3.6 ||  sleep 5 ; make cibase_3.6 
+            make push_cibase_3.6 || sleep 5 ; make push_cibase_3.6
 
     - job: cibase_3_7
       timeoutInMinutes: 0
@@ -1084,8 +1084,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make cibase_3.7
-            make push_cibase_3.7
+            make cibase_3.7 ||  sleep 5 ; make cibase_3.7 
+            make push_cibase_3.7 || sleep 5 ; make push_cibase_3.7
 
     - job: cibase_3_8
       timeoutInMinutes: 0
@@ -1110,8 +1110,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make cibase_3.8
-            make push_cibase_3.8
+            make cibase_3.8 ||  sleep 5 ; make cibase_3.8 
+            make push_cibase_3.8 || sleep 5 ; make push_cibase_3.8
 
 
 
@@ -1142,8 +1142,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make testing_3.6
-            make push_testing_3.6
+            make testing_3.6 ||  sleep 5 ; make testing_3.6 
+            make push_testing_3.6 || sleep 5 ; make push_testing_3.6
 
     - job: testing_3_7
       timeoutInMinutes: 0
@@ -1168,8 +1168,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make testing_3.7
-            make push_testing_3.7
+            make testing_3.7 ||  sleep 5 ; make testing_3.7 
+            make push_testing_3.7 || sleep 5 ; make push_testing_3.7
 
     - job: testing_3_8
       timeoutInMinutes: 0
@@ -1194,8 +1194,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make testing_3.8
-            make push_testing_3.8
+            make testing_3.8 ||  sleep 5 ; make testing_3.8 
+            make push_testing_3.8 || sleep 5 ; make push_testing_3.8
 
 
     - job: demo_master
@@ -1221,8 +1221,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make demo_master
-            make push_demo_master
+            make demo_master || sleep 5 ; make demo_master
+            make push_demo_master || sleep 5 ; make push_demo_master
 
 
   - stage: s_6
@@ -1252,8 +1252,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make jupyter_3.6
-            make push_jupyter_3.6
+            make jupyter_3.6 ||  sleep 5 ; make jupyter_3.6 
+            make push_jupyter_3.6 || sleep 5 ; make push_jupyter_3.6
 
     - job: jupyter_3_7
       timeoutInMinutes: 0
@@ -1278,8 +1278,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make jupyter_3.7
-            make push_jupyter_3.7
+            make jupyter_3.7 ||  sleep 5 ; make jupyter_3.7 
+            make push_jupyter_3.7 || sleep 5 ; make push_jupyter_3.7
 
     - job: jupyter_3_8
       timeoutInMinutes: 0
@@ -1304,8 +1304,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make jupyter_3.8
-            make push_jupyter_3.8
+            make jupyter_3.8 ||  sleep 5 ; make jupyter_3.8 
+            make push_jupyter_3.8 || sleep 5 ; make push_jupyter_3.8
 
 
     - job: docker__in__docker
@@ -1331,8 +1331,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make docker-in-docker
-            make push_docker-in-docker
+            make docker-in-docker || sleep 5 ; make docker-in-docker
+            make push_docker-in-docker || sleep 5 ; make push_docker-in-docker
 
     - job: docs
       timeoutInMinutes: 0
@@ -1357,8 +1357,8 @@ stages:
             command: login
             containerRegistry: dockerhub
         - script: |
-            make docs
-            make push_docs
+            make docs || sleep 5 ; make docs
+            make push_docs || sleep 5 ; make push_docs
 
 # THIS FILE IS AUTOGENERATED -- DO NOT EDIT #
 #   Edit and Re-run template.ci.py instead       #
