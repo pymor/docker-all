@@ -20,25 +20,12 @@ stages:
             - api_failure
 
     tags:
-      - long execution time
-      - docker-in-docker
+      - amm-only_shell
     script:
       - make ${TARGET}_${PYVER}
       - make push_${TARGET}_${PYVER}
-    before_script:
-      - apk --update add openssh-client rsync git file make bash m4
-      - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
       - docker version
       - docker buildx
-    variables:
-        DOCKER_HOST: tcp://docker:2375/
-        DOCKER_DRIVER: overlay2
-        DOCKER_CLI_EXPERIMENTAL: enabled
-    image: pymor/docker-in-docker:e85eee354d268bb406d381155964d0fbcdf7161f
-    services:
-        - name: docker:dind
-          command: ["--experimental"]
 
 .py_indep:
     extends: .per_py
@@ -55,9 +42,6 @@ stages:
 python_builder 3 6:
     extends: .per_py
     stage: "0"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: python_builder
@@ -65,9 +49,6 @@ python_builder 3 6:
 python_builder 3 7:
     extends: .per_py
     stage: "0"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: python_builder
@@ -75,9 +56,6 @@ python_builder 3 7:
 python_builder 3 8:
     extends: .per_py
     stage: "0"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: python_builder
@@ -98,9 +76,6 @@ ci_sanity:
 python 3 6:
     extends: .per_py
     stage: "1"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: python
@@ -108,9 +83,6 @@ python 3 6:
 python 3 7:
     extends: .per_py
     stage: "1"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: python
@@ -118,9 +90,6 @@ python 3 7:
 python 3 8:
     extends: .per_py
     stage: "1"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: python
@@ -131,9 +100,6 @@ python 3 8:
 constraints 3 6:
     extends: .per_py
     stage: "2"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: constraints
@@ -141,9 +107,6 @@ constraints 3 6:
 constraints 3 7:
     extends: .per_py
     stage: "2"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: constraints
@@ -151,9 +114,6 @@ constraints 3 7:
 constraints 3 8:
     extends: .per_py
     stage: "2"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: constraints
@@ -162,9 +122,6 @@ constraints 3 8:
 dealii 3 6:
     extends: .per_py
     stage: "2"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: dealii
@@ -172,9 +129,6 @@ dealii 3 6:
 dealii 3 7:
     extends: .per_py
     stage: "2"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: dealii
@@ -182,9 +136,6 @@ dealii 3 7:
 dealii 3 8:
     extends: .per_py
     stage: "2"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: dealii
@@ -193,9 +144,6 @@ dealii 3 8:
 petsc 3 6:
     extends: .per_py
     stage: "2"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: petsc
@@ -203,9 +151,6 @@ petsc 3 6:
 petsc 3 7:
     extends: .per_py
     stage: "2"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: petsc
@@ -213,9 +158,6 @@ petsc 3 7:
 petsc 3 8:
     extends: .per_py
     stage: "2"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: petsc
@@ -226,9 +168,6 @@ petsc 3 8:
 pypi-mirror_stable 3 6:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: pypi-mirror_stable
@@ -236,9 +175,6 @@ pypi-mirror_stable 3 6:
 pypi-mirror_stable 3 7:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: pypi-mirror_stable
@@ -246,9 +182,6 @@ pypi-mirror_stable 3 7:
 pypi-mirror_stable 3 8:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: pypi-mirror_stable
@@ -257,9 +190,6 @@ pypi-mirror_stable 3 8:
 pypi-mirror_oldest 3 6:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: pypi-mirror_oldest
@@ -267,9 +197,6 @@ pypi-mirror_oldest 3 6:
 pypi-mirror_oldest 3 7:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: pypi-mirror_oldest
@@ -277,9 +204,6 @@ pypi-mirror_oldest 3 7:
 pypi-mirror_oldest 3 8:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: pypi-mirror_oldest
@@ -288,9 +212,6 @@ pypi-mirror_oldest 3 8:
 ngsolve 3 6:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: ngsolve
@@ -298,9 +219,6 @@ ngsolve 3 6:
 ngsolve 3 7:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: ngsolve
@@ -308,9 +226,6 @@ ngsolve 3 7:
 ngsolve 3 8:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: ngsolve
@@ -319,9 +234,6 @@ ngsolve 3 8:
 fenics 3 6:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: fenics
@@ -329,9 +241,6 @@ fenics 3 6:
 fenics 3 7:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: fenics
@@ -339,9 +248,6 @@ fenics 3 7:
 fenics 3 8:
     extends: .per_py
     stage: "3"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: fenics
@@ -351,9 +257,6 @@ fenics 3 8:
 wheelbuilder_manylinux2010 3 6:
     extends: .per_py
     stage: "4"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: wheelbuilder_manylinux2010
@@ -361,9 +264,6 @@ wheelbuilder_manylinux2010 3 6:
 wheelbuilder_manylinux2010 3 7:
     extends: .per_py
     stage: "4"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: wheelbuilder_manylinux2010
@@ -371,9 +271,6 @@ wheelbuilder_manylinux2010 3 7:
 wheelbuilder_manylinux2010 3 8:
     extends: .per_py
     stage: "4"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: wheelbuilder_manylinux2010
@@ -382,9 +279,6 @@ wheelbuilder_manylinux2010 3 8:
 wheelbuilder_manylinux2014 3 6:
     extends: .per_py
     stage: "4"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: wheelbuilder_manylinux2014
@@ -392,9 +286,6 @@ wheelbuilder_manylinux2014 3 6:
 wheelbuilder_manylinux2014 3 7:
     extends: .per_py
     stage: "4"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: wheelbuilder_manylinux2014
@@ -402,9 +293,6 @@ wheelbuilder_manylinux2014 3 7:
 wheelbuilder_manylinux2014 3 8:
     extends: .per_py
     stage: "4"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: wheelbuilder_manylinux2014
@@ -414,9 +302,6 @@ wheelbuilder_manylinux2014 3 8:
 cibase 3 6:
     extends: .per_py
     stage: "4"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: cibase
@@ -424,9 +309,6 @@ cibase 3 6:
 cibase 3 7:
     extends: .per_py
     stage: "4"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: cibase
@@ -434,9 +316,6 @@ cibase 3 7:
 cibase 3 8:
     extends: .per_py
     stage: "4"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: cibase
@@ -447,9 +326,6 @@ cibase 3 8:
 testing 3 6:
     extends: .per_py
     stage: "5"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: testing
@@ -457,9 +333,6 @@ testing 3 6:
 testing 3 7:
     extends: .per_py
     stage: "5"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: testing
@@ -467,9 +340,6 @@ testing 3 7:
 testing 3 8:
     extends: .per_py
     stage: "5"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: testing
@@ -485,9 +355,6 @@ demo_master:
 jupyter 3 6:
     extends: .per_py
     stage: "6"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.6"
         TARGET: jupyter
@@ -495,9 +362,6 @@ jupyter 3 6:
 jupyter 3 7:
     extends: .per_py
     stage: "6"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.7"
         TARGET: jupyter
@@ -505,9 +369,6 @@ jupyter 3 7:
 jupyter 3 8:
     extends: .per_py
     stage: "6"
-    tags:
-    
-          - mike
     variables:
         PYVER: "3.8"
         TARGET: jupyter

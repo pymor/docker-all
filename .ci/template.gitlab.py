@@ -22,25 +22,12 @@ stages:
             - api_failure
 
     tags:
-      - long execution time
-      - docker-in-docker
+      - amm-only_shell
     script:
       - make ${TARGET}_${PYVER}
       - make push_${TARGET}_${PYVER}
-    before_script:
-      - apk --update add openssh-client rsync git file make bash m4
-      - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
       - docker version
       - docker buildx
-    variables:
-        DOCKER_HOST: tcp://docker:2375/
-        DOCKER_DRIVER: overlay2
-        DOCKER_CLI_EXPERIMENTAL: enabled
-    image: pymor/docker-in-docker:e85eee354d268bb406d381155964d0fbcdf7161f
-    services:
-        - name: docker:dind
-          command: ["--experimental"]
 
 .py_indep:
     extends: .per_py
@@ -53,13 +40,6 @@ stages:
 {{name}} {{PY[0]}} {{PY[2]}}:
     extends: .per_py
     stage: "{{stage}}"
-    tags:
-    {% if name == "wheelbuilder_manylinux1" -%}
-    {# glibc vsyscall issue with old centos and new kernel workaround -#}
-          - amm-old-ci
-    {% else %}
-          - mike
-    {% endif -%}
     variables:
         PYVER: "{{PY}}"
         TARGET: {{name}}
