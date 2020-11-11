@@ -15,7 +15,7 @@ RUN MOUNT_CACHE \
   && mkdir ${SERVER_ROOT} \
   && chown pymor ${SERVER_ROOT}
 
-COPY PYVER/requirements/*.txt ${SERVER_ROOT}/requirements/
+COPY PYVER/*.txt ${SERVER_ROOT}/requirements/
 # non-installable package cannot be downloaded and would error out the whole process
 # pytorch needs special casing due to --follow url
 RUN MOUNT_CACHE \
