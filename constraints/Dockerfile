@@ -1,5 +1,5 @@
 # EXPERIMENTAL_SYNTAX
-FROM REGISTRY/pymor/python_PYVER:VERTAG as builder
+FROM REGISTRY/pymor/python_PYVER:VERTAG as builder_PYVER_VERTAG
 # libopenblas-dev cmake: needed for slycot install (wheel building)
 # mpi-default-dev: for mpi4py install/wheel
 RUN MOUNT_CACHE \
@@ -14,8 +14,8 @@ RUN constraints.bash
 
 FROM alpine:3.12
 
-COPY --from=builder /requirements/ /requirements/
+COPY --from=builder_PYVER_VERTAG /requirements/* /requirements/
 RUN apk add bash
 VOLUME "/output"
 ENTRYPOINT []
-CMD ["cp", "-ra", "/requirements", "/output"]
+CMD ["/bin/bash", "-c", "install -v -m=0777 -t /output/ /requirements/*"]
