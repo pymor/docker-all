@@ -58,6 +58,7 @@ cl_% : FORCE
 rp_% : FORCE
 	$(call COMMON_PUSH,$(lastword $(subst _, ,$*)))
 
+# FULL_IMAGE_NAME includes MAIN_REGISTRY
 pl_% : FORCE
 	@$(CNTR_PULL) $(call FULL_IMAGE_NAME,$(lastword $(subst _, ,$*)),$(VER)) >/dev/null 2>&1 || \
 		(echo "Not yet build $(call FULL_IMAGE_NAME,$(lastword $(subst _, ,$*)),$(VER))" ; \
@@ -97,9 +98,9 @@ $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
 real_constraints_%: FORCE python_%
 	$(DO_IT)
 	[ -d $(THIS_DIR)/pypi-mirror_stable/$* ] || mkdir $(THIS_DIR)/pypi-mirror_stable/$*
-	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_stable/$*/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
+	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_stable/$*/:/output $(MAIN_CNTR_REGISTRY)/$(call CONSTRAINTS_IMAGE,$*,$(VER))
 	[ -d $(THIS_DIR)/pypi-mirror_oldest/$* ] || mkdir $(THIS_DIR)/pypi-mirror_oldest/$*
-	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_oldest/$*/:/output $(call CONSTRAINTS_IMAGE,$*,$(VER))
+	$(CNTR_RUN) -v $(THIS_DIR)/pypi-mirror_oldest/$*/:/output $(MAIN_CNTR_REGISTRY)/$(call CONSTRAINTS_IMAGE,$*,$(VER))
 
 $(addsuffix _pypi-mirror_stable_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE
 real_pypi-mirror_stable_%: FORCE constraints_%
@@ -154,58 +155,66 @@ real_jupyter_%: FORCE testing_%
 	$(DO_IT)
 
 $(DEMOS): demo_% : IS_DIRTY
-	$(CNTR_BUILD) -t pymor/demo:$* demo/$*
+	$(CNTR_BUILD) -t $(MAIN_CNTR_REGISTRY)/pymor/demo:$* \
+	  -t $(ALT_CNTR_REGISTRY)/pymor/demo:$* demo/$*
 demo: FORCE $(DEMOS)
 
 clean_demo: $(addprefix clean_,$(DEMOS))
 push_demo: $(addprefix push_,$(DEMOS))
 push_demo_%:
-	$(CNTR_PUSH) pymor/demo:$*
+	$(CNTR_PUSH) $(MAIN_CNTR_REGISTRY)/pymor/demo:$*
+	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/demo:$*
 clean_demo_%:
-	$(CNTR_RMI) pymor/demo:$*
+	$(CNTR_RMI) $(MAIN_CNTR_REGISTRY)/pymor/demo:$*
+	$(CNTR_RMI) $(ALT_CNTR_REGISTRY)/pymor/demo:$*
 
 # TODO forward to submake correctly
 push_docs:
 docs:
 
 ci_sanity: FORCE
-	$(CNTR_BUILD) -t pymor/ci_sanity:$(VER) ci_sanity
+	$(CNTR_BUILD) -t $(MAIN_CNTR_REGISTRY)/pymor/ci_sanity:$(VER) \
+	  -t $(ALT_CNTR_REGISTRY)/pymor/ci_sanity:$(VER) ci_sanity
 
 push_ci_sanity:
-	$(CNTR_PUSH) pymor/ci_sanity:$(VER)
+	$(CNTR_PUSH) $(MAIN_CNTR_REGISTRY)/pymor/ci_sanity:$(VER)
+	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/ci_sanity:$(VER)
 
 clean_deploy_checks: $(addprefix clean_,$(DEPLOY_CHECKS))
 push_deploy_checks: $(addprefix push_,$(DEPLOY_CHECKS))
 deploy_checks: $(DEPLOY_CHECKS)
 $(DEPLOY_CHECKS): deploy_checks_% : FORCE
 	$(CNTR_BUILD) --build-arg DEBIAN_DATE=20200607 --build-arg CENTOS_VERSION=centos8.2.2004 \
-		-t pymor/deploy_checks_$*:$(VER) -t pymor/deploy_checks_$*:latest deploy_checks/$*
+		-t $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*:$(VER) -t $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*:latest \
+		-t $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$*:$(VER) -t $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$*:latest \
+		deploy_checks/$*
 $(addprefix clean_,$(DEPLOY_CHECKS)): clean_deploy_checks_% : FORCE
-	$(CNTR_RMI) pymor/deploy_checks_$*
+	$(CNTR_RMI) $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$* $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*
 $(addprefix push_,$(DEPLOY_CHECKS)): push_deploy_checks_% : FORCE
-	$(CNTR_PUSH) pymor/deploy_checks_$*
+	$(CNTR_PUSH) $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*
+	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$* 
 
 
 pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
 
 pull_all_latest_%: FORCE
-	$(CNTR_PULL) $(call TESTING_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call CIBASE_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call DEALII_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call FENICS_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call PYTHON_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call PETSC_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call NGSOLVE_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call PYPI_MIRROR_OLDEST_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call JUPYTER_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call CONSTRAINTS_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call JUPYTER_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call JUPYTER_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call DIND_IMAGE,dummy,latest)
-	$(CNTR_PULL) $(call WB2010_IMAGE,$*,latest)
-	$(CNTR_PULL) $(call WB2014_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call TESTING_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call CIBASE_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call DEALII_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call FENICS_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PYTHON_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PETSC_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call NGSOLVE_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PYPI_MIRROR_OLDEST_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call JUPYTER_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call CONSTRAINTS_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call JUPYTER_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call JUPYTER_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call DIND_IMAGE,dummy,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call WB2010_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call WB2014_IMAGE,$*,latest)
 
 update_python_templates:
 	cd python_builder && ./update.sh 3.6 3.7 3.8 3.9-rc
