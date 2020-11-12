@@ -23,6 +23,7 @@ stages:
 
     tags:
       - amm-only_shell
+    resource_group: cache_${PYVER}
     script:
       - make ${TARGET}_${PYVER}
       - make push_${TARGET}_${PYVER}
