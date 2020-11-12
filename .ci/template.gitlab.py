@@ -25,16 +25,14 @@ stages:
       - amm-only_shell
     resource_group: cache_${PYVER}
     script:
-      - make ${TARGET}_${PYVER}
-      - make push_${TARGET}_${PYVER}
-      - docker version
-      - docker buildx
+      - make ${TARGET}_${PYVER} || (sleep 5s ; make ${TARGET}_${PYVER}) || (sleep 5s; make ${TARGET}_${PYVER})
+      - make push_${TARGET}_${PYVER} || (sleep 5s ;  make push_${TARGET}_${PYVER}) || (sleep 5s ;  make push_${TARGET}_${PYVER} )
 
 .py_indep:
     extends: .per_py
     script:
-      - make ${TARGET}
-      - make push_${TARGET}
+      - make ${TARGET} || (sleep 5s ; make ${TARGET}) || (sleep 5s; make ${TARGET})
+      - make push_${TARGET} || (sleep 5s ;  make push_${TARGET}) || (sleep 5s ;  make push_${TARGET})
 
 {% macro pyjob(name, stage) -%}
 {%- for PY in pythons %}
