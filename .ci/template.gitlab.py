@@ -26,7 +26,6 @@ include:
 
     tags:
       - amm-only_shell
-    resource_group: cache_${PYVER}
     script:
       - make ${TARGET}_${PYVER} || (sleep 5s ; make ${TARGET}_${PYVER}) || (sleep 5s; make ${TARGET}_${PYVER})
       - make push_${TARGET}_${PYVER} || (sleep 5s ;  make push_${TARGET}_${PYVER}) || (sleep 5s ;  make push_${TARGET}_${PYVER} )
@@ -41,6 +40,7 @@ include:
 {%- for PY in pythons %}
 {{name}} {{PY[0]}} {{PY[2]}}:
     extends: .per_py
+    resource_group: cache_{{PY}}
     stage: "{{stage}}"
     variables:
         PYVER: "{{PY}}"

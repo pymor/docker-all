@@ -24,7 +24,6 @@ include:
 
     tags:
       - amm-only_shell
-    resource_group: cache_${PYVER}
     script:
       - make ${TARGET}_${PYVER} || (sleep 5s ; make ${TARGET}_${PYVER}) || (sleep 5s; make ${TARGET}_${PYVER})
       - make push_${TARGET}_${PYVER} || (sleep 5s ;  make push_${TARGET}_${PYVER}) || (sleep 5s ;  make push_${TARGET}_${PYVER} )
@@ -43,6 +42,7 @@ include:
 
 python_builder 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "0"
     variables:
         PYVER: "3.6"
@@ -50,6 +50,7 @@ python_builder 3 6:
 
 python_builder 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "0"
     variables:
         PYVER: "3.7"
@@ -57,6 +58,7 @@ python_builder 3 7:
 
 python_builder 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "0"
     variables:
         PYVER: "3.8"
@@ -77,6 +79,7 @@ ci_sanity:
 
 python 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "1"
     variables:
         PYVER: "3.6"
@@ -84,6 +87,7 @@ python 3 6:
 
 python 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "1"
     variables:
         PYVER: "3.7"
@@ -91,6 +95,7 @@ python 3 7:
 
 python 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "1"
     variables:
         PYVER: "3.8"
@@ -101,6 +106,7 @@ python 3 8:
 
 constraints 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "2"
     variables:
         PYVER: "3.6"
@@ -108,6 +114,7 @@ constraints 3 6:
 
 constraints 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "2"
     variables:
         PYVER: "3.7"
@@ -115,6 +122,7 @@ constraints 3 7:
 
 constraints 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "2"
     variables:
         PYVER: "3.8"
@@ -123,6 +131,7 @@ constraints 3 8:
 
 dealii 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "2"
     variables:
         PYVER: "3.6"
@@ -130,6 +139,7 @@ dealii 3 6:
 
 dealii 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "2"
     variables:
         PYVER: "3.7"
@@ -137,6 +147,7 @@ dealii 3 7:
 
 dealii 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "2"
     variables:
         PYVER: "3.8"
@@ -145,6 +156,7 @@ dealii 3 8:
 
 petsc 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "2"
     variables:
         PYVER: "3.6"
@@ -152,6 +164,7 @@ petsc 3 6:
 
 petsc 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "2"
     variables:
         PYVER: "3.7"
@@ -159,6 +172,7 @@ petsc 3 7:
 
 petsc 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "2"
     variables:
         PYVER: "3.8"
@@ -169,6 +183,7 @@ petsc 3 8:
 
 pypi-mirror_stable 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "3"
     variables:
         PYVER: "3.6"
@@ -176,6 +191,7 @@ pypi-mirror_stable 3 6:
 
 pypi-mirror_stable 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "3"
     variables:
         PYVER: "3.7"
@@ -183,6 +199,7 @@ pypi-mirror_stable 3 7:
 
 pypi-mirror_stable 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "3"
     variables:
         PYVER: "3.8"
@@ -191,6 +208,7 @@ pypi-mirror_stable 3 8:
 
 pypi-mirror_oldest 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "3"
     variables:
         PYVER: "3.6"
@@ -198,6 +216,7 @@ pypi-mirror_oldest 3 6:
 
 pypi-mirror_oldest 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "3"
     variables:
         PYVER: "3.7"
@@ -205,6 +224,7 @@ pypi-mirror_oldest 3 7:
 
 pypi-mirror_oldest 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "3"
     variables:
         PYVER: "3.8"
@@ -213,6 +233,7 @@ pypi-mirror_oldest 3 8:
 
 ngsolve 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "3"
     variables:
         PYVER: "3.6"
@@ -220,6 +241,7 @@ ngsolve 3 6:
 
 ngsolve 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "3"
     variables:
         PYVER: "3.7"
@@ -227,6 +249,7 @@ ngsolve 3 7:
 
 ngsolve 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "3"
     variables:
         PYVER: "3.8"
@@ -235,6 +258,7 @@ ngsolve 3 8:
 
 fenics 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "3"
     variables:
         PYVER: "3.6"
@@ -242,6 +266,7 @@ fenics 3 6:
 
 fenics 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "3"
     variables:
         PYVER: "3.7"
@@ -249,6 +274,7 @@ fenics 3 7:
 
 fenics 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "3"
     variables:
         PYVER: "3.8"
@@ -258,6 +284,7 @@ fenics 3 8:
 #******* stage 4
 wheelbuilder_manylinux1 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "4"
     variables:
         PYVER: "3.6"
@@ -265,6 +292,7 @@ wheelbuilder_manylinux1 3 6:
 
 wheelbuilder_manylinux1 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "4"
     variables:
         PYVER: "3.7"
@@ -272,6 +300,7 @@ wheelbuilder_manylinux1 3 7:
 
 wheelbuilder_manylinux1 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "4"
     variables:
         PYVER: "3.8"
@@ -280,6 +309,7 @@ wheelbuilder_manylinux1 3 8:
 
 wheelbuilder_manylinux2010 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "4"
     variables:
         PYVER: "3.6"
@@ -287,6 +317,7 @@ wheelbuilder_manylinux2010 3 6:
 
 wheelbuilder_manylinux2010 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "4"
     variables:
         PYVER: "3.7"
@@ -294,6 +325,7 @@ wheelbuilder_manylinux2010 3 7:
 
 wheelbuilder_manylinux2010 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "4"
     variables:
         PYVER: "3.8"
@@ -302,6 +334,7 @@ wheelbuilder_manylinux2010 3 8:
 
 wheelbuilder_manylinux2014 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "4"
     variables:
         PYVER: "3.6"
@@ -309,6 +342,7 @@ wheelbuilder_manylinux2014 3 6:
 
 wheelbuilder_manylinux2014 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "4"
     variables:
         PYVER: "3.7"
@@ -316,6 +350,7 @@ wheelbuilder_manylinux2014 3 7:
 
 wheelbuilder_manylinux2014 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "4"
     variables:
         PYVER: "3.8"
@@ -325,6 +360,7 @@ wheelbuilder_manylinux2014 3 8:
 
 cibase 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "4"
     variables:
         PYVER: "3.6"
@@ -332,6 +368,7 @@ cibase 3 6:
 
 cibase 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "4"
     variables:
         PYVER: "3.7"
@@ -339,6 +376,7 @@ cibase 3 7:
 
 cibase 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "4"
     variables:
         PYVER: "3.8"
@@ -349,6 +387,7 @@ cibase 3 8:
 
 testing 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "5"
     variables:
         PYVER: "3.6"
@@ -356,6 +395,7 @@ testing 3 6:
 
 testing 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "5"
     variables:
         PYVER: "3.7"
@@ -363,6 +403,7 @@ testing 3 7:
 
 testing 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "5"
     variables:
         PYVER: "3.8"
@@ -378,6 +419,7 @@ demo_master:
 
 jupyter 3 6:
     extends: .per_py
+    resource_group: cache_3.6
     stage: "6"
     variables:
         PYVER: "3.6"
@@ -385,6 +427,7 @@ jupyter 3 6:
 
 jupyter 3 7:
     extends: .per_py
+    resource_group: cache_3.7
     stage: "6"
     variables:
         PYVER: "3.7"
@@ -392,6 +435,7 @@ jupyter 3 7:
 
 jupyter 3 8:
     extends: .per_py
+    resource_group: cache_3.8
     stage: "6"
     variables:
         PYVER: "3.8"
