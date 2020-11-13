@@ -12,6 +12,9 @@ stages:
   - "6"
 
 #************ definition of base jobs *********************************************************************************#
+# https://docs.gitlab.com/ee/ci/yaml/README.html#workflowrules-templates
+include:
+  - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
 
 .per_py:
     retry:
