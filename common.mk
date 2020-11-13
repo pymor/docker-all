@@ -38,7 +38,7 @@ WB2010_IMAGE_DIR = wheelbuilder_manylinux2010
 WB2014_IMAGE = pymor/wheelbuilder_manylinux2014_py$1:$2
 WB2014_IMAGE_DIR = wheelbuilder_manylinux2014
 # CNTR_BUILD=$(CNTR_CMD) build --squash
-MAIN_CNTR_REGISTRY?=zivgitlab.wwu.io/pymor/docker-all
+MAIN_CNTR_REGISTRY?=zivgitlab.wwu.io/pymor/docker
 ALT_CNTR_REGISTRY?=docker.io
 CNTR_CMD?=docker
 # this makes produced images usable by '--cache-from'

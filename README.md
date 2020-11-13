@@ -1,4 +1,4 @@
-# docker-all
+# docker
 Supermodule for all of pymor's  docker repositories
 
 | Image  | Info |
