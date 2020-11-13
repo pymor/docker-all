@@ -3,7 +3,7 @@
 check-manifest
 codecov
 hypothesis[numpy,pytest]>=5.19
-nbconvert
+nbclient
 pyicontract-lint
 pypi-oldest-requirements>=2020.2
 pytest-cov
