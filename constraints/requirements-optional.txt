@@ -7,6 +7,7 @@ bash_kernel
 cython>=0.28
 deal
 diskcache
+docopt-ng
 gmsh
 icontract
 ipyparallel>=6.2.5
