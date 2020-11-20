@@ -1,5 +1,5 @@
 # EXPERIMENTAL_SYNTAX
-FROM quay.io/pypa/manylinux1_x86_64:2020-10-06-c4a4a7c
+FROM quay.io/pypa/manylinux1_x86_64:2020-11-11-0f1f128
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
@@ -15,11 +15,12 @@ RUN MOUNT_CACHE \
 
 COPY --from=REGISTRY/pymor/pypi-mirror_oldest_pyPYVER:VERTAG /pymor/downloads/* ${WHEEL_DIR}/
 COPY pybin.sh /etc/profile.d/
+
+# installing scipy after numpy prevents scipy from trying to compile numpy from source
 # some packages get installed manually because others have broken dependency settings
 RUN MOUNT_CACHE \
   source /etc/profile.d/pybin.sh && \
   rm -f ${WHEEL_DIR}/slycot* ${WHEEL_DIR}/*manylinux201* && \
-  ${PYBIN}/pip install -U pip && \
   ${PYBIN}/pip install ${WHEEL_DIR}/numpy* && \
   ${PYBIN}/pip install ${WHEEL_DIR}/scipy* && \
   ${PYBIN}/pip install ${WHEEL_DIR}/*
