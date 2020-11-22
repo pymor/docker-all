@@ -17,16 +17,16 @@ DEMOS = $(addprefix demo_,$(DEMO_TAGS))
 MAKEFLAGS += -rR
 DOCKERFILES=$(shell find . -name Dockerfile -type f)
 
-all: FORCE $(foreach subd,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)),$(addprefix $(subd)_,$(filter-out 3.9,$(PYTHONS)))) $(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT))
+all: FORCE $(foreach subd,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)),$(addprefix $(subd)_,$(PYTHONS))) $(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT))
 
-$(PY_SUBDIRS): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
+$(PY_SUBDIRS): % : $(addprefix %_,$(PYTHONS))
 
 push: $(PUSH_PYTHON_SUBDIRS) $(PUSH)
 clean: $(CLEAN_PYTHON_SUBDIRS) $(CLEAN)
 
-$(CLEAN_PYTHON_SUBDIRS): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
+$(CLEAN_PYTHON_SUBDIRS): % : $(addprefix %_,$(PYTHONS))
 
-$(PUSH_PYTHON_SUBDIRS): % : $(addprefix %_,$(filter-out 3.9,$(PYTHONS)))
+$(PUSH_PYTHON_SUBDIRS): % : $(addprefix %_,$(PYTHONS))
 
 $(PYTHONS): % : $(addsuffix _%,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 
