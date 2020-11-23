@@ -64,6 +64,14 @@ python_builder 3 8:
         PYVER: "3.8"
         TARGET: python_builder
 
+python_builder 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "0"
+    variables:
+        PYVER: "3.9"
+        TARGET: python_builder
+
 deploy_checks:
     extends: .py_indep
     stage: "0"
@@ -101,6 +109,14 @@ python 3 8:
         PYVER: "3.8"
         TARGET: python
 
+python 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "1"
+    variables:
+        PYVER: "3.9"
+        TARGET: python
+
 
 #******* stage 2
 
@@ -128,6 +144,14 @@ constraints 3 8:
         PYVER: "3.8"
         TARGET: constraints
 
+constraints 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "2"
+    variables:
+        PYVER: "3.9"
+        TARGET: constraints
+
 
 dealii 3 6:
     extends: .per_py
@@ -153,6 +177,14 @@ dealii 3 8:
         PYVER: "3.8"
         TARGET: dealii
 
+dealii 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "2"
+    variables:
+        PYVER: "3.9"
+        TARGET: dealii
+
 
 petsc 3 6:
     extends: .per_py
@@ -176,6 +208,14 @@ petsc 3 8:
     stage: "2"
     variables:
         PYVER: "3.8"
+        TARGET: petsc
+
+petsc 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "2"
+    variables:
+        PYVER: "3.9"
         TARGET: petsc
 
 
@@ -205,6 +245,14 @@ pypi-mirror_stable 3 8:
         PYVER: "3.8"
         TARGET: pypi-mirror_stable
 
+pypi-mirror_stable 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "3"
+    variables:
+        PYVER: "3.9"
+        TARGET: pypi-mirror_stable
+
 
 pypi-mirror_oldest 3 6:
     extends: .per_py
@@ -228,6 +276,14 @@ pypi-mirror_oldest 3 8:
     stage: "3"
     variables:
         PYVER: "3.8"
+        TARGET: pypi-mirror_oldest
+
+pypi-mirror_oldest 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "3"
+    variables:
+        PYVER: "3.9"
         TARGET: pypi-mirror_oldest
 
 
@@ -255,6 +311,14 @@ ngsolve 3 8:
         PYVER: "3.8"
         TARGET: ngsolve
 
+ngsolve 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "3"
+    variables:
+        PYVER: "3.9"
+        TARGET: ngsolve
+
 
 fenics 3 6:
     extends: .per_py
@@ -280,33 +344,16 @@ fenics 3 8:
         PYVER: "3.8"
         TARGET: fenics
 
+fenics 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "3"
+    variables:
+        PYVER: "3.9"
+        TARGET: fenics
+
 
 #******* stage 4
-wheelbuilder_manylinux1 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "4"
-    variables:
-        PYVER: "3.6"
-        TARGET: wheelbuilder_manylinux1
-
-wheelbuilder_manylinux1 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "4"
-    variables:
-        PYVER: "3.7"
-        TARGET: wheelbuilder_manylinux1
-
-wheelbuilder_manylinux1 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "4"
-    variables:
-        PYVER: "3.8"
-        TARGET: wheelbuilder_manylinux1
-
-
 wheelbuilder_manylinux2010 3 6:
     extends: .per_py
     resource_group: cache_3.6
@@ -329,6 +376,14 @@ wheelbuilder_manylinux2010 3 8:
     stage: "4"
     variables:
         PYVER: "3.8"
+        TARGET: wheelbuilder_manylinux2010
+
+wheelbuilder_manylinux2010 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "4"
+    variables:
+        PYVER: "3.9"
         TARGET: wheelbuilder_manylinux2010
 
 
@@ -354,6 +409,14 @@ wheelbuilder_manylinux2014 3 8:
     stage: "4"
     variables:
         PYVER: "3.8"
+        TARGET: wheelbuilder_manylinux2014
+
+wheelbuilder_manylinux2014 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "4"
+    variables:
+        PYVER: "3.9"
         TARGET: wheelbuilder_manylinux2014
 
 
@@ -382,6 +445,14 @@ cibase 3 8:
         PYVER: "3.8"
         TARGET: cibase
 
+cibase 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "4"
+    variables:
+        PYVER: "3.9"
+        TARGET: cibase
+
 
 #******* stage 5
 
@@ -407,6 +478,14 @@ testing 3 8:
     stage: "5"
     variables:
         PYVER: "3.8"
+        TARGET: testing
+
+testing 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "5"
+    variables:
+        PYVER: "3.9"
         TARGET: testing
 
 demo_master:
@@ -439,6 +518,14 @@ jupyter 3 8:
     stage: "6"
     variables:
         PYVER: "3.8"
+        TARGET: jupyter
+
+jupyter 3 9:
+    extends: .per_py
+    resource_group: cache_3.9
+    stage: "6"
+    variables:
+        PYVER: "3.9"
         TARGET: jupyter
 
 docker-in-docker:
