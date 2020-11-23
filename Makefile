@@ -15,11 +15,13 @@ IMAGE_TARGETS=real rp run cl ensure pull pl
 DEMOS = $(addprefix demo_,$(DEMO_TAGS))
 # no builtin rules or variables
 MAKEFLAGS += -rR
-DOCKERFILES=$(shell find . -name Dockerfile -type f)
 
 all: FORCE $(foreach subd,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)),$(addprefix $(subd)_,$(PYTHONS))) $(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT))
 
 $(PY_SUBDIRS): % : $(addprefix %_,$(PYTHONS))
+
+py_independent: $(PY_INDEPENDENT)
+push_py_independent: $(addprefix push_,$(PY_INDEPENDENT))
 
 push: $(PUSH_PYTHON_SUBDIRS) $(PUSH)
 clean: $(CLEAN_PYTHON_SUBDIRS) $(CLEAN)
@@ -37,13 +39,9 @@ IS_DIRTY:
 	(git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code) || \
 	(git diff --no-ext-diff ; exit 1)
 
-.PHONY: FORCE IS_DIRTY $(DOCKERFILES)
+.PHONY: FORCE IS_DIRTY 
 
-FORCE: IS_DIRTY dockerfiles
-
-dockerfiles: $(DOCKERFILES)
-$(DOCKERFILES):
-
+FORCE: IS_DIRTY 
 
 # build+tag meta pattern for all SUBDIR_PY
 $(foreach subd,$(PY_SUBDIRS),$(addprefix $(subd)_,$(PYTHONS))): % : real_%
@@ -68,6 +66,7 @@ pl_% : FORCE
 run_%: %
 	$(CNTR_RUN) -it --entrypoint=/bin/bash $(call FULL_IMAGE_NAME,$(lastword $(subst _, ,$*)),$(VER))
 
+push_pymor_source:
 pymor_source:
 	test -d pymor_source || git clone --branch=$(PYMOR_BRANCH) https://github.com/pymor/pymor pymor_source
 
