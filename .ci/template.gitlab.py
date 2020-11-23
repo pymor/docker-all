@@ -107,7 +107,7 @@ from pathlib import Path
 
 tpl = jinja2.Template(tpl)
 pythons = ['3.6', '3.7', '3.8', '3.9']
-manylinux = ['1', '2010', '2014']
+manylinux = ['2010', '2014']
 
 with open(os.path.join(os.path.dirname(__file__), 'gitlab-ci.yml'), 'wt') as yml:
     yml.write(tpl.render(**locals()))

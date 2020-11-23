@@ -86,10 +86,6 @@ $(addsuffix _pytorch_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYTORCH_IMAGE
 real_pytorch_%: FORCE
 	$(DO_IT)
 
-$(addsuffix _wheelbuilder_manylinux1_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB1_IMAGE
-real_wheelbuilder_manylinux1_%: FORCE pypi-mirror_oldest_%
-	$(DO_IT)
-
 $(addsuffix _wheelbuilder_manylinux2010_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2010_IMAGE
 real_wheelbuilder_manylinux2010_%: FORCE pypi-mirror_oldest_%
 	$(DO_IT)
