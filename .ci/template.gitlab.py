@@ -32,6 +32,7 @@ include:
       - docker buildx --help
       - apk add make sed rsync bash git
       - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+      - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD docker.io
     script:
       - make ${TARGET}_${PYVER} || (sleep 5s ; make ${TARGET}_${PYVER}) || (sleep 5s; make ${TARGET}_${PYVER})
       - make push_${TARGET}_${PYVER} || (sleep 5s ;  make push_${TARGET}_${PYVER}) || (sleep 5s ;  make push_${TARGET}_${PYVER} )

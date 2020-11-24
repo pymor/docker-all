@@ -1,4 +1,4 @@
-FROM docker.io/library/docker:19.03.10
+FROM docker.io/library/docker:19.03.13
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 ENV DOCKER_BUILDKIT=1 \
