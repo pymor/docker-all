@@ -15,7 +15,7 @@ RUN MOUNT_CACHE \
   && mkdir ${SERVER_ROOT} \
   && chown pymor ${SERVER_ROOT}
 
-COPY PYVER/*.txt ${SERVER_ROOT}/requirements/
+COPY --from=zivgitlab.wwu.io/pymor/docker/pymor/constraints_pyPYVER:VERTAG /requirements/*.txt ${SERVER_ROOT}/requirements/
 # non-installable package cannot be downloaded and would error out the whole process
 # pytorch needs special casing due to --follow url
 # openblas is needed for python 3.9 until numpy has a wheel
