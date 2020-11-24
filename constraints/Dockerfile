@@ -18,7 +18,4 @@ RUN constraints.bash
 FROM alpine:3.12
 
 COPY --from=builder_PYVER_VERTAG /requirements/* /requirements/
-RUN apk add bash
-VOLUME "/output"
 ENTRYPOINT []
-CMD ["/bin/bash", "-c", "install -v -m=0777 -t /output/ /requirements/*"]
