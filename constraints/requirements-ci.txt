@@ -15,7 +15,7 @@ pytest-timeout
 pytest-xdist
 pytest>=4.4
 pytype
-PyQt5
+PyQt5!=5.15.2,>5.7,!=5.15.2.*
 readme_renderer[md]
 rstcheck
 testipynb
