@@ -12,6 +12,7 @@ pytest-memprof
 pytest-mypy
 pytest-notebook
 pytest-parallel
+pytest-qt
 pytest-timeout
 pytest-xdist
 pytest>=4.4
