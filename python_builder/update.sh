@@ -37,7 +37,7 @@ if [ ${#versions[@]} -eq 0 ]; then
 fi
 versions=( "${versions[@]%/}" )
 
-pipVersion="20.2.2"
+pipVersion="20.3.1"
 
 generated_warning() {
 	cat <<-EOH

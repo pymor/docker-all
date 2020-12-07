@@ -21,9 +21,10 @@ done
 
 cd /requirements/
 virtualenv /tmp/venv_old
+
 /tmp/venv_old/bin/pip install /usr/local/share/torch*whl
 for fn in oldest_require*.txt ; do
-    /tmp/venv_old/bin/pip install -r ${fn}
+    /tmp/venv_old/bin/pip install --use-deprecated=legacy-resolver -r ${fn}
 done
 
 /tmp/venv_old/bin/pip freeze --all | grep -v pymess | grep -v fenics | grep -v torch | grep -v dolfin |grep -v dealii \
