@@ -32,6 +32,10 @@ RUN MOUNT_CACHE \
   && pypi-mirror --print-traceback create  -d downloads -m simple \
   && rm -rf /tmp/*
 
+# FOLD tino previous run
+COPY extra_version_downloads.txt /tmp/
+RUN ${DOWNLOAD} -r /tmp/extra_version_downloads.txt
+
 USER pymor
 WORKDIR ${SERVER_ROOT}
 ENTRYPOINT ["python", "-m", "http.server", "--bind", "0.0.0.0", "8080" ]
