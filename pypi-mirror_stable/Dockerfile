@@ -6,7 +6,7 @@ ENV MIRROR_VERSION=4.0.5 \
   SERVER_ROOT=/pymor \
   PYTORCH_VERSION=1.5.1 \
   XDG_CACHE_HOME=/cache \
-  DOWNLOAD="pip download --no-deps --no-use-pep517 -d /pymor/downloads"
+  DOWNLOAD="pip download --no-deps -d /pymor/downloads"
 
 RUN MOUNT_CACHE \
   pip install -qq "python-pypi-mirror==${MIRROR_VERSION}"  pip==${PIP_VERSION} \
