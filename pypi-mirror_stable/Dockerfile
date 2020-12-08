@@ -21,20 +21,19 @@ COPY --from=zivgitlab.wwu.io/pymor/docker/pymor/constraints_pyPYVER:VERTAG /requ
 # openblas is needed for python 3.9 until numpy has a wheel
 # for slycot: scikit-build
 COPY --from=docker.io/pymor/pytorch_pyPYVER:a2ebb25a0992b20957bfeced2e9dcee30105350b /io/wheelhouse/torch*.whl /tmp/
+COPY extra_version_downloads.txt /tmp/
 RUN MOUNT_CACHE \
   ${DOWNLOAD} /tmp/torch*whl && rm /tmp/torch*whl \
   && set -uex ; \
   apt update && apt install -y libopenblas-base \
   && pip install scikit-build \
   && ${DOWNLOAD} -r ${SERVER_ROOT}/requirements/constraints.txt \
+  && ${DOWNLOAD} -r /tmp/extra_version_downloads.txt \
   && set -uex \
   && cd ${SERVER_ROOT}/ \
   && pypi-mirror --print-traceback create  -d downloads -m simple \
   && rm -rf /tmp/*
 
-# FOLD tino previous run
-COPY extra_version_downloads.txt /tmp/
-RUN ${DOWNLOAD} -r /tmp/extra_version_downloads.txt
 
 USER pymor
 WORKDIR ${SERVER_ROOT}
