@@ -1,20 +1,15 @@
 
 
 stages:
-  - "0"
-  - "1"
-  - "2"
-  - "3"
-  - "4"
-  - "5"
-  - "6"
+  - py_independent
+  - py_dependent
 
 #************ definition of base jobs *********************************************************************************#
 # https://docs.gitlab.com/ee/ci/yaml/README.html#workflowrules-templates
 include:
   - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
 
-.per_py:
+.docker_base:
     retry:
         max: 2
         when:
@@ -31,520 +26,386 @@ include:
       - apk add make sed rsync bash git
       - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
       - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD docker.io
+py_dep 3 6:
+    extends: .docker_base
+    resource_group: cache_3.6
+    stage: py_dependent
+    variables:
+        PYVER: "3.6"
     script:
-      - make ${TARGET}_${PYVER} || (sleep 5s ; make ${TARGET}_${PYVER}) || (sleep 5s; make ${TARGET}_${PYVER})
-      - make push_${TARGET}_${PYVER} || (sleep 5s ;  make push_${TARGET}_${PYVER}) || (sleep 5s ;  make push_${TARGET}_${PYVER} )
+      - make python_builder_3.6
+      # wait for potentially running push
+      - wait
+      - make push_python_builder_3.6 &
 
-.py_indep:
-    extends: .per_py
+      - make python_3.6
+      # wait for potentially running push
+      - wait
+      - make push_python_3.6 &
+
+      - make constraints_3.6
+      # wait for potentially running push
+      - wait
+      - make push_constraints_3.6 &
+
+      - make dealii_3.6
+      # wait for potentially running push
+      - wait
+      - make push_dealii_3.6 &
+
+      - make petsc_3.6
+      # wait for potentially running push
+      - wait
+      - make push_petsc_3.6 &
+
+      - make pypi-mirror_stable_3.6
+      # wait for potentially running push
+      - wait
+      - make push_pypi-mirror_stable_3.6 &
+
+      - make pypi-mirror_oldest_3.6
+      # wait for potentially running push
+      - wait
+      - make push_pypi-mirror_oldest_3.6 &
+
+      - make ngsolve_3.6
+      # wait for potentially running push
+      - wait
+      - make push_ngsolve_3.6 &
+
+      - make fenics_3.6
+      # wait for potentially running push
+      - wait
+      - make push_fenics_3.6 &
+
+      - make wheelbuilder_manylinux2010_3.6
+      # wait for potentially running push
+      - wait
+      - make push_wheelbuilder_manylinux2010_3.6 &
+
+      - make wheelbuilder_manylinux2014_3.6
+      # wait for potentially running push
+      - wait
+      - make push_wheelbuilder_manylinux2014_3.6 &
+
+      - make cibase_3.6
+      # wait for potentially running push
+      - wait
+      - make push_cibase_3.6 &
+
+      - make testing_3.6
+      # wait for potentially running push
+      - wait
+      - make push_testing_3.6 &
+
+      - make jupyter_3.6
+      # wait for potentially running push
+      - wait
+      - make push_jupyter_3.6 &
+
+      - wait
+
+py_dep 3 7:
+    extends: .docker_base
+    resource_group: cache_3.7
+    stage: py_dependent
+    variables:
+        PYVER: "3.7"
     script:
-      - make ${TARGET} || (sleep 5s ; make ${TARGET}) || (sleep 5s; make ${TARGET})
-      - make push_${TARGET} || (sleep 5s ;  make push_${TARGET}) || (sleep 5s ;  make push_${TARGET})
+      - make python_builder_3.7
+      # wait for potentially running push
+      - wait
+      - make push_python_builder_3.7 &
 
+      - make python_3.7
+      # wait for potentially running push
+      - wait
+      - make push_python_3.7 &
 
+      - make constraints_3.7
+      # wait for potentially running push
+      - wait
+      - make push_constraints_3.7 &
 
+      - make dealii_3.7
+      # wait for potentially running push
+      - wait
+      - make push_dealii_3.7 &
 
+      - make petsc_3.7
+      # wait for potentially running push
+      - wait
+      - make push_petsc_3.7 &
 
-#******* stage 0
+      - make pypi-mirror_stable_3.7
+      # wait for potentially running push
+      - wait
+      - make push_pypi-mirror_stable_3.7 &
 
-python_builder 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "0"
-    variables:
-        PYVER: "3.6"
-        TARGET: python_builder
+      - make pypi-mirror_oldest_3.7
+      # wait for potentially running push
+      - wait
+      - make push_pypi-mirror_oldest_3.7 &
 
-python_builder 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "0"
-    variables:
-        PYVER: "3.7"
-        TARGET: python_builder
+      - make ngsolve_3.7
+      # wait for potentially running push
+      - wait
+      - make push_ngsolve_3.7 &
 
-python_builder 3 8:
-    extends: .per_py
+      - make fenics_3.7
+      # wait for potentially running push
+      - wait
+      - make push_fenics_3.7 &
+
+      - make wheelbuilder_manylinux2010_3.7
+      # wait for potentially running push
+      - wait
+      - make push_wheelbuilder_manylinux2010_3.7 &
+
+      - make wheelbuilder_manylinux2014_3.7
+      # wait for potentially running push
+      - wait
+      - make push_wheelbuilder_manylinux2014_3.7 &
+
+      - make cibase_3.7
+      # wait for potentially running push
+      - wait
+      - make push_cibase_3.7 &
+
+      - make testing_3.7
+      # wait for potentially running push
+      - wait
+      - make push_testing_3.7 &
+
+      - make jupyter_3.7
+      # wait for potentially running push
+      - wait
+      - make push_jupyter_3.7 &
+
+      - wait
+
+py_dep 3 8:
+    extends: .docker_base
     resource_group: cache_3.8
-    stage: "0"
+    stage: py_dependent
     variables:
         PYVER: "3.8"
-        TARGET: python_builder
+    script:
+      - make python_builder_3.8
+      # wait for potentially running push
+      - wait
+      - make push_python_builder_3.8 &
 
-python_builder 3 9:
-    extends: .per_py
+      - make python_3.8
+      # wait for potentially running push
+      - wait
+      - make push_python_3.8 &
+
+      - make constraints_3.8
+      # wait for potentially running push
+      - wait
+      - make push_constraints_3.8 &
+
+      - make dealii_3.8
+      # wait for potentially running push
+      - wait
+      - make push_dealii_3.8 &
+
+      - make petsc_3.8
+      # wait for potentially running push
+      - wait
+      - make push_petsc_3.8 &
+
+      - make pypi-mirror_stable_3.8
+      # wait for potentially running push
+      - wait
+      - make push_pypi-mirror_stable_3.8 &
+
+      - make pypi-mirror_oldest_3.8
+      # wait for potentially running push
+      - wait
+      - make push_pypi-mirror_oldest_3.8 &
+
+      - make ngsolve_3.8
+      # wait for potentially running push
+      - wait
+      - make push_ngsolve_3.8 &
+
+      - make fenics_3.8
+      # wait for potentially running push
+      - wait
+      - make push_fenics_3.8 &
+
+      - make wheelbuilder_manylinux2010_3.8
+      # wait for potentially running push
+      - wait
+      - make push_wheelbuilder_manylinux2010_3.8 &
+
+      - make wheelbuilder_manylinux2014_3.8
+      # wait for potentially running push
+      - wait
+      - make push_wheelbuilder_manylinux2014_3.8 &
+
+      - make cibase_3.8
+      # wait for potentially running push
+      - wait
+      - make push_cibase_3.8 &
+
+      - make testing_3.8
+      # wait for potentially running push
+      - wait
+      - make push_testing_3.8 &
+
+      - make jupyter_3.8
+      # wait for potentially running push
+      - wait
+      - make push_jupyter_3.8 &
+
+      - wait
+
+py_dep 3 9:
+    extends: .docker_base
     resource_group: cache_3.9
-    stage: "0"
+    stage: py_dependent
     variables:
         PYVER: "3.9"
-        TARGET: python_builder
+    script:
+      - make python_builder_3.9
+      # wait for potentially running push
+      - wait
+      - make push_python_builder_3.9 &
 
-deploy_checks:
-    extends: .py_indep
-    stage: "0"
+      - make python_3.9
+      # wait for potentially running push
+      - wait
+      - make push_python_3.9 &
+
+      - make constraints_3.9
+      # wait for potentially running push
+      - wait
+      - make push_constraints_3.9 &
+
+      - make dealii_3.9
+      # wait for potentially running push
+      - wait
+      - make push_dealii_3.9 &
+
+      - make petsc_3.9
+      # wait for potentially running push
+      - wait
+      - make push_petsc_3.9 &
+
+      - make pypi-mirror_stable_3.9
+      # wait for potentially running push
+      - wait
+      - make push_pypi-mirror_stable_3.9 &
+
+      - make pypi-mirror_oldest_3.9
+      # wait for potentially running push
+      - wait
+      - make push_pypi-mirror_oldest_3.9 &
+
+      - make ngsolve_3.9
+      # wait for potentially running push
+      - wait
+      - make push_ngsolve_3.9 &
+
+      - make fenics_3.9
+      # wait for potentially running push
+      - wait
+      - make push_fenics_3.9 &
+
+      - make wheelbuilder_manylinux2010_3.9
+      # wait for potentially running push
+      - wait
+      - make push_wheelbuilder_manylinux2010_3.9 &
+
+      - make wheelbuilder_manylinux2014_3.9
+      # wait for potentially running push
+      - wait
+      - make push_wheelbuilder_manylinux2014_3.9 &
+
+      - make cibase_3.9
+      # wait for potentially running push
+      - wait
+      - make push_cibase_3.9 &
+
+      - make testing_3.9
+      # wait for potentially running push
+      - wait
+      - make push_testing_3.9 &
+
+      - make jupyter_3.9
+      # wait for potentially running push
+      - wait
+      - make push_jupyter_3.9 &
+
+      - wait
+py_indep:
+    extends: .docker_base
+    resource_group: cache_
+    stage: py_dependent
     variables:
-        TARGET: deploy_checks
+        PYVER: ""
+    script:
+      - make python_builder
+      - wait
+      - make push_python_builder &
 
-#******* stage 1
-ci_sanity:
-    extends: .py_indep
-    stage: "1"
-    variables:
-        TARGET: ci_sanity
+      - make python
+      - wait
+      - make push_python &
 
-python 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "1"
-    variables:
-        PYVER: "3.6"
-        TARGET: python
+      - make constraints
+      - wait
+      - make push_constraints &
 
-python 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "1"
-    variables:
-        PYVER: "3.7"
-        TARGET: python
+      - make dealii
+      - wait
+      - make push_dealii &
 
-python 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "1"
-    variables:
-        PYVER: "3.8"
-        TARGET: python
+      - make petsc
+      - wait
+      - make push_petsc &
 
-python 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "1"
-    variables:
-        PYVER: "3.9"
-        TARGET: python
+      - make pypi-mirror_stable
+      - wait
+      - make push_pypi-mirror_stable &
 
+      - make pypi-mirror_oldest
+      - wait
+      - make push_pypi-mirror_oldest &
 
-#******* stage 2
+      - make ngsolve
+      - wait
+      - make push_ngsolve &
 
-constraints 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "2"
-    variables:
-        PYVER: "3.6"
-        TARGET: constraints
+      - make fenics
+      - wait
+      - make push_fenics &
 
-constraints 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "2"
-    variables:
-        PYVER: "3.7"
-        TARGET: constraints
+      - make wheelbuilder_manylinux2010
+      - wait
+      - make push_wheelbuilder_manylinux2010 &
 
-constraints 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "2"
-    variables:
-        PYVER: "3.8"
-        TARGET: constraints
+      - make wheelbuilder_manylinux2014
+      - wait
+      - make push_wheelbuilder_manylinux2014 &
 
-constraints 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "2"
-    variables:
-        PYVER: "3.9"
-        TARGET: constraints
+      - make cibase
+      - wait
+      - make push_cibase &
 
+      - make testing
+      - wait
+      - make push_testing &
 
-dealii 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "2"
-    variables:
-        PYVER: "3.6"
-        TARGET: dealii
+      - make jupyter
+      - wait
+      - make push_jupyter &
 
-dealii 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "2"
-    variables:
-        PYVER: "3.7"
-        TARGET: dealii
+      - wait
 
-dealii 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "2"
-    variables:
-        PYVER: "3.8"
-        TARGET: dealii
-
-dealii 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "2"
-    variables:
-        PYVER: "3.9"
-        TARGET: dealii
-
-
-petsc 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "2"
-    variables:
-        PYVER: "3.6"
-        TARGET: petsc
-
-petsc 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "2"
-    variables:
-        PYVER: "3.7"
-        TARGET: petsc
-
-petsc 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "2"
-    variables:
-        PYVER: "3.8"
-        TARGET: petsc
-
-petsc 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "2"
-    variables:
-        PYVER: "3.9"
-        TARGET: petsc
-
-
-#******* stage 3
-
-pypi-mirror_stable 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "3"
-    variables:
-        PYVER: "3.6"
-        TARGET: pypi-mirror_stable
-
-pypi-mirror_stable 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "3"
-    variables:
-        PYVER: "3.7"
-        TARGET: pypi-mirror_stable
-
-pypi-mirror_stable 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "3"
-    variables:
-        PYVER: "3.8"
-        TARGET: pypi-mirror_stable
-
-pypi-mirror_stable 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "3"
-    variables:
-        PYVER: "3.9"
-        TARGET: pypi-mirror_stable
-
-
-pypi-mirror_oldest 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "3"
-    variables:
-        PYVER: "3.6"
-        TARGET: pypi-mirror_oldest
-
-pypi-mirror_oldest 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "3"
-    variables:
-        PYVER: "3.7"
-        TARGET: pypi-mirror_oldest
-
-pypi-mirror_oldest 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "3"
-    variables:
-        PYVER: "3.8"
-        TARGET: pypi-mirror_oldest
-
-pypi-mirror_oldest 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "3"
-    variables:
-        PYVER: "3.9"
-        TARGET: pypi-mirror_oldest
-
-
-ngsolve 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "3"
-    variables:
-        PYVER: "3.6"
-        TARGET: ngsolve
-
-ngsolve 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "3"
-    variables:
-        PYVER: "3.7"
-        TARGET: ngsolve
-
-ngsolve 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "3"
-    variables:
-        PYVER: "3.8"
-        TARGET: ngsolve
-
-ngsolve 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "3"
-    variables:
-        PYVER: "3.9"
-        TARGET: ngsolve
-
-
-fenics 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "3"
-    variables:
-        PYVER: "3.6"
-        TARGET: fenics
-
-fenics 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "3"
-    variables:
-        PYVER: "3.7"
-        TARGET: fenics
-
-fenics 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "3"
-    variables:
-        PYVER: "3.8"
-        TARGET: fenics
-
-fenics 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "3"
-    variables:
-        PYVER: "3.9"
-        TARGET: fenics
-
-
-#******* stage 4
-wheelbuilder_manylinux2010 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "4"
-    variables:
-        PYVER: "3.6"
-        TARGET: wheelbuilder_manylinux2010
-
-wheelbuilder_manylinux2010 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "4"
-    variables:
-        PYVER: "3.7"
-        TARGET: wheelbuilder_manylinux2010
-
-wheelbuilder_manylinux2010 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "4"
-    variables:
-        PYVER: "3.8"
-        TARGET: wheelbuilder_manylinux2010
-
-wheelbuilder_manylinux2010 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "4"
-    variables:
-        PYVER: "3.9"
-        TARGET: wheelbuilder_manylinux2010
-
-
-wheelbuilder_manylinux2014 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "4"
-    variables:
-        PYVER: "3.6"
-        TARGET: wheelbuilder_manylinux2014
-
-wheelbuilder_manylinux2014 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "4"
-    variables:
-        PYVER: "3.7"
-        TARGET: wheelbuilder_manylinux2014
-
-wheelbuilder_manylinux2014 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "4"
-    variables:
-        PYVER: "3.8"
-        TARGET: wheelbuilder_manylinux2014
-
-wheelbuilder_manylinux2014 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "4"
-    variables:
-        PYVER: "3.9"
-        TARGET: wheelbuilder_manylinux2014
-
-
-
-cibase 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "4"
-    variables:
-        PYVER: "3.6"
-        TARGET: cibase
-
-cibase 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "4"
-    variables:
-        PYVER: "3.7"
-        TARGET: cibase
-
-cibase 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "4"
-    variables:
-        PYVER: "3.8"
-        TARGET: cibase
-
-cibase 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "4"
-    variables:
-        PYVER: "3.9"
-        TARGET: cibase
-
-
-#******* stage 5
-
-testing 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "5"
-    variables:
-        PYVER: "3.6"
-        TARGET: testing
-
-testing 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "5"
-    variables:
-        PYVER: "3.7"
-        TARGET: testing
-
-testing 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "5"
-    variables:
-        PYVER: "3.8"
-        TARGET: testing
-
-testing 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "5"
-    variables:
-        PYVER: "3.9"
-        TARGET: testing
-
-demo_master:
-    extends: .py_indep
-    stage: "5"
-    variables:
-        TARGET: demo_master
-
-#******* stage 6
-
-jupyter 3 6:
-    extends: .per_py
-    resource_group: cache_3.6
-    stage: "6"
-    variables:
-        PYVER: "3.6"
-        TARGET: jupyter
-
-jupyter 3 7:
-    extends: .per_py
-    resource_group: cache_3.7
-    stage: "6"
-    variables:
-        PYVER: "3.7"
-        TARGET: jupyter
-
-jupyter 3 8:
-    extends: .per_py
-    resource_group: cache_3.8
-    stage: "6"
-    variables:
-        PYVER: "3.8"
-        TARGET: jupyter
-
-jupyter 3 9:
-    extends: .per_py
-    resource_group: cache_3.9
-    stage: "6"
-    variables:
-        PYVER: "3.9"
-        TARGET: jupyter
-
-docker-in-docker:
-    extends: .py_indep
-    stage: "6"
-    variables:
-        TARGET: docker-in-docker
-docs:
-    extends: .py_indep
-    stage: "6"
-    variables:
-        TARGET: docs
 
 # THIS FILE IS AUTOGENERATED -- DO NOT EDIT #
 #   Edit and Re-run template.ci.py instead       #
