@@ -17,7 +17,6 @@ ipywidgets
 jupyter_contrib_nbextensions
 jupyter_sphinx
 matplotlib
-kiwisolver==1.2.0
 meshio==4.2.0
 mpi4py
 nbresuse
