@@ -18,4 +18,3 @@ RUN constraints.bash
 FROM alpine:3.12
 
 COPY --from=builder_PYVER_VERTAG /requirements/* /requirements/
-ENTRYPOINT []
