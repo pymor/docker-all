@@ -9,7 +9,7 @@ RUN MOUNT_CACHE \
   apt install -y libopenblas-dev mpi-default-dev make g++ gfortran cmake \
     libxslt1-dev libxml2-dev libjpeg-dev
 
-COPY --from=docker.io/pymor/pytorch_pyPYVER:a2ebb25a0992b20957bfeced2e9dcee30105350b /io/wheelhouse/torch*.whl /usr/local/share/
+COPY --from=REGISTRY/pymor/ci_wheels_pyPYVER:VERTAG /wheelhouse/*.whl /ci_wheels/
 COPY requirements* /requirements/
 
 COPY constraints.bash /usr/local/bin

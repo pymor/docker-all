@@ -12,6 +12,7 @@ ENV FENICS_BUILD_TYPE=Release \
     FENICS_PYTHON=python
 WORKDIR /tmp
 
+COPY --from=REGISTRY/pymor/ci_wheels_pyPYVER:VERTAG /wheelhouse/mpi4py*.whl /tmp/
 # Install Python environment
 RUN pip install --no-cache-dir numpy && \
     pip install --no-cache-dir ply && \
@@ -22,7 +23,7 @@ RUN pip install --no-cache-dir numpy && \
 # Install Jupyter, sympy, mpi4py, petsc4py and slepc4py and Swig from source.
     pip install --no-cache-dir sympy==1.5.1 && \
     pip install --no-cache-dir matplotlib && \
-    pip install --no-cache-dir https://bitbucket.org/mpi4py/mpi4py/downloads/mpi4py-${MPI4PY_VERSION}.tar.gz && \
+    pip install --no-cache-dir /tmp/mpi4py*.whl && \
     pip install petsc4py==${PETSC4PY_VERSION} && \
     wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
     tar -xf v${PYBIND11_VERSION}.tar.gz && \

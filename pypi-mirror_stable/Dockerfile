@@ -17,16 +17,11 @@ RUN MOUNT_CACHE \
 
 COPY --from=zivgitlab.wwu.io/pymor/docker/pymor/constraints_pyPYVER:VERTAG /requirements/*.txt ${SERVER_ROOT}/requirements/
 # non-installable package cannot be downloaded and would error out the whole process
-# pytorch needs special casing due to --follow url
-# openblas is needed for python 3.9 until numpy has a wheel
-# for slycot: scikit-build
-COPY --from=docker.io/pymor/pytorch_pyPYVER:a2ebb25a0992b20957bfeced2e9dcee30105350b /io/wheelhouse/torch*.whl /tmp/
+COPY --from=REGISTRY/pymor/ci_wheels_pyPYVER:VERTAG /wheelhouse/*.whl /tmp/
 COPY extra_version_downloads.txt /tmp/
 RUN MOUNT_CACHE \
-  ${DOWNLOAD} /tmp/torch*whl && rm /tmp/torch*whl \
-  && set -uex ; \
-  apt update && apt install -y libopenblas-base \
-  && pip install scikit-build \
+  ${DOWNLOAD} /tmp/*whl && rm /tmp/*whl \
+  && set -uex \
   && ${DOWNLOAD} -r ${SERVER_ROOT}/requirements/constraints.txt \
   && ${DOWNLOAD} -r /tmp/extra_version_downloads.txt \
   && set -uex \
