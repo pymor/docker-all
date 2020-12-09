@@ -3,5 +3,3 @@
 # numpy master needs this
 wheel<=0.35.1
 
-# newer kiwisolver needs this on python 3.9 since no wheels are avail yet
-cppy>=1.1.0
