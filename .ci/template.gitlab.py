@@ -3,8 +3,8 @@
 tpl = '''
 
 stages:
-  - py_independent
-  - py_dependent
+  - static_targetsendent
+  - parameterized_targetsendent
 
 #************ definition of base jobs *********************************************************************************#
 # https://docs.gitlab.com/ee/ci/yaml/README.html#workflowrules-templates
@@ -30,14 +30,14 @@ include:
       - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD docker.io
 
 {%- for PY in pythons %}
-py_dep {{PY[0]}} {{PY[2]}}:
+parameterized_targets {{PY[0]}} {{PY[2]}}:
     extends: .docker_base
     resource_group: cache_{{PY}}
-    stage: py_dependent
+    stage: parameterized_targetsendent
     variables:
         PYVER: "{{PY}}"
     script:
-{%- for target in py_deps %}
+{%- for target in parameterized_targetss %}
       - make {{target}}_{{PY}}
       # wait for potentially running push
       - wait
@@ -46,14 +46,14 @@ py_dep {{PY[0]}} {{PY[2]}}:
       - wait
 {% endfor -%}
 
-py_indep:
+static_targets:
     extends: .docker_base
     resource_group: cache_{{PY}}
-    stage: py_independent
+    stage: static_targetsendent
     variables:
         PYVER: "{{PY}}"
     script:
-{%- for target in py_deps %}
+{%- for target in static_targets %}
       - make {{target}}
       - wait
       - make push_{{target}} &
@@ -76,8 +76,8 @@ from pathlib import Path
 tpl = jinja2.Template(tpl)
 pythons = ['3.6', '3.7', '3.8', '3.9']
 manylinux = ['2010', '2014']
-py_indep = ['docker-in-docker', 'docs', 'demo_master', 'deploy_checks', 'ci_sanity']
-py_deps = ['python_builder', 'python', 'constraints', 'dealii', 'petsc', 'pypi-mirror_stable', 'pypi-mirror_oldest',
+static_targets = ['docker-in-docker', 'docs', 'demo_master', 'deploy_checks', 'ci_sanity']
+parameterized_targetss = ['python_builder', 'python', 'constraints', 'dealii', 'petsc', 'pypi-mirror_stable', 'pypi-mirror_oldest',
 'ngsolve', 'fenics' ] + [f'wheelbuilder_manylinux{ml}' for ml in manylinux] +  ['cibase', 'testing','jupyter']
 
 with open(os.path.join(os.path.dirname(__file__), 'gitlab-ci.yml'), 'wt') as yml:
