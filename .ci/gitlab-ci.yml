@@ -1,8 +1,8 @@
 
 
 stages:
-  - py_independent
-  - py_dependent
+  - static_targetsendent
+  - parameterized_targetsendent
 
 #************ definition of base jobs *********************************************************************************#
 # https://docs.gitlab.com/ee/ci/yaml/README.html#workflowrules-templates
@@ -26,10 +26,10 @@ include:
       - apk add make sed rsync bash git
       - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
       - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD docker.io
-py_dep 3 6:
+parameterized_targets 3 6:
     extends: .docker_base
     resource_group: cache_3.6
-    stage: py_dependent
+    stage: parameterized_targetsendent
     variables:
         PYVER: "3.6"
     script:
@@ -105,10 +105,10 @@ py_dep 3 6:
 
       - wait
 
-py_dep 3 7:
+parameterized_targets 3 7:
     extends: .docker_base
     resource_group: cache_3.7
-    stage: py_dependent
+    stage: parameterized_targetsendent
     variables:
         PYVER: "3.7"
     script:
@@ -184,10 +184,10 @@ py_dep 3 7:
 
       - wait
 
-py_dep 3 8:
+parameterized_targets 3 8:
     extends: .docker_base
     resource_group: cache_3.8
-    stage: py_dependent
+    stage: parameterized_targetsendent
     variables:
         PYVER: "3.8"
     script:
@@ -263,10 +263,10 @@ py_dep 3 8:
 
       - wait
 
-py_dep 3 9:
+parameterized_targets 3 9:
     extends: .docker_base
     resource_group: cache_3.9
-    stage: py_dependent
+    stage: parameterized_targetsendent
     variables:
         PYVER: "3.9"
     script:
@@ -341,68 +341,32 @@ py_dep 3 9:
       - make push_jupyter_3.9 &
 
       - wait
-py_indep:
+static_targets:
     extends: .docker_base
     resource_group: cache_
-    stage: py_dependent
+    stage: static_targetsendent
     variables:
         PYVER: ""
     script:
-      - make python_builder
+      - make docker-in-docker
       - wait
-      - make push_python_builder &
+      - make push_docker-in-docker &
 
-      - make python
+      - make docs
       - wait
-      - make push_python &
+      - make push_docs &
 
-      - make constraints
+      - make demo_master
       - wait
-      - make push_constraints &
+      - make push_demo_master &
 
-      - make dealii
+      - make deploy_checks
       - wait
-      - make push_dealii &
+      - make push_deploy_checks &
 
-      - make petsc
+      - make ci_sanity
       - wait
-      - make push_petsc &
-
-      - make pypi-mirror_stable
-      - wait
-      - make push_pypi-mirror_stable &
-
-      - make pypi-mirror_oldest
-      - wait
-      - make push_pypi-mirror_oldest &
-
-      - make ngsolve
-      - wait
-      - make push_ngsolve &
-
-      - make fenics
-      - wait
-      - make push_fenics &
-
-      - make wheelbuilder_manylinux2010
-      - wait
-      - make push_wheelbuilder_manylinux2010 &
-
-      - make wheelbuilder_manylinux2014
-      - wait
-      - make push_wheelbuilder_manylinux2014 &
-
-      - make cibase
-      - wait
-      - make push_cibase &
-
-      - make testing
-      - wait
-      - make push_testing &
-
-      - make jupyter
-      - wait
-      - make push_jupyter &
+      - make push_ci_sanity &
 
       - wait
 
