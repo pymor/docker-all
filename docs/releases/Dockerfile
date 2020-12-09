@@ -21,7 +21,7 @@ USER pymor
 COPY build_docs.bash /home/pymor/
 RUN /home/pymor/build_docs.bash 2020.1.x
 
-FROM alpine:latest
+FROM alpine:3.12
 
 COPY --from=demo04 /home/pymor/docs/ /docs/
 COPY --from=demo05 /home/pymor/docs/ /docs/
