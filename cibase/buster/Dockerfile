@@ -14,8 +14,7 @@ ENV DOCKER_NGSOLVE=1 \
     BOOST_VERSION=1.67.0
 
 # -dev packages should be kept as few as possible, and listed here with reasoning
-# mpi-default-dev: mpi4py install depends on it
-# libopenblas-dev: slycot install needs it
+# mpi-default-bin: mpi runtime for tests
 # matplotlib/Qt backend: libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
 #     libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-util0
 # fenics/petsc:
@@ -34,7 +33,7 @@ RUN MOUNT_CACHE \
         swig cmake libopenblas-dev \
         aptitude bison flex ninja-build \
         xauth gsl-bin git-lfs \
-        vim openmpi-bin mpi-default-dev gosu sudo \
+        vim mpi-default-bin gosu sudo \
         liboce-modeling11 liboce-ocaf11 libopengl0 \
         libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23 \
         libhdf5-mpi-dev \

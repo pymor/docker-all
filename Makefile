@@ -94,7 +94,7 @@ real_wheelbuilder_manylinux2014_%: FORCE pypi-mirror_oldest_%
 	$(DO_IT)
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
-real_constraints_%: FORCE python_%
+real_constraints_%: FORCE real_ci_wheels_%
 	$(DO_IT)
 
 $(addsuffix _pypi-mirror_stable_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE
@@ -138,7 +138,7 @@ real_petsc_%: FORCE python_%
 	$(DO_IT)
 
 $(addsuffix _fenics_%,$(IMAGE_TARGETS)): IMAGE_NAME:=FENICS_IMAGE
-real_fenics_%: FORCE petsc_%
+real_fenics_%: FORCE petsc_% ci_wheels_%
 	$(DO_IT)
 
 $(addsuffix _ngsolve_%,$(IMAGE_TARGETS)): IMAGE_NAME:=NGSOLVE_IMAGE

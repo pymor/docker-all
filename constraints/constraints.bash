@@ -4,7 +4,9 @@ set -exo pipefail
 # in the constrainer base image and cannot be installed from pypi
 
 REQUIREMENTS="requirements.txt requirements-ci.txt requirements-optional.txt requirements-docker-other.txt"
-pip install /usr/local/share/torch*whl
+
+# these are copied from the pymor/ci_wheels image
+pip install /ci_wheels/*whl
 
 cd /requirements/
 for fn in ${REQUIREMENTS} ; do
@@ -22,7 +24,7 @@ done
 cd /requirements/
 virtualenv /tmp/venv_old
 
-/tmp/venv_old/bin/pip install /usr/local/share/torch*whl
+/tmp/venv_old/bin/pip install /ci_wheels/*whl
 for fn in oldest_require*.txt ; do
     /tmp/venv_old/bin/pip install --use-deprecated=legacy-resolver -r ${fn}
 done

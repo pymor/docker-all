@@ -6,7 +6,7 @@ WHEELHOUSE=/wheelhouse
 mkdir /src
 pip install wheel
 
-for pkg in slycot mpi4py ; do
+for pkg in ${WHEEL_PKGS} ; do
   cd /src
   pip download --no-deps $pkg -d /src/
   unp /src/${pkg}*.tar.gz && rm /src/${pkg}*.tar.gz
