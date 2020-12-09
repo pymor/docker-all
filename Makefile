@@ -39,9 +39,9 @@ IS_DIRTY:
 	(git update-index -q --really-refresh && git diff --no-ext-diff --quiet --exit-code) || \
 	(git diff --no-ext-diff ; exit 1)
 
-.PHONY: FORCE IS_DIRTY 
+.PHONY: FORCE IS_DIRTY
 
-FORCE: IS_DIRTY 
+FORCE: IS_DIRTY
 
 # build+tag meta pattern for all SUBDIR_PY
 $(foreach subd,$(PY_SUBDIRS),$(addprefix $(subd)_,$(PYTHONS))): % : real_%
@@ -81,8 +81,8 @@ clean_docker-in-docker: FORCE
 	for img in $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep $(call FULL_IMAGE_NAME,dummy,)) ; \
 		do $(CNTR_RMI) $${img} ; done
 
-$(addsuffix _pytorch_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYTORCH_IMAGE
-real_pytorch_%: FORCE
+$(addsuffix _ci_wheels_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CI_WHEELS_IMAGE
+real_ci_wheels_%: FORCE python_%
 	$(DO_IT)
 
 $(addsuffix _wheelbuilder_manylinux2010_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2010_IMAGE
@@ -187,7 +187,7 @@ $(addprefix clean_,$(DEPLOY_CHECKS)): clean_deploy_checks_% : FORCE
 	$(CNTR_RMI) $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$* $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*
 $(addprefix push_,$(DEPLOY_CHECKS)): push_deploy_checks_% : FORCE
 	$(CNTR_PUSH) $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*
-	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$* 
+	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$*
 
 
 pull_latest_%: FORCE
