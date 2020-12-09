@@ -21,7 +21,6 @@ COPY pybin.sh /etc/profile.d/
 # some packages get installed manually because others have broken dependency settings
 RUN MOUNT_CACHE \
   source /etc/profile.d/pybin.sh && \
-  rm -f ${WHEEL_DIR}/slycot* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/scipy* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/*manylinux2014_x86_64.whl && \

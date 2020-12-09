@@ -25,7 +25,6 @@ RUN MOUNT_CACHE \
   && set -uex \
   && ${DOWNLOAD} -r  ${SERVER_ROOT}/requirements/oldest_constraints.txt \
   && cd ${SERVER_ROOT}/ \
-  && set -uex \
   && pypi-mirror create -d downloads -m simple \
   && rm -rf /tmp/*
 

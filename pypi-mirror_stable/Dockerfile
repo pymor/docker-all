@@ -1,6 +1,6 @@
 # EXPERIMENTAL_SYNTAX
 FROM python:PYVER
-# --no-use-pep517 makes sure scipy and numpy do not install build deps at download time
+
 ENV MIRROR_VERSION=4.0.5 \
   PIP_VERSION=20.3.1 \
   SERVER_ROOT=/pymor \
@@ -24,7 +24,6 @@ RUN MOUNT_CACHE \
   && set -uex \
   && ${DOWNLOAD} -r ${SERVER_ROOT}/requirements/constraints.txt \
   && ${DOWNLOAD} -r /tmp/extra_version_downloads.txt \
-  && set -uex \
   && cd ${SERVER_ROOT}/ \
   && pypi-mirror --print-traceback create  -d downloads -m simple \
   && rm -rf /tmp/*
