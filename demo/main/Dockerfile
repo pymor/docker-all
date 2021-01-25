@@ -12,8 +12,8 @@ RUN apt-get update && apt-get install \
         libarpack2-dev libboost-all-dev libgmsh-dev \
         liblapack-dev libmuparser-dev libmetis-dev libtbb-dev
 RUN apt-get update && apt-get install \
-    && ${PIP_INSTALL} -U pip \
-    && ${PIP_INSTALL} git+https://github.com/pymor/pymor.git@master#egg=pymor[full] \
+    && ${PIP_INSTALL} -U pip==21.0 \
+    && ${PIP_INSTALL} git+https://github.com/pymor/pymor.git@main#egg=pymor[full] \
     && ${PIP_INSTALL} -U git+https://github.com/pymor/pymor-deal.II#egg=pymor_dealii \
     && rm -rf ~/.matplotlib \
     && apt-get autoremove -y  \
