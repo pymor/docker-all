@@ -1,7 +1,6 @@
 cmake
 cmarkgfm
 pytest-pycharm
-myst-parser
 mypy
 pyannotate
 MonkeyType
