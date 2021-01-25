@@ -4,6 +4,7 @@ import os
 import sys
 import termtables as tt
 import dolfin as df
+import dolfinx as dfx
 from dotenv import dotenv_values
 
 
@@ -18,6 +19,7 @@ env_keys_text = {
     'python':   '.'.join((str(f) for f in sys.version_info[0:4])),
     'deal.II':  env('DEALII_VERSION', 'dealii'),
     'FEniCS':   env('FENICS_VERSION', 'fenics'),
+    'dolfinx':   env('DOLFINX_VERSION', 'dolfinx'),
     'NGSolve':  env('NGSOLVE_VERSION', 'ngsolve'),
     'PETSc':    env('PETSC_VERSION', 'petsc'),
     'pybind11': env('PYBIND11_VERSION', 'fenics'),
