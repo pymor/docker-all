@@ -76,7 +76,7 @@ from pathlib import Path
 tpl = jinja2.Template(tpl)
 pythons = ['3.6', '3.7', '3.8', '3.9']
 manylinux = ['2010', '2014']
-static_targets = ['docker-in-docker', 'docs', 'demo_master', 'deploy_checks', 'ci_sanity']
+static_targets = ['docker-in-docker', 'docs', 'demo_main', 'deploy_checks', 'ci_sanity']
 parameterized_targetss = ['python_builder', 'python', 'constraints', 'dealii', 'petsc', 'pypi-mirror_stable', 'pypi-mirror_oldest',
 'ngsolve', 'fenics' ] + [f'wheelbuilder_manylinux{ml}' for ml in manylinux] +  ['cibase', 'testing','jupyter']
 
