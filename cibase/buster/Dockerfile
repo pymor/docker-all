@@ -11,7 +11,7 @@ ENV DOCKER_NGSOLVE=1 \
     DEBIAN_FRONTEND=teletype \
     SLEPC_DIR=/usr/local/slepc-32 \
     PETSC_DIR=/usr/local/petsc-32 \
-    BOOST_VERSION=1.67.0
+    BOOST_VERSION=1.71.0
 
 # -dev packages should be kept as few as possible, and listed here with reasoning
 # mpi-default-bin: mpi runtime for tests
@@ -26,7 +26,11 @@ ENV DOCKER_NGSOLVE=1 \
 #          libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23
 # gmsh: libxcursor1 libxinerama1
 RUN MOUNT_CACHE \
-    apt-get update && \
+    echo 'APT::Default-Release "buster";' > /etc/apt/apt.conf.d/default-release && \
+    echo "deb http://deb.debian.org/debian buster-backports main contrib non-free" > /etc/apt/sources.list.d/buster-backports.list && \
+    echo "deb http://deb.debian.org/debian/ buster contrib non-free" > /etc/apt/sources.list.d/buster-nonfree.list && \
+    apt update && \
+    ${APTINSTALL} -t buster-backports libboost1.71-all-dev && \
     ${APTINSTALL} wget curl less \
         texlive-base xvfb gnupg ca-certificates \
         gcc g++ gfortran make dirmngr pandoc \
@@ -37,13 +41,6 @@ RUN MOUNT_CACHE \
         liboce-modeling11 liboce-ocaf11 libopengl0 \
         libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23 \
         libhdf5-mpi-dev \
-        libboost-filesystem-dev \
-        libboost-iostreams-dev \
-        libboost-math-dev \
-        libboost-program-options-dev \
-        libboost-system-dev \
-        libboost-thread-dev \
-        libboost-timer-dev \
         libeigen3-dev \
         libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
           libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-util0\

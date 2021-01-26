@@ -12,7 +12,11 @@ WORKDIR /tmp
 
 # Non-Python utilities and libraries
 RUN MOUNT_CACHE \
-    apt-get -qq update && \
+    echo 'APT::Default-Release "buster";' > /etc/apt/apt.conf.d/default-release && \
+    echo "deb http://deb.debian.org/debian buster-backports main contrib non-free" > /etc/apt/sources.list.d/buster-backports.list && \
+    echo "deb http://deb.debian.org/debian/ buster contrib non-free" > /etc/apt/sources.list.d/buster-nonfree.list && \
+    apt update && \
+    apt-get install -q=100 -y --no-install-recommends -t buster-backports libboost1.71-all-dev && \
     apt-get -y install curl \
         bison \
         cmake \
@@ -22,13 +26,6 @@ RUN MOUNT_CACHE \
         gfortran \
         git \
         git-lfs \
-        libboost-filesystem-dev \
-        libboost-iostreams-dev \
-        libboost-math-dev \
-        libboost-program-options-dev \
-        libboost-system-dev \
-        libboost-thread-dev \
-        libboost-timer-dev \
         libeigen3-dev \
         liblapack-dev \
         libopenmpi-dev \
@@ -68,7 +65,8 @@ ENV PETSC_VERSION=3.14.0 \
     SLEPC4PY_VERSION=3.13.0 \
     TRILINOS_VERSION=12.10.1 \
     OPENBLAS_NUM_THREADS=1 \
-    OPENBLAS_VERBOSE=0
+    OPENBLAS_VERBOSE=0 \
+    PYBIND11_VERSION=2.4.3
 
 # Install PETSc from source
 RUN MOUNT_CACHE \
@@ -101,11 +99,16 @@ RUN MOUNT_CACHE \
     cd slepc-src && \
     python ./configure --prefix=/usr/local/slepc-32 && \
   PETSC_ARCH=linux-gnu-real-32 pip3 install petsc4py==${PETSC4PY_VERSION} slepc4py==${SLEPC4PY_VERSION} && \
-    wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
-    make -j ${MAKE_PROCS} && \
-    make install && \
-    find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
-    rm -rf /tmp/*
+  wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
+  tar -xf v${PYBIND11_VERSION}.tar.gz && \
+  cd pybind11-${PYBIND11_VERSION} && \
+  mkdir build && \
+  cd build && \
+  cmake -DPYBIND11_TEST=False ../ && \
+  make -j ${MAKE_PROCS} && \
+  make install && \
+  find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
+  rm -rf /tmp/*
 
 # By default use the 32-bit build of SLEPc and PETSc.
 # these can not be moved, configure behaves differently when these are already in the env
