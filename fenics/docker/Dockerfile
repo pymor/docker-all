@@ -7,33 +7,23 @@ ENV FENICS_BUILD_TYPE=Release \
     FENICS_PYTHON=python \
     DOLFIN_VERSION="2019.1.0.post0" \
     MSHR_VERSION="2019.1.0" \
-    PYBIND11_VERSION=2.4.3 \
     PYPI_FENICS_VERSION=">=2019.1.0,<2019.2.0" \
     FENICS_PYTHON=python
 WORKDIR /tmp
 
 COPY --from=REGISTRY/pymor/ci_wheels_pyPYVER:VERTAG /wheelhouse/mpi4py*.whl /tmp/
 # Install Python environment
-RUN pip install --no-cache-dir numpy && \
-    pip install --no-cache-dir ply && \
-    pip install --no-cache-dir pytest && \
-    pip install --no-cache-dir scipy && \
-    pip install --no-cache-dir six && \
-    pip install --no-cache-dir urllib3 && \
+RUN pip install numpy && \
+    pip install ply && \
+    pip install pytest && \
+    pip install scipy && \
+    pip install six && \
+    pip install urllib3 && \
 # Install Jupyter, sympy, mpi4py, petsc4py and slepc4py and Swig from source.
-    pip install --no-cache-dir sympy==1.5.1 && \
-    pip install --no-cache-dir matplotlib && \
-    pip install --no-cache-dir /tmp/mpi4py*.whl && \
-    pip install petsc4py==${PETSC4PY_VERSION} && \
-    wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
-    tar -xf v${PYBIND11_VERSION}.tar.gz && \
-    cd pybind11-${PYBIND11_VERSION} && \
-    mkdir build && \
-    cd build && \
-    cmake -DPYBIND11_TEST=False ../ && \
-    make -j ${MAKE_PROCS} && \
-    make install && \
-    rm -rf /tmp/*
+    pip install sympy==1.5.1 && \
+    pip install matplotlib && \
+    pip install /tmp/mpi4py*.whl && \
+    pip install petsc4py==${PETSC4PY_VERSION}
 
 # Our helper scripts
 WORKDIR $FENICS_HOME
