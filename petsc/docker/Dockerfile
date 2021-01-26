@@ -58,21 +58,20 @@ RUN MOUNT_CACHE \
 
 
 # Environment variables
-ENV PETSC_VERSION=3.14.0 \
-    SLEPC_VERSION=3.14.0 \
-    MPI4PY_VERSION=3.0.3 \
-    PETSC4PY_VERSION=3.13.0 \
-    SLEPC4PY_VERSION=3.13.0 \
+ENV PETSC_VERSION=3.14.3 \
+    SLEPC_VERSION=3.14.1 \
+    PETSC4PY_VERSION=3.14.1 \
+    SLEPC4PY_VERSION=3.14.0 \
     TRILINOS_VERSION=12.10.1 \
     OPENBLAS_NUM_THREADS=1 \
     OPENBLAS_VERBOSE=0 \
-    PYBIND11_VERSION=2.4.3
+    PYBIND11_VERSION=2.6.1
 
 # Install PETSc from source
 RUN MOUNT_CACHE \
-    wget --quiet -nc http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz && \
-    tar -xf petsc-lite-${PETSC_VERSION}.tar.gz && \
-    cd petsc-${PETSC_VERSION} && \
+    git clone -b release https://gitlab.com/petsc/petsc.git petsc && \
+    cd petsc && \
+    git checkout v${PETSC_VERSION} && \
     python ./configure --COPTFLAGS="-O2" \
                 --CXXOPTFLAGS="-O2" \
                 --FOPTFLAGS="-O2" \
