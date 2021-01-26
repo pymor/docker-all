@@ -6,9 +6,6 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 ENV WHEEL_VERSION=0.36.1 \
   WHEEL_PKGS="slycot mpi4py gmsh"
 
-COPY --from=docker.io/pymor/pytorch_pyPYVER:a2ebb25a0992b20957bfeced2e9dcee30105350b \
-  /io/wheelhouse/torch*.whl /wheelhouse/
-
 # libopenblas-dev cmake: needed for slycot
 # mpi-default-dev: mpi4py
 RUN MOUNT_CACHE apt update && \
