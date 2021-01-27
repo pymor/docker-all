@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install \
         libnetcdf-c++4-dev \
         libnetcdf-cxx-legacy-dev \
         libnetcdf-dev \
-        libarpack2-dev libboost1.71-all-dev libgmsh-dev \
+        libarpack2-dev libboost-all-dev libgmsh-dev \
         liblapack-dev libmuparser-dev libmetis-dev libtbb-dev
 RUN apt-get update && apt-get install \
     && ${PIP_INSTALL} -U pip==21.0 \
