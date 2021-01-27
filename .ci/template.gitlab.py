@@ -3,8 +3,8 @@
 tpl = '''
 
 stages:
-  - static_targetsendent
-  - parameterized_targetsendent
+  - static_targets
+  - parameterized_targets
 
 #************ definition of base jobs *********************************************************************************#
 # https://docs.gitlab.com/ee/ci/yaml/README.html#workflowrules-templates
@@ -33,11 +33,11 @@ include:
 parameterized_targets {{PY[0]}} {{PY[2]}}:
     extends: .docker_base
     resource_group: cache_{{PY}}
-    stage: parameterized_targetsendent
+    stage: parameterized_targets
     variables:
         PYVER: "{{PY}}"
     script:
-{%- for target in parameterized_targetss %}
+{%- for target in parameterized_targets %}
       - make {{target}}_{{PY}}
       # wait for potentially running push
       - wait
@@ -49,7 +49,7 @@ parameterized_targets {{PY[0]}} {{PY[2]}}:
 static_targets:
     extends: .docker_base
     resource_group: cache_{{PY}}
-    stage: static_targetsendent
+    stage: static_targets
     variables:
         PYVER: "{{PY}}"
     script:
@@ -77,7 +77,7 @@ tpl = jinja2.Template(tpl)
 pythons = ['3.6', '3.7', '3.8', '3.9']
 manylinux = ['2010', '2014']
 static_targets = ['docker-in-docker', 'docs', 'demo_main', 'deploy_checks', 'ci_sanity']
-parameterized_targetss = ['python_builder', 'python', 'constraints', 'dealii', 'petsc', 'pypi-mirror_stable', 'pypi-mirror_oldest',
+parameterized_targets = ['python_builder', 'python', 'constraints', 'dealii', 'petsc', 'pypi-mirror_stable', 'pypi-mirror_oldest',
 'ngsolve', 'fenics' ] + [f'wheelbuilder_manylinux{ml}' for ml in manylinux] +  ['cibase', 'testing','jupyter']
 
 with open(os.path.join(os.path.dirname(__file__), 'gitlab-ci.yml'), 'wt') as yml:
