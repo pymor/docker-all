@@ -1,8 +1,8 @@
 
 
 stages:
-  - static_targetsendent
-  - parameterized_targetsendent
+  - static_targets
+  - parameterized_targets
 
 #************ definition of base jobs *********************************************************************************#
 # https://docs.gitlab.com/ee/ci/yaml/README.html#workflowrules-templates
@@ -29,7 +29,7 @@ include:
 parameterized_targets 3 6:
     extends: .docker_base
     resource_group: cache_3.6
-    stage: parameterized_targetsendent
+    stage: parameterized_targets
     variables:
         PYVER: "3.6"
     script:
@@ -108,7 +108,7 @@ parameterized_targets 3 6:
 parameterized_targets 3 7:
     extends: .docker_base
     resource_group: cache_3.7
-    stage: parameterized_targetsendent
+    stage: parameterized_targets
     variables:
         PYVER: "3.7"
     script:
@@ -187,7 +187,7 @@ parameterized_targets 3 7:
 parameterized_targets 3 8:
     extends: .docker_base
     resource_group: cache_3.8
-    stage: parameterized_targetsendent
+    stage: parameterized_targets
     variables:
         PYVER: "3.8"
     script:
@@ -266,7 +266,7 @@ parameterized_targets 3 8:
 parameterized_targets 3 9:
     extends: .docker_base
     resource_group: cache_3.9
-    stage: parameterized_targetsendent
+    stage: parameterized_targets
     variables:
         PYVER: "3.9"
     script:
@@ -344,7 +344,7 @@ parameterized_targets 3 9:
 static_targets:
     extends: .docker_base
     resource_group: cache_
-    stage: static_targetsendent
+    stage: static_targets
     variables:
         PYVER: ""
     script:
