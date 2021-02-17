@@ -1,0 +1,9 @@
+numpy
+scipy
+docopt-ng
+matplotlib
+pytest
+pytest-memprof
+pytest-pycharm
+pytest-cov
+codecov
