@@ -114,6 +114,14 @@ $(addsuffix _cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CIBASE_IMAGE
 real_cibase_%: FORCE ngsolve_% dolfinx_% fenics_% dealii_% pypi-mirror_stable_%
 	$(DO_IT)
 
+$(addsuffix _minimal_cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MINIMAL_CIBASE_IMAGE
+real_minimal_cibase_%: FORCE pypi-mirror_stable_%
+	$(DO_IT)
+
+$(addsuffix _minimal_testing_%,$(IMAGE_TARGETS)) ensure_testing_%: IMAGE_NAME=MINIMAL_TESTING_IMAGE
+real_minimal_testing_%: FORCE minimal_cibase_%
+	$(DO_IT)
+
 $(addsuffix _testing_%,$(IMAGE_TARGETS)) ensure_testing_%: IMAGE_NAME=TESTING_IMAGE
 real_testing_%: FORCE cibase_%
 	$(DO_IT)

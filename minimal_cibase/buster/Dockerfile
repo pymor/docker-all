@@ -8,44 +8,27 @@ ENV DOCKER_NGSOLVE=1 \
     OPENBLAS_NUM_THREADS=1 \
     GOTO_NUM_THREADS=1 \
     OMP_NUM_THREADS=1 \
-    DEBIAN_FRONTEND=teletype \
-    SLEPC_DIR=/usr/local/slepc-32 \
-    PETSC_DIR=/usr/local/petsc-32 \
-    BOOST_VERSION=1.71.0
+    DEBIAN_FRONTEND=teletype
 
 # -dev packages should be kept as few as possible, and listed here with reasoning
-# mpi-default-bin: mpi runtime for tests
 # matplotlib/Qt backend: libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
 #     libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-util0
-# fenics/petsc:
-#         boost*
-#         libsz2
-#         libhdf5-mpi-dev
-#         libeigen3-dev
-# ngsolve: liboce-modeling11 liboce-ocaf11 libopengl0 \
-#          libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23
 # gmsh: libxcursor1 libxinerama1
 RUN MOUNT_CACHE \
     echo 'APT::Default-Release "buster";' > /etc/apt/apt.conf.d/default-release && \
     echo "deb http://deb.debian.org/debian buster-backports main contrib non-free" > /etc/apt/sources.list.d/buster-backports.list && \
     echo "deb http://deb.debian.org/debian/ buster contrib non-free" > /etc/apt/sources.list.d/buster-nonfree.list && \
     apt update && \
-    ${APTINSTALL} -t buster-backports libboost1.71-all-dev && \
     ${APTINSTALL} wget curl less \
-        texlive-base xvfb gnupg ca-certificates \
+        xvfb gnupg ca-certificates \
         gcc g++ gfortran make dirmngr pandoc \
         swig cmake libopenblas-dev \
-        aptitude bison flex ninja-build \
+        ninja-build \
         xauth gsl-bin git-lfs \
-        vim mpi-default-bin gosu sudo \
-        liboce-modeling11 liboce-ocaf11 libopengl0 \
-        libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23 \
-        libhdf5-mpi-dev \
-        libeigen3-dev \
+        vim gosu sudo \
         libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 \
           libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-util0\
-        libxcursor1 libxinerama1 \
-        libsz2  && \
+        libxcursor1 libxinerama1 && \
     echo "alias ls='ls -h --color=auto'" >> /etc/bash.bashrc && \
     echo "alias ll='ls -lh'" >> /etc/bash.bashrc && \
     echo "source /usr/local/share/dolfin/dolfin.conf" >> /etc/bash.bashrc && \
@@ -53,24 +36,19 @@ RUN MOUNT_CACHE \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-
-COPY --from=REGISTRY/pymor/petsc_pyPYVER:VERTAG /usr/local/ /usr/local/
-COPY --from=REGISTRY/pymor/dealii_pyPYVER:VERTAG /usr/local/ /usr/local/
-COPY --from=REGISTRY/pymor/ngsolve_pyPYVER:VERTAG /usr/local/ /usr/local/
-COPY --from=REGISTRY/pymor/fenics_pyPYVER:VERTAG /usr/local/ /usr/local/
-COPY --from=REGISTRY/pymor/dolfinx_pyPYVER:VERTAG /usr/local/ /usr/local/
-
 RUN MOUNT_CACHE \
-    python -c "import ngsolve" && \
     pip install termtables python-dotenv # for pymor-info script
 
 COPY pymor-info /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/
 COPY *.pip.conf /usr/local/share/
-
+COPY packages.list.txt /tmp
 COPY --from=pymor/pypi-mirror_stable_pyPYVER:VERTAG /pymor/downloads/* /tmp/dependencies/
 RUN MOUNT_CACHE \
-    set -exu && for pkg in /tmp/dependencies/* ; do pip install --no-deps --no-cache-dir ${pkg} && rm ${pkg} ; done
+    set -exu \
+    && pip install --no-cache-dir -f /tmp/dependencies/ -r /tmp/packages.list.txt \
+    && rm -rf /tmp/*
+
 
 # from here on images are user facing, unset away from mounted cache
 ENV CCACHE_DIR=/tmp/ccache \
