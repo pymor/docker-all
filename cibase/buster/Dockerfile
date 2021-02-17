@@ -70,7 +70,8 @@ COPY *.pip.conf /usr/local/share/
 
 COPY --from=pymor/pypi-mirror_stable_pyPYVER:VERTAG /pymor/downloads/* /tmp/dependencies/
 RUN MOUNT_CACHE \
-    set -exu && for pkg in /tmp/dependencies/* ; do pip install --no-deps --no-cache-dir ${pkg} && rm ${pkg} ; done
+    set -exu && (for pkg in /tmp/dependencies/* ; do pip install --no-deps --no-cache-dir ${pkg} && \
+     rm ${pkg} ; done)
 
 # from here on images are user facing, unset away from mounted cache
 ENV CCACHE_DIR=/tmp/ccache \
