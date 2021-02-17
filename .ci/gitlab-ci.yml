@@ -108,6 +108,16 @@ parameterized_targets 3 6:
       - wait
       - make push_jupyter_3.6 &
 
+      - make minimal_cibase_3.6
+      # wait for potentially running push
+      - wait
+      - make push_minimal_cibase_3.6 &
+
+      - make minimal_testing_3.6
+      # wait for potentially running push
+      - wait
+      - make push_minimal_testing_3.6 &
+
       - wait
 
 parameterized_targets 3 7:
@@ -186,6 +196,16 @@ parameterized_targets 3 7:
       # wait for potentially running push
       - wait
       - make push_jupyter_3.7 &
+
+      - make minimal_cibase_3.7
+      # wait for potentially running push
+      - wait
+      - make push_minimal_cibase_3.7 &
+
+      - make minimal_testing_3.7
+      # wait for potentially running push
+      - wait
+      - make push_minimal_testing_3.7 &
 
       - wait
 
@@ -266,6 +286,16 @@ parameterized_targets 3 8:
       - wait
       - make push_jupyter_3.8 &
 
+      - make minimal_cibase_3.8
+      # wait for potentially running push
+      - wait
+      - make push_minimal_cibase_3.8 &
+
+      - make minimal_testing_3.8
+      # wait for potentially running push
+      - wait
+      - make push_minimal_testing_3.8 &
+
       - wait
 
 parameterized_targets 3 9:
@@ -344,6 +374,16 @@ parameterized_targets 3 9:
       # wait for potentially running push
       - wait
       - make push_jupyter_3.9 &
+
+      - make minimal_cibase_3.9
+      # wait for potentially running push
+      - wait
+      - make push_minimal_cibase_3.9 &
+
+      - make minimal_testing_3.9
+      # wait for potentially running push
+      - wait
+      - make push_minimal_testing_3.9 &
 
       - wait
 static_targets:
