@@ -69,7 +69,9 @@ COMMON_BUILD=$(COPY_DOCKERFILE_IF_CHANGED) && \
 	 -f $(call $(IMAGE_NAME)_DIR,$*)/Dockerfile__$* $(CACHE_FROM) \
 	 $(call $(IMAGE_NAME)_DIR,$*)
 COMMON_TAG=$(CNTR_TAG) $(call FULL_IMAGE_NAME,$*,$(VER)) $(call FULL_IMAGE_NAME,$*,latest)
-CHECK_IMG=(which dive && CI=true dive $(call FULL_IMAGE_NAME,$*,$(VER))) || true
+DIVE_LOG=$(subst /,__,dive_$(call $(IMAGE_NAME),$1,$2).log)
+CHECK_IMG=(which dive 2>&1 && CI=true dive $(call FULL_IMAGE_NAME,$*,$(VER)) \
+	  > $(call DIVE_LOG,$*,$(VER)) 2>&1) || true
 DO_IT= ($(COMMON_INSPECT) || ($(COMMON_PULL) && $(COMMON_TAG))) || \
 	($(COMMON_PULL_LATEST) ; $(COMMON_BUILD) && $(COMMON_TAG)) && \
 	$(CHECK_IMG)

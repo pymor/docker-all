@@ -46,11 +46,15 @@ include:
     before_script:
       - docker buildx --help
       - apk add make sed rsync bash git wget
-      - wget https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.tar.gz \
+      - wget -q https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.tar.gz \
         -O - | tar -xz -C /usr/local/bin
       - chmod +x /usr/local/bin/dive
       - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
       - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD docker.io
+
+    artifacts:
+        paths:
+            - dive*.log
 
 {%- for PY in pythons %}
 parameterized_targets {{PY[0]}} {{PY[2]}}:
