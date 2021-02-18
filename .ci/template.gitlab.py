@@ -103,6 +103,7 @@ static_targets:
     script:
 {%- for target in static_targets %}
       - make {{target}}
+      - ls -lha
       - wait
       - make push_{{target}} &
 {% endfor %}

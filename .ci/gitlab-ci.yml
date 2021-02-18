@@ -793,22 +793,27 @@ static_targets:
         PYVER: ""
     script:
       - make docker-in-docker
+      - ls -lha
       - wait
       - make push_docker-in-docker &
 
       - make docs
+      - ls -lha
       - wait
       - make push_docs &
 
       - make demo_main
+      - ls -lha
       - wait
       - make push_demo_main &
 
       - make deploy_checks
+      - ls -lha
       - wait
       - make push_deploy_checks &
 
       - make ci_sanity
+      - ls -lha
       - wait
       - make push_ci_sanity &
 
