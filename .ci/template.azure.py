@@ -83,6 +83,7 @@ stages:
 {{ pyjob('constraints', 2)}}
 {{ pyjob('dealii', 2)}}
 {{ pyjob('petsc', 2)}}
+{{ pyjob('dunegdt', 2)}}
 
 {{ stage(3) }}
 {{ pyjob('pypi-mirror_stable', 3)}}

@@ -111,7 +111,7 @@ real_pypi-mirror_test_%: testing_% pypi-mirror_stable_% pypi-mirror_oldest_% pym
 	VARIANT=oldest PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) CNTR_BASE_PYTHON=$* docker-compose -f mirror-test.docker-compose.yml up --build test
 
 $(addsuffix _cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CIBASE_IMAGE
-real_cibase_%: FORCE ngsolve_% dolfinx_% fenics_% dealii_% pypi-mirror_stable_%
+real_cibase_%: FORCE ngsolve_% dolfinx_% fenics_% dealii_% dunegdt_% pypi-mirror_stable_%
 	$(DO_IT)
 
 $(addsuffix _minimal_cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MINIMAL_CIBASE_IMAGE
@@ -143,6 +143,10 @@ real_dealii_%: FORCE python_%
 
 $(addsuffix _petsc_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PETSC_IMAGE
 real_petsc_%: FORCE python_%
+	$(DO_IT)
+
+$(addsuffix _dunegdt_%,$(IMAGE_TARGETS)): IMAGE_NAME:=DUNEGDT_IMAGE
+real_dunegdt_%: FORCE python_%
 	$(DO_IT)
 
 $(addsuffix _fenics_%,$(IMAGE_TARGETS)): IMAGE_NAME:=FENICS_IMAGE
@@ -214,6 +218,7 @@ pull_all_latest_%: FORCE
 	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PYTHON_IMAGE,$*,latest)
 	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PETSC_IMAGE,$*,latest)
 	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call NGSOLVE_IMAGE,$*,latest)
+	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call DUNEGDT_IMAGE,$*,latest)
 	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PYPI_MIRROR_OLDEST_IMAGE,$*,latest)
 	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
 	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call JUPYTER_IMAGE,$*,latest)

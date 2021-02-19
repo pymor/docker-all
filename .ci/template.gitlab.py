@@ -101,7 +101,7 @@ manylinux = ['2010', '2014']
 static_targets = ['docker-in-docker', 'docs', 'demo_main', 'deploy_checks', 'ci_sanity']
 mirror_types = ['oldest', 'stable']
 parameterized_targets = ['python_builder', 'python', 'constraints', 'dealii', 'petsc', 'pypi-mirror_stable',
-'pypi-mirror_oldest', 'ngsolve', 'fenics' ] + [f'wheelbuilder_manylinux{ml}' for ml in manylinux] + ['cibase',
+'pypi-mirror_oldest', 'dolfinx', 'dunegdt', 'ngsolve', 'fenics' ] + [f'wheelbuilder_manylinux{ml}' for ml in manylinux] + ['cibase',
 'testing','jupyter', 'minimal_cibase', 'minimal_testing']
 
 with open(os.path.join(os.path.dirname(__file__), 'gitlab-ci.yml'), 'wt') as yml:
