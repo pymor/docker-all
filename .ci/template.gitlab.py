@@ -7,6 +7,20 @@ stages:
   - parameterized_targets
   - test
 
+{% macro never_on_schedule_rule() -%}
+rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: on_success
+{%- endmacro -%}
+{% macro only_on_schedule_rule() -%}
+rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
+      when: never
+    - when: on_success
+{%- endmacro -%}
+
+
 #************ definition of base jobs *********************************************************************************#
 # https://docs.gitlab.com/ee/ci/yaml/README.html#workflowrules-templates
 include:
@@ -37,6 +51,7 @@ include:
 {%- for PY in pythons %}
 parameterized_targets {{PY[0]}} {{PY[2]}}:
     extends: .docker_base
+    {{ never_on_schedule_rule() }}
     resource_group: cache_{{PY}}
     stage: parameterized_targets
     variables:
@@ -51,8 +66,28 @@ parameterized_targets {{PY[0]}} {{PY[2]}}:
       - wait
 {% endfor -%}
 
+{%- for PY in pythons %}
+parameterized_targets {{PY[0]}} {{PY[2]}} (scheduled):
+    extends: .docker_base
+    {{ only_on_schedule_rule() }}
+    resource_group: cache_{{PY}}
+    stage: parameterized_targets
+    variables:
+        PYVER: "{{PY}}"
+    script:
+{%- for target in parameterized_targets %}
+      - make VER=weekly_cron {{target}}_{{PY}}
+      # wait for potentially running push
+      - wait
+      - make VER=weekly_cron push_{{target}}_{{PY}} &
+{% endfor %}
+      - wait
+{% endfor -%}
+
+
 static_targets:
     extends: .docker_base
+    {{ never_on_schedule_rule() }}
     resource_group: cache_{{PY}}
     stage: static_targets
     variables:
@@ -65,11 +100,27 @@ static_targets:
 {% endfor %}
       - wait
 
+static_targets (scheduled):
+    extends: .docker_base
+    {{ only_on_schedule_rule() }}
+    resource_group: cache_{{PY}}
+    stage: static_targets
+    variables:
+        PYVER: "{{PY}}"
+    script:
+{%- for target in static_targets %}
+      - make VER=weekly_cron {{target}}
+      - wait
+      - make VER=weekly_cron push_{{target}} &
+{% endfor %}
+      - wait
+
 {%- for mirror in mirror_types %}
 {%- for PY in pythons %}
 test {{mirror}} {{PY[0]}} {{PY[2]}}:
     stage: test
     extends: .base
+    {{ never_on_schedule_rule() }}
     services:
     {%- if mirror == "oldest" %}
         - name: $REGISTRY_PREFIX/pypi-mirror_oldest_py{{PY}}:$CI_COMMIT_SHA
