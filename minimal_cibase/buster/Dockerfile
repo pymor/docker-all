@@ -15,9 +15,6 @@ ENV DOCKER_NGSOLVE=1 \
 #     libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-util0
 # gmsh: libxcursor1 libxinerama1
 RUN MOUNT_CACHE \
-    echo 'APT::Default-Release "buster";' > /etc/apt/apt.conf.d/default-release && \
-    echo "deb http://deb.debian.org/debian buster-backports main contrib non-free" > /etc/apt/sources.list.d/buster-backports.list && \
-    echo "deb http://deb.debian.org/debian/ buster contrib non-free" > /etc/apt/sources.list.d/buster-nonfree.list && \
     apt update && \
     ${APTINSTALL} wget curl less \
         xvfb gnupg ca-certificates \

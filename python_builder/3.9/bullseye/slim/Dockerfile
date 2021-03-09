@@ -5,7 +5,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 ENV QUIET="-q" \
  VERYQUIET="-qq"
@@ -83,8 +83,8 @@ RUN apt-get update ${VERYQUIET} && apt-get install ${VERYQUIET} -y --no-install-
 		tk \
 	&& rm -rf /var/lib/apt/lists/*
 
-ENV GPG_KEY 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
-ENV PYTHON_VERSION 3.6.13
+ENV GPG_KEY E3FF2839C048B25C084DEBE9B26995E310250568
+ENV PYTHON_VERSION 3.9.2
 
 RUN MOUNT_CACHE set -ex \
 	&& buildDeps=' \

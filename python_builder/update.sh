@@ -119,7 +119,7 @@ for version in "${versions[@]}"; do
 
 	for v in \
 		alpine{3.9,3.10} \
-		{jessie,stretch,buster}{/slim,} \
+		bullseye{/slim,} \
 		windows/windowsservercore-{1809,1803,ltsc2016} \
 	; do
 		dir="$version/$v"
@@ -169,7 +169,7 @@ for version in "${versions[@]}"; do
 			3.[5-6]*)
 				sed -ri -e '/uuid-dev/d' "$dir/Dockerfile"
 				;;& # (other Debian variants need to match later blocks)
-			*/buster | */stretch | */jessie)
+			*/bullseye)
 				# buildpack-deps already includes libssl-dev
 				sed -ri -e '/libssl-dev/d' "$dir/Dockerfile"
 				;;

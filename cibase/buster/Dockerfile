@@ -25,11 +25,8 @@ ENV DOCKER_NGSOLVE=1 \
 #          libumfpack5 libmuparser2v5 libatlas3-base libnetcdf-c++4 libgsl23
 # gmsh: libxcursor1 libxinerama1
 RUN MOUNT_CACHE \
-    echo 'APT::Default-Release "buster";' > /etc/apt/apt.conf.d/default-release && \
-    echo "deb http://deb.debian.org/debian buster-backports main contrib non-free" > /etc/apt/sources.list.d/buster-backports.list && \
-    echo "deb http://deb.debian.org/debian/ buster contrib non-free" > /etc/apt/sources.list.d/buster-nonfree.list && \
     apt update && \
-    ${APTINSTALL} -t buster-backports libboost1.71-all-dev && \
+    ${APTINSTALL} libboost1.74-all-dev && \
     ${APTINSTALL} wget curl less \
         texlive-base xvfb gnupg ca-certificates \
         gcc g++ gfortran make dirmngr pandoc \

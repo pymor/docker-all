@@ -1,4 +1,5 @@
 PYTHONS = 3.6 3.7 3.8 3.9
+DEBIAN_VERSION=bullseye
 VER?=$(shell git log -1 --pretty=format:"%H")
 NGSOLVE_IMAGE = pymor/ngsolve_py$1:$2
 NGSOLVE_IMAGE_DIR = ngsolve/docker
@@ -7,7 +8,7 @@ PETSC_IMAGE_DIR = petsc/docker
 PYTHON_IMAGE = pymor/python_$1:$2
 PYTHON_IMAGE_DIR = python
 PYTHON_BUILDER_IMAGE = pymor/python_builder_$1:$2
-PYTHON_BUILDER_IMAGE_DIR = python_builder/$1/buster/slim
+PYTHON_BUILDER_IMAGE_DIR = python_builder/$1/$(DEBIAN_VERSION)/slim
 FENICS_IMAGE = pymor/fenics_py$1:$2
 FENICS_IMAGE_DIR = fenics/docker
 DOLFINX_IMAGE = pymor/dolfinx_py$1:$2
@@ -15,9 +16,9 @@ DOLFINX_IMAGE_DIR = dolfinx/docker
 DEALII_IMAGE = pymor/dealii_py$1:$2
 DEALII_IMAGE_DIR = dealii/docker
 CIBASE_IMAGE = pymor/cibase_py$1:$2
-CIBASE_IMAGE_DIR = cibase/buster
+CIBASE_IMAGE_DIR = cibase/$(DEBIAN_VERSION)
 MINIMAL_CIBASE_IMAGE = pymor/minimal_cibase_py$1:$2
-MINIMAL_CIBASE_IMAGE_DIR = minimal_cibase/buster
+MINIMAL_CIBASE_IMAGE_DIR = minimal_cibase/$(DEBIAN_VERSION)
 DIND_IMAGE = pymor/docker-in-docker:$2
 DIND_IMAGE_DIR = docker-in-docker
 TESTING_IMAGE = pymor/testing_py$1:$2

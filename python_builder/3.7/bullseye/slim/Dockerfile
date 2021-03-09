@@ -5,7 +5,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 ENV QUIET="-q" \
  VERYQUIET="-qq"
