@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install \
         libnetcdf-cxx-legacy-dev \
         libnetcdf-dev \
         libarpack2-dev libboost-all-dev libgmsh-dev \
-        liblapack-dev libmuparser-dev libmetis-dev libtbb-dev
-RUN apt-get update && apt-get install \
+        liblapack-dev libmuparser-dev libmetis-dev libtbb-dev \
+    && pip uninstall -y pymor numpy \
     && ${PIP_INSTALL} -U pip==21.0 \
     && ${PIP_INSTALL} git+https://github.com/pymor/pymor.git@main#egg=pymor[full] \
     && ${PIP_INSTALL} -U git+https://github.com/pymor/pymor-deal.II#egg=pymor_dealii \
