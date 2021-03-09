@@ -4,7 +4,7 @@ THIS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 SUBDIRS = $(patsubst %/,%,$(sort $(dir $(wildcard */))))
 PY_INDEPENDENT = demo deploy_checks docker-in-docker docs ci_sanity pymor_source
 PY_SUBDIRS = $(filter-out $(PY_INDEPENDENT),$(SUBDIRS))
-EXCLUDE_FROM_ALL = pypi-mirror_test docs pymor_source
+EXCLUDE_FROM_ALL = pypi-mirror_test docs pymor_source dolfinx
 PUSH_PYTHON_SUBDIRS = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 CLEAN_PYTHON_SUBDIRS = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_SUBDIRS)))
 PUSH_PYTHON_VERSIONS = $(addprefix push_,$(PYTHONS))
@@ -111,7 +111,7 @@ real_pypi-mirror_test_%: testing_% pypi-mirror_stable_% pypi-mirror_oldest_% pym
 	VARIANT=oldest PYPI_MIRROR_TAG=$(VER) CI_IMAGE_TAG=$(VER) CNTR_BASE_PYTHON=$* docker-compose -f mirror-test.docker-compose.yml up --build test
 
 $(addsuffix _cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CIBASE_IMAGE
-real_cibase_%: FORCE ngsolve_% dolfinx_% fenics_% dealii_% pypi-mirror_stable_%
+real_cibase_%: FORCE ngsolve_% fenics_% dealii_% pypi-mirror_stable_%
 	$(DO_IT)
 
 $(addsuffix _minimal_cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MINIMAL_CIBASE_IMAGE
