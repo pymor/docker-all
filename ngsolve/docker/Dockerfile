@@ -9,7 +9,7 @@ RUN MOUNT_CACHE \
     libglu1-mesa-dev ccache openssh-client openmpi-bin libopenmpi-dev \
     python3 libpython3-dev python3-pytest python3-numpy python3-sphinx python3-pip \
     liboce-ocaf-dev libsuitesparse-dev python3-tk && \
-    pip3 install sphinx_rtd_theme pybind11_stubgen 
+    pip3 install sphinx_rtd_theme
 ENV PATH="/opt/netgen/bin:${PATH}" \
     NGSOLVE_VERSION=v6.2.2101 \
     NGSOLVE_SRC_DIR=/root/src/ngsolve_src \
@@ -20,13 +20,14 @@ ENV MUMPS_DIR=${PETSC_DIR}
 COPY --from=REGISTRY/pymor/petsc_pyPYVER:VERTAG ${PETSC_DIR} ${PETSC_DIR}
 
 COPY catch.hpp /usr/local/include/
+COPY 0001-calc-linearized-elmat-and-apply-elmat-from-python.patch /tmp/
 # fake lsb-release to get ngsolve cmake to configure for deb package building
 RUN MOUNT_CACHE \
     echo "DISTRIB_CODENAME=buster" > /etc/lsb-release && \
     git clone https://github.com/NGSolve/ngsolve.git ${NGSOLVE_SRC_DIR} && \
     cd ${NGSOLVE_SRC_DIR} && \
     git checkout ${NGSOLVE_VERSION} && \
-    cd ${NGSOLVE_SRC_DIR}  && \
+    git apply /tmp/0001-calc-linearized-elmat-and-apply-elmat-from-python.patch && \
     git submodule update --init --recursive && \
     mkdir -p ${NGSOLVE_BUILD_DIR} && \
     cd ${NGSOLVE_BUILD_DIR} && \
