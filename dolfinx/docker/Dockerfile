@@ -25,7 +25,7 @@ RUN MOUNT_CACHE \
   (for i in basix fiat ufl ffcx dolfinx ; do git clone https://github.com/FEniCS/$i /src/$i ; done) && \
   (for i in basix fiat ufl ffcx dolfinx; do cd /src/$i && git checkout ${DOLFINX_VERSION} ; done) && \
   (for i in basix fiat ufl ffcx ; do cd /src/$i && pip install --no-cache-dir . ; done) && \
-  apt update ; apt install -y ninja-build && \
+  apt update && apt install -y ninja-build && \
   cd /src/dolfinx && \
   mkdir build && \
   cd build && \

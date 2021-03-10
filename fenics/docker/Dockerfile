@@ -45,7 +45,8 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
                     -DDOLFIN_ENABLE_SCOTCH=on \
                     -DDOLFIN_ENABLE_HDF5=on && \
                   make -j ${MAKE_PROCS} && \
-                  make install && \
+                  make install "
+RUN find /usr/local -name demo ; ls -l /usr/local/share/* && \
                   mv /usr/local/share/dolfin/demo /tmp/demo && \
                   mkdir -p /usr/local/share/dolfin/demo && \
                   mv /tmp/demo /usr/local/share/dolfin/demo/cpp && \
@@ -70,7 +71,7 @@ RUN /bin/bash -c "PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install 'fenics${
                   PIP_NO_CACHE_DIR=off ${FENICS_PYTHON} -m pip install . && \
                   find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
                   ldconfig && \
-                  rm -rf /tmp/*"
+                  rm -rf /tmp/*
 
 # Install fenics as root user into /usr/local then remove the fenics-* scripts
 # the fenics.env.conf file and the unnecessary /home/fenics/local directory as
