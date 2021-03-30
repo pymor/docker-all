@@ -63,6 +63,7 @@ RUN MOUNT_CACHE \
     python -c "import ngsolve" && \
     pip install termtables python-dotenv # for pymor-info script
 
+COPY openmpi-mca-params.conf /etc/openmpi/openmpi-mca-params.conf
 COPY pymor-info /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/
 COPY *.pip.conf /usr/local/share/
