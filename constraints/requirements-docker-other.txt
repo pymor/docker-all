@@ -10,5 +10,4 @@ sphinx-tomyst
 sphinxcontrib-bibtex
 sphinx-tojupyter
 sphinx>=3.0
-vaa==0.1.4
 pybind11_stubgen
