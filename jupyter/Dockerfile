@@ -19,7 +19,8 @@ RUN MOUNT_CACHE \
     jupyter nbextension enable collapsible_headings/main && \
     jupyter nbextension enable codefolding/main && \
     jupyter nbextension enable notify/notify && \
-    jupyter nbextension enable scroll_down/main"
+    jupyter nbextension enable scroll_down/main && \
+    find /usr -name .cache | xargs rm -rf"
 COPY dev-entrypoint.bash /usr/local/bin/
 COPY ipython_kernel_config.py /etc/ipython/
 
