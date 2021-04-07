@@ -19,7 +19,6 @@ RUN pip install numpy && \
     pip install scipy && \
     pip install six && \
     pip install urllib3 && \
-# Install Jupyter, sympy, mpi4py, petsc4py and slepc4py and Swig from source.
     pip install sympy==1.5.1 && \
     pip install matplotlib && \
     pip install /tmp/mpi4py*.whl && \
