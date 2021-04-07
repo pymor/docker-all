@@ -32,7 +32,7 @@ RUN MOUNT_CACHE \
     openmpi-bin gosu && \
     pip install numpy
 
-ENV DEALII_VERSION=9.0.1
+ENV DEALII_VERSION=9.2.0
 RUN MOUNT_CACHE \
     cd /tmp && git clone https://github.com/dealii/dealii.git dealii-${DEALII_VERSION}-src && \
     cd dealii-${DEALII_VERSION}-src && \
@@ -49,7 +49,7 @@ RUN MOUNT_CACHE \
     ninja -j 1 install && \
     find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
     cd / && rm -rf /tmp/deal* && \
-    cd /tmp && git clone --recurse-submodules --branch=master https://github.com/pymor/pymor-deal.II deal && \
+    cd /tmp && git clone --recurse-submodules --branch=main https://github.com/pymor/pymor-deal.II deal && \
     cd deal && python setup.py bdist_wheel && \
     mkdir /usr/local/tmp/ && \
     mv dist/*.whl /usr/local/tmp/ && \
