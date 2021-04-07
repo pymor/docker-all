@@ -59,9 +59,7 @@ RUN MOUNT_CACHE \
 
 # Environment variables
 ENV PETSC_VERSION=3.14.3 \
-    SLEPC_VERSION=3.14.1 \
     PETSC4PY_VERSION=3.14.1 \
-    SLEPC4PY_VERSION=3.14.0 \
     TRILINOS_VERSION=12.10.1 \
     OPENBLAS_NUM_THREADS=1 \
     OPENBLAS_VERBOSE=0 \
@@ -88,16 +86,7 @@ RUN MOUNT_CACHE \
                 --prefix=/usr/local/petsc-32 && \
      make -j ${MAKE_PROCS} && \
      make install && \
-     rm -rf /tmp/*
-
-# Install SLEPc from source
-RUN MOUNT_CACHE \
-    wget -nc --quiet https://slepc.upv.es/download/distrib/slepc-${SLEPC_VERSION}.tar.gz -O slepc-${SLEPC_VERSION}.tar.gz && \
-    mkdir -p slepc-src && tar -xf slepc-${SLEPC_VERSION}.tar.gz -C slepc-src --strip-components 1 && \
-    export PETSC_DIR=/usr/local/petsc-32 && \
-    cd slepc-src && \
-    python ./configure --prefix=/usr/local/slepc-32 && \
-  PETSC_ARCH=linux-gnu-real-32 pip3 install petsc4py==${PETSC4PY_VERSION} slepc4py==${SLEPC4PY_VERSION} && \
+  PETSC_ARCH=linux-gnu-real-32 pip3 install petsc4py==${PETSC4PY_VERSION} && \
   wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
   tar -xf v${PYBIND11_VERSION}.tar.gz && \
   cd pybind11-${PYBIND11_VERSION} && \
@@ -109,9 +98,8 @@ RUN MOUNT_CACHE \
   find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
   rm -rf /tmp/*
 
-# By default use the 32-bit build of SLEPc and PETSc.
+# By default use the 32-bit build of PETSc.
 # these can not be moved, configure behaves differently when these are already in the env
-ENV SLEPC_DIR=/usr/local/slepc-32 \
-    PETSC_DIR=/usr/local/petsc-32
+ENV PETSC_DIR=/usr/local/petsc-32
 
 RUN printenv > /usr/local/share/petsc.env

@@ -9,7 +9,6 @@ ENV DOCKER_NGSOLVE=1 \
     GOTO_NUM_THREADS=1 \
     OMP_NUM_THREADS=1 \
     DEBIAN_FRONTEND=teletype \
-    SLEPC_DIR=/usr/local/slepc-32 \
     PETSC_DIR=/usr/local/petsc-32 \
     BOOST_VERSION=1.71.0
 
