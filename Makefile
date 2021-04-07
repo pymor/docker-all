@@ -206,23 +206,12 @@ pull_latest_%: FORCE
 	$(MAKE) -C testing pull_latest_$*
 
 pull_all_latest_%: FORCE
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call TESTING_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call CIBASE_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call DEALII_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call FENICS_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call DOLFINX_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PYTHON_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PETSC_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call NGSOLVE_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PYPI_MIRROR_OLDEST_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call PYPI_MIRROR_STABLE_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call JUPYTER_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call CONSTRAINTS_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call JUPYTER_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call JUPYTER_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call DIND_IMAGE,dummy,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call WB2010_IMAGE,$*,latest)
-	$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call WB2014_IMAGE,$*,latest)
+	@$(foreach v, $(filter %IMAGE,$(.VARIABLES)), \
+		$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call $(v),$*,latest) ; )
+
+pull_all_current_%: FORCE
+	@$(foreach v, $(filter %IMAGE,$(.VARIABLES)), \
+		$(CNTR_PULL) $(MAIN_CNTR_REGISTRY)/$(call $(v),$*,$(VER)) ; )
 
 update_python_templates:
 	cd python_builder && ./update.sh 3.6 3.7 3.8 3.9
