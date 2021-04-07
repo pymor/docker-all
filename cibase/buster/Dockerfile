@@ -60,7 +60,9 @@ COPY --from=REGISTRY/pymor/ngsolve_pyPYVER:VERTAG /usr/local/ /usr/local/
 COPY --from=REGISTRY/pymor/fenics_pyPYVER:VERTAG /usr/local/ /usr/local/
 
 RUN MOUNT_CACHE \
+    pip install /usr/local/tmp/pymor_dealii-*.whl && \
     python -c "import ngsolve" && \
+    python -c "import pymor_dealii" && \
     pip install termtables python-dotenv # for pymor-info script
 
 COPY openmpi-mca-params.conf /etc/openmpi/openmpi-mca-params.conf
