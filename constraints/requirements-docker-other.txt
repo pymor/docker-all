@@ -11,3 +11,4 @@ sphinxcontrib-bibtex
 sphinx-tojupyter
 sphinx>=3.0
 pybind11_stubgen
+pytimings
