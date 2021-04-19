@@ -5,7 +5,6 @@ mypy
 pyannotate
 MonkeyType
 scikit-build
-sphinx-autoapi
 sphinx-tomyst 
 sphinxcontrib-bibtex
 sphinx-tojupyter
