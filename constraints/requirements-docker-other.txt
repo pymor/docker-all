@@ -11,5 +11,5 @@ sphinxcontrib-bibtex
 sphinx-tojupyter
 sphinx>=3.0
 pybind11_stubgen
-pytimings
+pytimings>=2021.3
 pandas
