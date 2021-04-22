@@ -4,6 +4,8 @@ pytest-pycharm
 mypy
 pyannotate
 MonkeyType
+rich
+scalene
 scikit-build
 sphinx-autoapi
 sphinx-tomyst 
@@ -11,5 +13,5 @@ sphinxcontrib-bibtex
 sphinx-tojupyter
 sphinx>=3.0
 pybind11_stubgen
-pytimings>=2021.3
+pytimings>=2021.3.1
 pandas
