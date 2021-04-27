@@ -2,6 +2,7 @@ cmake
 cmarkgfm
 pytest-pycharm
 mypy
+numba
 pyannotate
 MonkeyType
 scikit-build
