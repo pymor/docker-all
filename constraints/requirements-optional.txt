@@ -49,4 +49,5 @@ sphinx>=1.7
 sympy
 torch
 typer
-wheel
+# require exact version for numpy git main
+wheel==0.36.2
