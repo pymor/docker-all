@@ -3,6 +3,8 @@ cmarkgfm
 pytest-pycharm
 mypy
 pyannotate
+pyvista
+itkwidgets
 MonkeyType
 scikit-build
 sphinx-autoapi
