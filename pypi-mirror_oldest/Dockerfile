@@ -2,7 +2,7 @@
 FROM python:PYVER
 # --no-use-pep517 makes sure scipy and numpy do not install build deps at download time
 ENV MIRROR_VERSION=4.0.5 \
-  PIP_VERSION=20.3.1 \
+  PIP_VERSION=21.1.1 \
   SERVER_ROOT=/pymor \
   PYTORCH_VERSION=1.5.1 \
   XDG_CACHE_HOME=/cache \
