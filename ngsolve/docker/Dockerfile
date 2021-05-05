@@ -11,7 +11,7 @@ RUN MOUNT_CACHE \
     liboce-ocaf-dev libsuitesparse-dev python3-tk && \
     pip3 install sphinx_rtd_theme pybind11_stubgen 
 ENV PATH="/opt/netgen/bin:${PATH}" \
-    NGSOLVE_VERSION=v6.2.2101 \
+    NGSOLVE_VERSION=v6.2.2102 \
     NGSOLVE_SRC_DIR=/root/src/ngsolve_src \
     NGSOLVE_BUILD_DIR=/root/src/ngsolve_build \
     PETSC_DIR=/usr/local/petsc-32
