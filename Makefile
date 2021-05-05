@@ -191,7 +191,7 @@ clean_deploy_checks: $(addprefix clean_,$(DEPLOY_CHECKS))
 push_deploy_checks: $(addprefix push_,$(DEPLOY_CHECKS))
 deploy_checks: $(DEPLOY_CHECKS)
 $(DEPLOY_CHECKS): deploy_checks_% : FORCE
-	$(CNTR_BUILD) --build-arg DEBIAN_DATE=20201117 --build-arg CENTOS_VERSION=centos8.2.2004 \
+	$(CNTR_BUILD) --build-arg DEBIAN_DATE=20201117 --build-arg CENTOS_VERSION=centos8.3.2011 \
 		-t $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*:$(VER) -t $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*:latest \
 		-t $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$*:$(VER) -t $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$*:latest \
 		deploy_checks/$*
