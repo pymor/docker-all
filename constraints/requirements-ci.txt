@@ -5,7 +5,7 @@ codecov
 flake8-docstrings
 flake8-rst-docstrings
 hypothesis[numpy,pytest]>=5.19
-myst-nb[linkify]
+myst-nb
 nbclient
 pyicontract-lint
 pypi-oldest-requirements>=2020.2
