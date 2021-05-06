@@ -18,7 +18,7 @@ pytest-regressions
 pytest-timeout
 pytest-xdist
 pytest>=4.4
-PyQt5!=5.15.2,>5.7,!=5.15.2.*
+PyQt5==5.15.1
 readme_renderer[md]
 rstcheck
 testipynb
