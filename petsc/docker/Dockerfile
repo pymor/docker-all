@@ -95,7 +95,6 @@ RUN MOUNT_CACHE \
   cmake -DPYBIND11_TEST=False ../ && \
   make -j ${MAKE_PROCS} && \
   make install && \
-  find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
   rm -rf /tmp/*
 
 # By default use the 32-bit build of PETSc.
