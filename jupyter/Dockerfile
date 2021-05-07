@@ -5,7 +5,7 @@ MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 # the pythreejs needs npm/nodejs installed for the jupter lab extension
 RUN MOUNT_CACHE \
-    /bin/bash -c "curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    /bin/bash -c "curl -sL https://deb.nodesource.com/setup_lts.x | bash - \
     &&  apt update && ${APTINSTALL} nodejs &&\
     pip install jupyterlab pythreejs && \
     jupyter nbextension install --py --symlink --sys-prefix pythreejs && \
