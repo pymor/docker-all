@@ -356,10 +356,6 @@ static_targets:
       - wait
       - make push_docs &
 
-      - make demo_master
-      - wait
-      - make push_demo_master &
-
       - make deploy_checks
       - wait
       - make push_deploy_checks &
