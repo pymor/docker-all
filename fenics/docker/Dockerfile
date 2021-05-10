@@ -13,6 +13,7 @@ WORKDIR /tmp
 
 COPY --from=REGISTRY/pymor/ci_wheels_pyPYVER:VERTAG /wheelhouse/mpi4py*.whl /tmp/
 # Install Python environment
+# petsc4py would install a separate petsc copy w/o --no-deps
 RUN pip install numpy && \
     pip install ply && \
     pip install pytest && \
@@ -22,7 +23,7 @@ RUN pip install numpy && \
     pip install sympy==1.5.1 && \
     pip install matplotlib && \
     pip install /tmp/mpi4py*.whl && \
-    pip install petsc4py==${PETSC4PY_VERSION}
+    pip install --no-deps petsc4py==${PETSC4PY_VERSION}
 
 # Our helper scripts
 WORKDIR $FENICS_HOME
