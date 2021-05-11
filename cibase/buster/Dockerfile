@@ -62,7 +62,13 @@ RUN MOUNT_CACHE \
     pip install /usr/local/tmp/pymor_dealii-*.whl && \
     python -c "import ngsolve" && \
     python -c "import pymor_dealii" && \
+    python -c "from dolfin import cpp" && \
     pip install termtables python-dotenv # for pymor-info script
+RUN MOUNT_CACHE \
+  (find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ) && \
+  python -c "import ngsolve" && \
+  python -c "import pymor_dealii" && \
+  python -c "from dolfin import cpp" 
 
 COPY openmpi-mca-params.conf /etc/openmpi/openmpi-mca-params.conf
 COPY pymor-info /usr/local/bin/

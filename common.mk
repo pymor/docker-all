@@ -80,5 +80,5 @@ PYTHON_TAG=$(VER)
 PETSC_TAG=$(VER)
 PYMOR_BRANCH=main
 MANYLINUXS=2010 2014
-DISTROS = centos_8 debian_stretch debian_buster debian_bullseye
+DISTROS = centos_8 fedora debian_stretch debian_buster debian_bullseye
 DEMO_TAGS = 0.5 main 2019.2 2020.1

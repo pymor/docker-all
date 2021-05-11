@@ -65,6 +65,7 @@ ENV PETSC_VERSION=3.14.3 \
     OPENBLAS_VERBOSE=0 \
     PYBIND11_VERSION=2.6.1
 
+# petsc4py would install a separate petsc copy w/o --no-deps
 # Install PETSc from source
 RUN MOUNT_CACHE \
     git clone -b release https://gitlab.com/petsc/petsc.git petsc && \
@@ -86,7 +87,7 @@ RUN MOUNT_CACHE \
                 --prefix=/usr/local/petsc-32 && \
      make -j ${MAKE_PROCS} && \
      make install && \
-  PETSC_ARCH=linux-gnu-real-32 pip3 install petsc4py==${PETSC4PY_VERSION} && \
+  PETSC_DIR=/usr/local/petsc-32 PETSC_ARCH="" pip3 install --no-deps petsc4py==${PETSC4PY_VERSION} && \
   wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
   tar -xf v${PYBIND11_VERSION}.tar.gz && \
   cd pybind11-${PYBIND11_VERSION} && \
@@ -95,7 +96,6 @@ RUN MOUNT_CACHE \
   cmake -DPYBIND11_TEST=False ../ && \
   make -j ${MAKE_PROCS} && \
   make install && \
-  find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ; \
   rm -rf /tmp/*
 
 # By default use the 32-bit build of PETSc.

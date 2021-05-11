@@ -36,7 +36,6 @@ RUN MOUNT_CACHE \
   ninja install && \
   cd ../python && \
   PETSC_ARCH=linux-gnu-real-32 pip3 install . && \
-  (find /usr/local/lib -maxdepth 1 -type f | xargs strip -p -d 2> /dev/null ) && \
   ldconfig && \
   rm -rf /src && \
   printenv >> /usr/local/share/dolfinx.env

@@ -4,9 +4,9 @@
 PySide2!=5.15.2,!=5.15.2.*,!=5.11.*
 Qt.py>=1.2.4
 bash_kernel
-cython>=0.28;python_version != "3.9"
-cython>=0.29.12;python_version == "3.9"
 deal
+cython>=0.28;python_version < "3.9"
+cython>=0.29.12;python_version >= "3.9"
 diskcache
 docopt-ng
 gmsh
@@ -19,7 +19,8 @@ jupyter_sphinx
 jupytext
 matplotlib
 meshio==4.2.0
-mpi4py
+mpi4py>=3.0.3;python_version >= "3.9"
+mpi4py>=3.0;python_version < "3.9"
 nbresuse
 numpy>=1.15.4;python_version == "3.7"
 numpy>=1.16.0;python_version != "3.6" and python_version != "3.7" and python_version != "3.8" and python_version != "3.9"
@@ -33,19 +34,20 @@ pygments
 pyopengl
 pytest-runner>=2.9
 pytest>=4.4
+python-slugify
 pythreejs
 scipy>=1.1;python_version < "3.8"
 scipy>=1.3.3;python_version == "3.8"
-scipy>=1.5.4;python_version > "3.8"
 setuptools>=40.8.0,<49.2.0;python_version < "3.9"
 setuptools>=49.1,<49.2.0;python_version >= "3.9"
+scipy>=1.5.4;python_version >= "3.9"
 slycot>=0.4.0
 sphinx-autoapi>=1.8
 sphinx-autodoc-typehints
 sphinx-icontract
 sphinx-material
 sphinx-qt-documentation
-sphinx>=1.7
+sphinx>=3.4
 sympy
 torch
 typer
