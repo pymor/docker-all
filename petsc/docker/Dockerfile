@@ -87,7 +87,7 @@ RUN MOUNT_CACHE \
                 --prefix=/usr/local/petsc-32 && \
      make -j ${MAKE_PROCS} && \
      make install && \
-  PETSC_ARCH=linux-gnu-real-32 pip3 install --no-deps petsc4py==${PETSC4PY_VERSION} && \
+  PETSC_DIR=/usr/local/petsc-32 PETSC_ARCH="" pip3 install --no-deps petsc4py==${PETSC4PY_VERSION} && \
   wget -nc --quiet https://github.com/pybind/pybind11/archive/v${PYBIND11_VERSION}.tar.gz && \
   tar -xf v${PYBIND11_VERSION}.tar.gz && \
   cd pybind11-${PYBIND11_VERSION} && \
