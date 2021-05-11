@@ -30,4 +30,5 @@ RUN MOUNT_CACHE \
 
 USER pymor
 WORKDIR ${SERVER_ROOT}
+EXPOSE 8080
 ENTRYPOINT ["python", "-m", "http.server", "--bind", "0.0.0.0", "8080" ]
