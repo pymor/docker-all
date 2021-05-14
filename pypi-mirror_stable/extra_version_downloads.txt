@@ -2,4 +2,3 @@
 
 # numpy master needs this
 wheel<=0.35.1
-
