@@ -198,8 +198,10 @@ $(DEPLOY_CHECKS): deploy_checks_% : FORCE
 $(addprefix clean_,$(DEPLOY_CHECKS)): clean_deploy_checks_% : FORCE
 	$(CNTR_RMI) $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$* $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*
 $(addprefix push_,$(DEPLOY_CHECKS)): push_deploy_checks_% : FORCE
-	$(CNTR_PUSH) $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*
-	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$*
+	$(CNTR_PUSH) $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*:$(VER)
+	$(CNTR_PUSH) $(MAIN_CNTR_REGISTRY)/pymor/deploy_checks_$*:latest
+	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$*:$(VER)
+	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/deploy_checks_$*:latest
 
 
 pull_latest_%: FORCE
