@@ -839,20 +839,6 @@ static_targets (scheduled):
       - make VER=weekly_cron push_ci_sanity &
 
       - wait
-test oldest 3 6:
-    stage: test
-    extends: .base
-    rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - when: on_success
-    services:
-        - name: $REGISTRY_PREFIX/pypi-mirror_oldest_py3.6:$CI_COMMIT_SHA
-          alias: pypi_mirror
-    image: $REGISTRY_PREFIX/testing_py3.6:$CI_COMMIT_SHA
-    script:
-        - ./.ci/test.bash
-
 test oldest 3 7:
     stage: test
     extends: .base
@@ -895,20 +881,6 @@ test oldest 3 9:
     script:
         - ./.ci/test.bash
 
-
-test stable 3 6:
-    stage: test
-    extends: .base
-    rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - when: on_success
-    services:
-        - name: $REGISTRY_PREFIX/pypi-mirror_stable_py3.6:$CI_COMMIT_SHA
-          alias: pypi_mirror
-    image: $REGISTRY_PREFIX/testing_py3.6:$CI_COMMIT_SHA
-    script:
-        - ./.ci/test.bash
 
 test stable 3 7:
     stage: test

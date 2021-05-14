@@ -116,7 +116,7 @@ static_targets (scheduled):
       - wait
 
 {%- for mirror in mirror_types %}
-{%- for PY in pythons %}
+{%- for PY in pythons[1:] %}
 test {{mirror}} {{PY[0]}} {{PY[2]}}:
     stage: test
     extends: .base
