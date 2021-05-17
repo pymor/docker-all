@@ -1,1 +1,1 @@
-c.IPKernelApp.extensions = ['pymor.discretizers.builtin.gui.jupyter']
+c.IPKernelApp.extensions = ["pymor.discretizers.builtin.gui.jupyter"]
