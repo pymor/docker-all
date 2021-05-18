@@ -12,7 +12,7 @@ RUN MOUNT_CACHE \
 COPY --from=REGISTRY/pymor/ci_wheels_pyPYVER:VERTAG /wheelhouse/*.whl /ci_wheels/
 COPY requirements* /requirements/
 
-COPY constraints.bash /usr/local/bin
+COPY check_reqs.py constraints.bash /usr/local/bin
 RUN constraints.bash
 
 FROM alpine:3.12

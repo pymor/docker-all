@@ -7,7 +7,7 @@ pyannotate
 MonkeyType
 scikit-build
 sphinxcontrib-bibtex
-sphinx>=3.0
+sphinx>=3.4
 pybind11_stubgen
 pytimings
 rich
