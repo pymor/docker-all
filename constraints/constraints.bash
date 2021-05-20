@@ -22,23 +22,13 @@ pip freeze --all | grep -v fenics | grep -v dolfin |grep -v dealii \
   > /requirements/constraints.txt
 
 cd /requirements/
-for fn in ${REQUIREMENTS} ; do
-    pypi_minimal_requirements_pinned ${fn} oldest_${fn}
-done
+pypi_minimal_requirements_pinned ${REQUIREMENTS} --output-fn combined_oldest.txt
 
-cd /requirements/
 virtualenv /tmp/venv_old
 
 /tmp/venv_old/bin/pip install /ci_wheels/*whl
-for fn in oldest_require*.txt ; do
-    VARG="-r ${fn} ${VARG}"
-done
-/tmp/venv_old/bin/pip install ${VARG}
-# currently cannot work due to file-by-file processing of pypi_minimal_requirements_pinned
-# for fn in oldest_require*.txt ; do
-#     check_reqs.py ${fn}
-# done
-
+/tmp/venv_old/bin/pip install -r combined_oldest.txt
+/tmp/venv_old/bin/python /usr/local/bin/check_reqs.py combined_oldest.txt
 
 # torch is still excluded here since it cannot be installed from pypi
 /tmp/venv_old/bin/pip freeze --all | grep -v fenics | grep -v torch | grep -v dolfin |grep -v dealii \
