@@ -9,3 +9,5 @@ scikit-build
 sphinxcontrib-bibtex
 sphinx>=3.0
 pybind11_stubgen
+pytimings
+rich
