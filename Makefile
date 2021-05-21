@@ -10,7 +10,8 @@ CLEAN_PYTHON_SUBDIRS = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_
 PUSH_PYTHON_VERSIONS = $(addprefix push_,$(PYTHONS))
 PUSH = $(addprefix push_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
 CLEAN = $(addprefix clean_,$(filter-out $(EXCLUDE_FROM_ALL),$(PY_INDEPENDENT)))
-DEPLOY_CHECKS = $(addprefix deploy_checks_,$(DISTROS))
+DEPLOY_CHECKS = $(subst /,_,$(patsubst %/,%,$(sort $(dir $(wildcard deploy_checks/*/)))))
+
 IMAGE_TARGETS=real rp run cl ensure pull pl
 DEMOS = $(addprefix demo_,$(DEMO_TAGS))
 # no builtin rules or variables
@@ -221,3 +222,6 @@ update_python_templates:
 ci_update:
 	./.ci/template.azure.py
 	./.ci/template.gitlab.py
+
+debug:
+	echo $(DSUB)
