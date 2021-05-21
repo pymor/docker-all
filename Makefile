@@ -182,11 +182,15 @@ docs:
 
 ci_sanity: FORCE
 	$(CNTR_BUILD) -t $(MAIN_CNTR_REGISTRY)/pymor/ci_sanity:$(VER) \
-	  -t $(ALT_CNTR_REGISTRY)/pymor/ci_sanity:$(VER) ci_sanity
+		-t $(MAIN_CNTR_REGISTRY)/pymor/ci_sanity:latest \
+	  -t $(ALT_CNTR_REGISTRY)/pymor/ci_sanity:$(VER) \
+		-t $(ALT_CNTR_REGISTRY)/pymor/ci_sanity:latest ci_sanity
 
 push_ci_sanity:
 	$(CNTR_PUSH) $(MAIN_CNTR_REGISTRY)/pymor/ci_sanity:$(VER)
+	$(CNTR_PUSH) $(MAIN_CNTR_REGISTRY)/pymor/ci_sanity:latest
 	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/ci_sanity:$(VER)
+	$(CNTR_PUSH) $(ALT_CNTR_REGISTRY)/pymor/ci_sanity:latest
 
 clean_deploy_checks: $(addprefix clean_,$(DEPLOY_CHECKS))
 push_deploy_checks: $(addprefix push_,$(DEPLOY_CHECKS))
