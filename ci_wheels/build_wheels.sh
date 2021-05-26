@@ -11,7 +11,7 @@ for pkg in ${WHEEL_PKGS} ; do
   pip download --no-deps $pkg -d /src/
   unp /src/${pkg}*.tar.gz && rm /src/${pkg}*.tar.gz
   cd ${pkg}*
-  pip wheel . -w ${WHEELHOUSE}/tmp
+  pip wheel --use-feature=in-tree-build . -w ${WHEELHOUSE}/tmp
   mv ${WHEELHOUSE}/tmp/${pkg}* ${WHEELHOUSE}/
   rm -rf ${WHEELHOUSE}/tmp
 done

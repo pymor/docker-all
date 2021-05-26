@@ -9,7 +9,7 @@ fi
 popd
 
 # Compile wheels
-${PYBIN}/pip wheel /io/pymor/ -w ${WHEEL_DIR}/
+${PYBIN}/pip wheel --use-feature=in-tree-build /io/pymor/ -w ${WHEEL_DIR}/
 
 # Bundle external shared libraries into the wheels
 for whl in ${WHEEL_DIR}/pymor*.whl; do
