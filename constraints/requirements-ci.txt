@@ -22,6 +22,7 @@ pytest-xdist
 pytest>=4.4
 readme_renderer[md]
 rstcheck
+rst_to_myst
 testipynb
 twine
 virtualenv
