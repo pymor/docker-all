@@ -29,10 +29,7 @@ include:
 .base:
     retry:
         max: 2
-        when:
-            - runner_system_failure
-            - stuck_or_timeout_failure
-            - api_failure
+        when: always
 
     tags:
       - amm-only_sb_dind
