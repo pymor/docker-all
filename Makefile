@@ -71,7 +71,7 @@ push_pymor_source:
 pymor_source:
 	test -d pymor_source || git clone --branch=$(PYMOR_BRANCH) https://github.com/pymor/pymor pymor_source
 
-docker-in-docker push_docker-in-docker clean_docker-in-docker: IMAGE_NAME:=DIND_IMAGE
+docker-in-docker push_docker-in-docker clean_docker-in-docker run_docker-in-docker: IMAGE_NAME:=DIND_IMAGE
 docker-in-docker: FORCE
 	$(CNTR_BUILD) -t $(call FULL_IMAGE_NAME,dummy,$(VER)) $(call $(IMAGE_NAME)_DIR,dummy)
 	$(CNTR_TAG) $(call FULL_IMAGE_NAME,dummy,$(VER)) $(call FULL_IMAGE_NAME,dummy,latest)
