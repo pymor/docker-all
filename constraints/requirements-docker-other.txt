@@ -1,4 +1,5 @@
 cmake
+ipympl
 cmarkgfm
 pytest-pycharm
 mypy
