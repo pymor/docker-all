@@ -1,5 +1,12 @@
 cmake
 ipympl
+plotly
+bokeh
+pyvista
+ipygany
+ipyvtklink
+ipyvolume
+panel
 cmarkgfm
 pytest-pycharm
 mypy
