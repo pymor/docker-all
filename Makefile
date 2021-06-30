@@ -180,6 +180,11 @@ real_jupyter_%: FORCE testing_%
 	@echo "Building $(IMAGE_NAME)"
 	@$(DO_IT)
 
+$(addsuffix _jhub_%,$(IMAGE_TARGETS)): IMAGE_NAME:=JHUB_IMAGE
+real_jhub_%: FORCE jupyter_%
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
+
 $(DEMOS): demo_% : IS_DIRTY
 	$(CNTR_BUILD) -t $(MAIN_CNTR_REGISTRY)/pymor/demo:$* \
 	  -t $(ALT_CNTR_REGISTRY)/pymor/demo:$* demo/$*
