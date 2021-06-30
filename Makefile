@@ -84,27 +84,32 @@ clean_docker-in-docker: FORCE
 
 $(addsuffix _ci_wheels_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CI_WHEELS_IMAGE
 real_ci_wheels_%: FORCE python_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _wheelbuilder_manylinux2010_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2010_IMAGE
 real_wheelbuilder_manylinux2010_%: FORCE pypi-mirror_oldest_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"@$(DO_IT)
 
 $(addsuffix _wheelbuilder_manylinux2014_%,$(IMAGE_TARGETS)): IMAGE_NAME:=WB2014_IMAGE
 real_wheelbuilder_manylinux2014_%: FORCE pypi-mirror_oldest_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _constraints_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CONSTRAINTS_IMAGE
 real_constraints_%: FORCE real_ci_wheels_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _pypi-mirror_stable_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_STABLE_IMAGE
 real_pypi-mirror_stable_%: FORCE constraints_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _pypi-mirror_oldest_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PYPI_MIRROR_OLDEST_IMAGE
 real_pypi-mirror_oldest_%: FORCE constraints_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _pypi-mirror_test_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MIRROR_TEST_IMAGE
 real_pypi-mirror_test_%: testing_% pypi-mirror_stable_% pypi-mirror_oldest_% pymor_source
@@ -113,54 +118,66 @@ real_pypi-mirror_test_%: testing_% pypi-mirror_stable_% pypi-mirror_oldest_% pym
 
 $(addsuffix _cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=CIBASE_IMAGE
 real_cibase_%: FORCE ngsolve_% fenics_% dealii_% pypi-mirror_stable_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _minimal_cibase_%,$(IMAGE_TARGETS)): IMAGE_NAME:=MINIMAL_CIBASE_IMAGE
 real_minimal_cibase_%: FORCE pypi-mirror_stable_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _minimal_testing_%,$(IMAGE_TARGETS)) ensure_testing_%: IMAGE_NAME=MINIMAL_TESTING_IMAGE
 real_minimal_testing_%: FORCE minimal_cibase_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _testing_%,$(IMAGE_TARGETS)) ensure_testing_%: IMAGE_NAME=TESTING_IMAGE
 real_testing_%: FORCE cibase_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 ensure_testing_%:
 	$(CNTR_INSPECT) $(call FULL_IMAGE_NAME,$*,latest) >/dev/null 2>&1 || $(CNTR_PULL) $(call FULL_IMAGE_NAME,$*,latest)
 
 $(addsuffix _python_builder_%,$(IMAGE_TARGETS)): IMAGE_NAME=PYTHON_BUILDER_IMAGE
 real_python_builder_%: FORCE
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _python_%,$(IMAGE_TARGETS)): IMAGE_NAME=PYTHON_IMAGE
 real_python_%: FORCE python_builder_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _dealii_%,$(IMAGE_TARGETS)): IMAGE_NAME:=DEALII_IMAGE
 real_dealii_%: FORCE python_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _petsc_%,$(IMAGE_TARGETS)): IMAGE_NAME:=PETSC_IMAGE
 real_petsc_%: FORCE python_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _fenics_%,$(IMAGE_TARGETS)): IMAGE_NAME:=FENICS_IMAGE
 real_fenics_%: FORCE petsc_% ci_wheels_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _dolfinx_%,$(IMAGE_TARGETS)): IMAGE_NAME:=DOLFINX_IMAGE
 real_dolfinx_%: FORCE petsc_% ci_wheels_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _ngsolve_%,$(IMAGE_TARGETS)): IMAGE_NAME:=NGSOLVE_IMAGE
 real_ngsolve_%: FORCE petsc_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(addsuffix _jupyter_%,$(IMAGE_TARGETS)): IMAGE_NAME:=JUPYTER_IMAGE
 real_jupyter_%: FORCE testing_%
-	$(DO_IT)
+	@echo "Building $(IMAGE_NAME)"
+	@$(DO_IT)
 
 $(DEMOS): demo_% : IS_DIRTY
 	$(CNTR_BUILD) -t $(MAIN_CNTR_REGISTRY)/pymor/demo:$* \
