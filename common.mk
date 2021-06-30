@@ -46,8 +46,11 @@ WB2014_IMAGE_DIR = wheelbuilder_manylinux2014
 MAIN_CNTR_REGISTRY?=zivgitlab.wwu.io/pymor/docker
 ALT_CNTR_REGISTRY?=docker.io
 CNTR_CMD?=docker
+ifeq ($(CI),1)
+	PROGRESS="--progress=plain"
+endif
 # this makes produced images usable by '--cache-from'
-CNTR_BUILD=$(CNTR_CMD) buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --progress=plain
+CNTR_BUILD=$(CNTR_CMD) buildx build --build-arg BUILDKIT_INLINE_CACHE=1 $(PROGRESS)
 CNTR_TAG=$(CNTR_CMD) tag
 CNTR_PUSH=$(CNTR_CMD) push
 CNTR_PULL=$(CNTR_CMD) pull -q
