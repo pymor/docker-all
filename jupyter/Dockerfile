@@ -3,11 +3,13 @@ FROM REGISTRY/pymor/testing_pyPYVER:VERTAG
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
+# needed for jhub run (at least @WWU)
+#   - jupyterlab, jupyterhub
 # the pythreejs needs npm/nodejs installed for the jupter lab extension
 RUN MOUNT_CACHE \
     /bin/bash -c "curl -sL https://deb.nodesource.com/setup_lts.x | bash - \
     &&  apt update && ${APTINSTALL} nodejs &&\
-    pip install jupyterlab pythreejs && \
+    pip install jupyterlab jupyterhub pythreejs && \
     jupyter nbextension install --py --symlink --sys-prefix pythreejs && \
     jupyter nbextension install --py --symlink --sys-prefix ngsolve && \
     jupyter nbextension enable --py --sys-prefix pythreejs && \
