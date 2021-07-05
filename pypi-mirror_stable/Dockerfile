@@ -2,9 +2,8 @@
 FROM python:PYVER
 
 ENV MIRROR_VERSION=4.0.5 \
-  PIP_VERSION=21.1.1 \
+  PIP_VERSION=21.1.3 \
   SERVER_ROOT=/pymor \
-  PYTORCH_VERSION=1.5.1 \
   XDG_CACHE_HOME=/cache \
   DOWNLOAD="pip download --no-deps -d /pymor/downloads"
 
