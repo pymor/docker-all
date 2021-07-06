@@ -4,8 +4,6 @@
 PySide2!=5.15.2,!=5.15.2.*,!=5.11.*
 bash_kernel
 deal
-cython>=0.28;python_version < "3.9"
-cython>=0.29.12;python_version >= "3.9"
 diskcache
 docopt-ng
 gmsh
