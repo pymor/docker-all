@@ -1,5 +1,5 @@
 # EXPERIMENTAL_SYNTAX
-FROM quay.io/pypa/manylinux2014_x86_64:2020-11-11-bc8ce45
+FROM quay.io/pypa/manylinux2014_x86_64:2021-06-07-00faba2
 
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
@@ -19,13 +19,14 @@ COPY pybin.sh /etc/profile.d/
 
 # installing scipy after numpy prevents scipy from trying to compile numpy from source
 # some packages get installed manually because others have broken dependency settings
+# --only-binary for packages that got additional source tarball downloads that shouldn't be installed
 RUN MOUNT_CACHE \
   source /etc/profile.d/pybin.sh && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/scipy* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/*manylinux2014_x86_64.whl && \
   rm -f ${WHEEL_DIR}/*manylinux2014_x86_64.whl && \
-  ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/*
+  ${PYBIN}/pip install --only-binary mpi4py --no-cache ${WHEEL_DIR}/*
 
 COPY entrypoint.sh /usr/local/bin/
 COPY build-wheels.sh /usr/local/bin/

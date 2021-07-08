@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -exo pipefail
 # fenics and pymor-deallii packages need to be filtered from the freeze command since they're already installed
-# in the constrainer base image and cannot be installed from pypi
+# in the constaints base image and cannot be installed from pypi
 
 REQUIREMENTS="requirements.txt requirements-ci.txt requirements-optional.txt requirements-docker-other.txt"
 
@@ -23,6 +23,11 @@ pip freeze --all | grep -v fenics | grep -v dolfin |grep -v dealii \
 
 cd /requirements/
 pypi_minimal_requirements_pinned ${REQUIREMENTS} --output-fn combined_oldest.txt
+# manully installed wheels need to be filtered, otherwise
+# versions not matching the wheels' will conflict on requirements install
+for pkg in $(cat /ci_wheels/ci_wheels.list) ; do
+  sed -i "/${pkg}/d" combined_oldest.txt
+done
 
 virtualenv /tmp/venv_old
 

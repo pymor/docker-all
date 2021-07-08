@@ -15,7 +15,9 @@ RUN MOUNT_CACHE apt update && \
 
 
 COPY build_*.sh /builder/
-RUN MOUNT_CACHE /builder/build_wheels.sh
+RUN MOUNT_CACHE \
+  /builder/build_wheels.sh && \
+  echo "${WHEEL_PKGS}" > /wheelhouse/ci_wheels.list
 
 FROM alpine:3.12
 
