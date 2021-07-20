@@ -12,6 +12,6 @@ COPY requirements* /requirements/
 COPY check_reqs.py constraints.bash /usr/local/bin
 RUN constraints.bash
 
-# FROM alpine:3.12
-#
-# COPY --from=builder_PYVER_VERTAG /requirements/* /requirements/
+FROM alpine:3.12
+
+COPY --from=builder_PYVER_VERTAG /requirements/* /requirements/
