@@ -4,14 +4,16 @@ FROM REGISTRY/pymor/python_PYVER:VERTAG as builder
 MAINTAINER René Fritze <rene.fritze@wwu.de>
 
 ENV WHEEL_VERSION=0.36.1 \
-  WHEEL_PKGS="slycot mpi4py gmsh"
+  WHEEL_PKGS="vtk slycot mpi4py gmsh"
 
 # libopenblas-dev cmake: needed for slycot
 # mpi-default-dev: mpi4py
+# g++, libglu1-mesa-dev, cmake: vtk
 RUN MOUNT_CACHE apt update && \
   apt install -y unp \
       libopenblas-dev cmake \
-      mpi-default-dev
+      mpi-default-dev \
+      wget g++ libglu1-mesa-dev
 
 
 COPY build_*.sh /builder/
