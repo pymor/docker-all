@@ -8,7 +8,8 @@ ENV MPICC=/usr/lib64/openmpi/bin/mpicc \
     PYTHON_VERSION=PYVER \
     WHEEL_DIR=/io/wheelhouse \
     XDG_CACHE_HOME=/cache \
-    PLATFORM=manylinux2010_x86_64
+    PLATFORM=manylinux2010_x86_64 \
+    PIP_VERSION=21.1.3
 
 RUN MOUNT_CACHE \
   yum install -y atlas-devel openmpi-devel \
@@ -23,6 +24,7 @@ COPY pybin.sh /etc/profile.d/
 # --only-binary for packages that got additional source tarball downloads that shouldn't be installed
 RUN MOUNT_CACHE \
   source /etc/profile.d/pybin.sh && \
+  ${PYBIN}/pip install pip==${PIP_VERSION} && \
   rm -f ${WHEEL_DIR}/*manylinux2014_x86_64.whl && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/numpy* && \
   ${PYBIN}/pip install --no-cache ${WHEEL_DIR}/scipy* && \
